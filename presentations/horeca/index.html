@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Green Panda для HoReCa — презентация для байеров</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          mint:    { 50:'#EEFAF8', 100:'#D6F2EE', 300:'#7DD6CB', 500:'#1FA8A3', 700:'#137C7A', 900:'#0B4B4A' },
+          bamboo:  { 500:'#6CB369', 700:'#3E7F45' },
+          cream:   '#F6F4EE',
+          ink:     '#0F1A1A',
+          accent:  '#C8443E',
+          gold:    '#E5B53D'
+        },
+        fontFamily: {
+          sans: ['Manrope', 'sans-serif'],
+          display: ['Unbounded', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Manrope', sans-serif; background: #F6F4EE; color: #0F1A1A; }
+  .display { font-family: 'Unbounded', sans-serif; letter-spacing: -0.02em; }
+
+  /* «Ждём данные» — желтая плашка */
+  .pending {
+    display: inline-block;
+    background: rgba(229, 181, 61, 0.18);
+    border: 1px dashed #E5B53D;
+    color: #8a6a17;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .pending-block {
+    border: 1px dashed #E5B53D;
+    background: rgba(229, 181, 61, 0.08);
+    color: #5a4710;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Sticky-секция */
+  .pin-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Mascot guide */
+  .mascot-guide {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 30px rgba(15,26,26,0.18));
+  }
+
+  /* SKU карточка */
+  .sku-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 6px 30px rgba(15,26,26,0.06);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .sku-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(15,26,26,0.10);
+  }
+  .sku-label {
+    background:
+      radial-gradient(circle at 50% 40%, rgba(31,168,163,0.12), transparent 60%),
+      linear-gradient(180deg, #EEFAF8 0%, #FFFFFF 100%);
+  }
+  .sku-label img { width: 80%; max-height: 280px; object-fit: contain; }
+
+  /* Матрица применения */
+  .matrix th, .matrix td {
+    border: 1px solid #D6F2EE;
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  .matrix th { background: #EEFAF8; color: #0B4B4A; font-weight: 700; }
+  .matrix .dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #6CB369;
+    margin-right: 6px;
+  }
+
+  /* Прогрессный бар скролла */
+  .scroll-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1FA8A3 0%, #6CB369 100%);
+    z-index: 100;
+    width: 0%;
+  }
+
+  /* Боковая навигация */
+  .side-nav {
+    position: fixed; right: 24px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .side-nav a {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(15,26,26,0.18);
+    transition: all 0.2s;
+  }
+  .side-nav a:hover, .side-nav a.active {
+    background: #1FA8A3;
+    transform: scale(1.4);
+  }
+  .side-nav a span {
+    position: absolute;
+    right: 22px; top: 50%;
+    transform: translateY(-50%);
+    background: #0F1A1A;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .side-nav a:hover span { opacity: 1; }
+
+  /* Декоративный лист бамбука */
+  .leaf-deco {
+    position: absolute;
+    opacity: 0.08;
+    pointer-events: none;
+    font-size: 240px;
+    color: #3E7F45;
+  }
+
+  /* Анимация появления */
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* History timeline */
+  .timeline-item {
+    position: relative;
+    padding-left: 28px;
+    padding-bottom: 24px;
+    border-left: 2px solid #D6F2EE;
+  }
+  .timeline-item:last-child { border-left: 2px solid transparent; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -7px; top: 0;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #1FA8A3;
+    box-shadow: 0 0 0 4px rgba(31,168,163,0.18);
+  }
+
+  /* Печать в PDF */
+  @media print {
+    .side-nav, .scroll-bar { display: none !important; }
+    section { page-break-after: always; }
+  }
+</style>
+</head>
+
+<body class="antialiased">
+
+<!-- Прогресс скролла -->
+<div class="scroll-bar" id="scroll-bar"></div>
+
+<!-- Боковая навигация -->
+<nav class="side-nav hidden lg:flex">
+  <a href="#s-cover"   data-label="Обложка"></a>
+  <a href="#s-about"   data-label="О компании"></a>
+  <a href="#s-history" data-label="История"></a>
+  <a href="#s-mission" data-label="Миссия"></a>
+  <a href="#s-range"   data-label="Линейка"></a>
+  <a href="#s-skus"    data-label="SKU"></a>
+  <a href="#s-segments" data-label="Сегменты HoReCa"></a>
+  <a href="#s-economy" data-label="Экономика"></a>
+  <a href="#s-certs"   data-label="Сертификаты"></a>
+  <a href="#s-logi"    data-label="Логистика"></a>
+  <a href="#s-terms"   data-label="Условия"></a>
+  <a href="#s-contact" data-label="Контакты"></a>
+</nav>
+
+<!-- ===================== 1. COVER ===================== -->
+<section id="s-cover" class="pin-section relative overflow-hidden">
+  <div class="absolute inset-0" style="background:
+      radial-gradient(circle at 20% 30%, rgba(31,168,163,0.18), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(108,179,105,0.18), transparent 55%),
+      linear-gradient(180deg, #EEFAF8 0%, #F6F4EE 100%);"></div>
+  <div class="leaf-deco" style="top:-40px; right:-40px;">🎋</div>
+  <div class="leaf-deco" style="bottom:-40px; left:-40px;">🎋</div>
+
+  <div class="relative max-w-7xl mx-auto px-8 py-20 grid lg:grid-cols-2 gap-12 items-center">
+    <div class="reveal">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-bamboo-500 flex items-center justify-center text-white font-bold">G</div>
+        <span class="display text-xl text-mint-900">GREEN PANDA</span>
+      </div>
+      <h1 class="display text-5xl lg:text-7xl font-black text-mint-900 leading-[0.95] mb-6">
+        Профессиональная<br>эко-химия<br>
+        <span class="text-bamboo-700">для HoReCa</span>
+      </h1>
+      <p class="text-xl text-ink/75 mb-8 max-w-lg">
+        6 SKU для кухни, зала, прачечной и номерного фонда. Производство в Новороссийске. 10 лет на рынке.
+      </p>
+      <div class="flex flex-wrap gap-3 mb-8">
+        <span class="px-4 py-2 rounded-full bg-mint-500 text-white font-semibold text-sm">Eco-friendly</span>
+        <span class="px-4 py-2 rounded-full bg-bamboo-500 text-white font-semibold text-sm">Гипоаллергенно</span>
+        <span class="px-4 py-2 rounded-full bg-mint-900 text-white font-semibold text-sm">СГР ЕАЭС</span>
+      </div>
+      <div class="text-sm text-ink/60">
+        Презентация для категорийных менеджеров и закупщиков HoReCa<br>
+        <span class="font-semibold">2026</span> · ООО «КубаньБытХим»
+      </div>
+    </div>
+    <div class="relative flex items-center justify-center reveal">
+      <img src="../../assets/mascots/floor.png" alt="Green Panda mascot"
+           class="w-full max-w-md drop-shadow-2xl">
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 2. О КОМПАНИИ ===================== -->
+<section id="s-about" class="pin-section bg-white">
+  <div class="max-w-7xl mx-auto px-8 py-24 grid lg:grid-cols-12 gap-12 items-start">
+    <div class="lg:col-span-5 reveal">
+      <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4">О компании</div>
+      <h2 class="display text-5xl font-black text-mint-900 leading-tight mb-6">
+        10 лет<br>производства<br>в Новороссийске
+      </h2>
+      <p class="text-ink/75 text-lg leading-relaxed mb-6">
+        ООО «КубаньБытХим» — российский производитель бытовой и профессиональной химии.
+        Под нашей крышей живут два бренда: <b>Матрёшка</b> для ритейла и
+        <b>Green Panda</b> — эко-линейка для требовательного B2B-сегмента.
+      </p>
+      <img src="../../assets/mascots/soap.png" class="mascot-guide" alt="">
+    </div>
+
+    <div class="lg:col-span-7 grid grid-cols-2 gap-5 reveal">
+      <div class="bg-cream rounded-2xl p-6">
+        <div class="text-4xl display font-black text-mint-700">2015</div>
+        <div class="text-sm text-ink/70 mt-2">Год основания производства</div>
+      </div>
+      <div class="bg-cream rounded-2xl p-6">
+        <div class="text-4xl display font-black text-mint-700">10 лет</div>
+        <div class="text-sm text-ink/70 mt-2">Стабильность поставок и репутации</div>
+      </div>
+      <div class="bg-cream rounded-2xl p-6">
+        <div class="text-4xl display font-black text-mint-700">6 SKU</div>
+        <div class="text-sm text-ink/70 mt-2">В линейке Green Panda</div>
+      </div>
+      <div class="bg-cream rounded-2xl p-6">
+        <div class="text-4xl display font-black text-mint-700">2 бренда</div>
+        <div class="text-sm text-ink/70 mt-2">Матрёшка (ритейл) + Green Panda (эко-B2B)</div>
+      </div>
+
+      <div class="col-span-2 bg-mint-50 rounded-2xl p-6">
+        <div class="font-bold text-mint-900 mb-3">Юридические реквизиты</div>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-ink/80">
+          <div><span class="text-ink/50">Название:</span> ООО «КубаньБытХим»</div>
+          <div><span class="text-ink/50">ИНН:</span> 2315984520</div>
+          <div><span class="text-ink/50">ОГРН:</span> 1152315004005</div>
+          <div><span class="text-ink/50">Адрес:</span> г. Новороссийск, ул. Кутузовская 117</div>
+          <div><span class="text-ink/50">ОКВЭД:</span> Производство мыла и моющих средств</div>
+          <div><span class="text-ink/50">Руководитель:</span> Забара Е. А.</div>
+        </div>
+      </div>
+
+      <div class="col-span-2 bg-bamboo-500/10 border-l-4 border-bamboo-500 rounded-r-2xl p-5">
+        <div class="text-sm font-semibold text-bamboo-700 mb-1">Логистическое плечо</div>
+        <div class="text-ink/80 text-sm">
+          Производство в Новороссийске → удобная доставка в Краснодарский край, Крым,
+          Ростов, Ставрополь, Кавминводы. Курортные отельные кластеры — в радиусе одного дня доставки.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3. ИСТОРИЯ (TIMELINE) ===================== -->
+<section id="s-history" class="pin-section bg-cream">
+  <div class="max-w-7xl mx-auto px-8 py-24 w-full">
+    <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4 reveal">История компании</div>
+    <h2 class="display text-5xl font-black text-mint-900 mb-12 reveal">Вехи 10-летнего пути</h2>
+
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
+      <div class="reveal">
+        <div class="timeline-item">
+          <div class="font-bold text-mint-900">2015 — основание</div>
+          <div class="text-ink/70 text-sm mt-1">
+            13 августа 2015 года зарегистрировано ООО «КубаньБытХим» в Новороссийске.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="font-bold text-mint-900">Запуск бренда Матрёшка</div>
+          <div class="pending mt-2">ждём данные от вас — год запуска</div>
+        </div>
+        <div class="timeline-item">
+          <div class="font-bold text-mint-900">Выход на маркетплейсы</div>
+          <div class="text-ink/70 text-sm mt-1">
+            Wildberries, Ozon — продажи под брендом Матрёшка.
+          </div>
+          <div class="pending mt-2">ждём данные от вас — год</div>
+        </div>
+        <div class="timeline-item">
+          <div class="font-bold text-mint-900">Запуск Green Panda</div>
+          <div class="pending mt-2">ждём данные от вас — год, повод, отличие от Матрёшки</div>
+        </div>
+        <div class="timeline-item">
+          <div class="font-bold text-mint-900">Регистрация СГР линейки</div>
+          <div class="text-ink/70 text-sm mt-1">
+            СГР по ТР ТС 009/2011 (БРБ.70.06.01.015.E…) на 6 SKU.
+            Действует на территории ЕАЭС.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="font-bold text-mint-900">Развитие B2B-направления</div>
+          <div class="pending mt-2">ждём данные от вас — этапы выхода в HoReCa</div>
+        </div>
+        <div class="timeline-item">
+          <div class="font-bold text-mint-900">2026 — сегодня</div>
+          <div class="text-ink/70 text-sm mt-1">
+            10 лет на рынке. Партнёрский портал partners.kubanbithim.ru.
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="pending-block mb-6">
+          <b>Здесь нужны ваши вехи:</b><br>
+          • годы и события (запуск брендов, расширение мощностей, новые линии)<br>
+          • награды, выставки, отраслевые ассоциации<br>
+          • ключевые контракты или клиенты (если можно публиковать)<br>
+          • штат и команда (опционально)
+        </div>
+
+        <div class="bg-white rounded-2xl p-6">
+          <div class="font-bold text-mint-900 mb-3">Производственные мощности</div>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between border-b border-mint-50 pb-2">
+              <span class="text-ink/60">Площадь цеха</span>
+              <span class="pending">ждём данные</span>
+            </div>
+            <div class="flex justify-between border-b border-mint-50 pb-2">
+              <span class="text-ink/60">Объём производства (тонн/мес)</span>
+              <span class="pending">ждём данные</span>
+            </div>
+            <div class="flex justify-between border-b border-mint-50 pb-2">
+              <span class="text-ink/60">Линии розлива</span>
+              <span class="pending">ждём данные</span>
+            </div>
+            <div class="flex justify-between border-b border-mint-50 pb-2">
+              <span class="text-ink/60">Штат</span>
+              <span class="pending">ждём данные</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-ink/60">Лаборатория</span>
+              <span class="pending">ждём данные</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. МИССИЯ ===================== -->
+<section id="s-mission" class="pin-section relative overflow-hidden">
+  <div class="absolute inset-0 bg-mint-900"></div>
+  <div class="absolute inset-0" style="background:
+      radial-gradient(circle at 80% 20%, rgba(108,179,105,0.35), transparent 50%),
+      radial-gradient(circle at 20% 80%, rgba(31,168,163,0.35), transparent 50%);"></div>
+
+  <div class="relative max-w-6xl mx-auto px-8 py-24 text-white">
+    <div class="text-mint-300 font-bold uppercase tracking-widest text-sm mb-4 reveal">Миссия</div>
+    <h2 class="display text-5xl lg:text-6xl font-black leading-tight mb-10 reveal">
+      Высококачественные<br>
+      и безопасные<br>
+      <span class="text-bamboo-500">бытовые продукты,</span><br>
+      которые заботятся<br>
+      о здоровье людей.
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-6 mt-12 reveal">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
+        <div class="text-3xl mb-3">🌿</div>
+        <div class="font-bold mb-2">Натуральные ингредиенты</div>
+        <div class="text-white/75 text-sm">Биоразлагаемые ПАВ, без агрессивной щёлочи на пищевых поверхностях.</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
+        <div class="text-3xl mb-3">🤝</div>
+        <div class="font-bold mb-2">Безопасность персонала</div>
+        <div class="text-white/75 text-sm">Гипоаллергенные формулы — снижение жалоб и текучки в клининге.</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6">
+        <div class="text-3xl mb-3">🏨</div>
+        <div class="font-bold mb-2">ESG-история отелю</div>
+        <div class="text-white/75 text-sm">Эко-сертификация = аргумент для гостей и тендеров на ESG.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 5. ЛИНЕЙКА — ОБЗОР 6 SKU ===================== -->
+<section id="s-range" class="pin-section bg-white">
+  <div class="max-w-7xl mx-auto px-8 py-24 w-full">
+    <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4 reveal">Линейка</div>
+    <h2 class="display text-5xl font-black text-mint-900 mb-4 reveal">6 SKU. Под все задачи HoReCa.</h2>
+    <p class="text-ink/70 text-lg mb-12 max-w-3xl reveal">
+      Каждый продукт — в фасовке 5 л (B2B-канистра, основная) и 0.75–1.5 л (триггер/дозатор для точечных операций).
+    </p>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- SKU 90502 GLASS -->
+      <div class="sku-card reveal">
+        <div class="sku-label flex items-center justify-center p-6 h-64">
+          <img src="../../assets/labels/длямытьястеколвектор.svg" alt="Стёкла">
+        </div>
+        <div class="p-5">
+          <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90502</div>
+          <div class="font-bold text-mint-900">Мытьё стёкол и зеркал</div>
+          <div class="text-sm text-ink/60 mt-1">5 л · 0.75 л (триггер-спрей)</div>
+        </div>
+      </div>
+      <!-- SKU 90503 FLOOR -->
+      <div class="sku-card reveal">
+        <div class="sku-label flex items-center justify-center p-6 h-64">
+          <img src="../../assets/labels/мытьеполоввектор.svg" alt="Полы">
+        </div>
+        <div class="p-5">
+          <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90503</div>
+          <div class="font-bold text-mint-900">Универсальное для полов</div>
+          <div class="text-sm text-ink/60 mt-1">5 л · 1.5 л</div>
+        </div>
+      </div>
+      <!-- SKU 90505 DISHES -->
+      <div class="sku-card reveal">
+        <div class="sku-label flex items-center justify-center p-6 h-64">
+          <img src="../../assets/labels/посудавектор.svg" alt="Посуда">
+        </div>
+        <div class="p-5">
+          <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90505</div>
+          <div class="font-bold text-mint-900">Для посуды и рук</div>
+          <div class="text-sm text-ink/60 mt-1">5 л · 0.75 л (дозатор)</div>
+        </div>
+      </div>
+      <!-- SKU 90506 LAUNDRY -->
+      <div class="sku-card reveal">
+        <div class="sku-label flex items-center justify-center p-6 h-64">
+          <img src="../../assets/labels/средстводлястиркивектор.svg" alt="Стирка">
+        </div>
+        <div class="p-5">
+          <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90506</div>
+          <div class="font-bold text-mint-900">Жидкое для стирки</div>
+          <div class="text-sm text-ink/60 mt-1">5 л · 1.5 л</div>
+        </div>
+      </div>
+      <!-- SKU 90504 SOAP -->
+      <div class="sku-card reveal">
+        <div class="sku-label flex items-center justify-center p-6 h-64">
+          <img src="../../assets/labels/хозжидкоемыловектор.svg" alt="Мыло">
+        </div>
+        <div class="p-5">
+          <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90504</div>
+          <div class="font-bold text-mint-900">Жидкое хоз. мыло</div>
+          <div class="text-sm text-ink/60 mt-1">5 л</div>
+        </div>
+      </div>
+      <!-- SKU 90507 PLASTICIZER -->
+      <div class="sku-card reveal">
+        <div class="sku-label flex items-center justify-center p-6 h-64">
+          <img src="../../assets/labels/пластификаторвектор.svg" alt="Пластификатор">
+        </div>
+        <div class="p-5">
+          <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90507</div>
+          <div class="font-bold text-mint-900">Пластификатор для бетона</div>
+          <div class="text-sm text-ink/60 mt-1">5 л · противоморозный</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Доп. SKU 90501 — отдельным блоком как «дуальный» -->
+    <div class="mt-8 bg-mint-50 rounded-2xl p-6 reveal">
+      <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90501 · дуальное назначение</div>
+      <div class="font-bold text-mint-900">Средство для мытья посуды и рук + хозяйственное мыло</div>
+      <div class="text-sm text-ink/60 mt-1">5 л · ПЭТ · крышка с ручкой · СГР BY.70.06.01.015.E.004707.12.16</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 6. SKU ДЕТАЛЬНО ===================== -->
+<section id="s-skus" class="bg-cream py-24">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4 reveal">Каталог SKU</div>
+    <h2 class="display text-5xl font-black text-mint-900 mb-12 reveal">Карточка каждого продукта</h2>
+
+    <!-- ШАБЛОН: чередуем left/right -->
+    <!-- 90502 СТЁКЛА -->
+    <div class="sku-detail grid lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-8 mb-8 reveal">
+      <div class="lg:col-span-4 sku-label rounded-2xl p-6 flex items-center justify-center h-72">
+        <img src="../../assets/labels/длямытьястеколвектор.svg" alt="">
+      </div>
+      <div class="lg:col-span-5">
+        <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90502</div>
+        <h3 class="display text-3xl font-black text-mint-900 mb-3">Средство для мытья стёкол и зеркал</h3>
+        <p class="text-ink/70 mb-4">
+          Не оставляет разводов. Безопасно для тонировок, антибликовых покрытий и ЖК-экранов в ресепшен-зоне.
+          Идеально для номерного фонда и стеклянных перегородок ресторанов.
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div><span class="text-ink/50">СГР:</span> BY.70.06.01.015.E.004704.12.16</div>
+          <div><span class="text-ink/50">Штрихкод:</span> 4680788441415</div>
+          <div><span class="text-ink/50">pH:</span> <span class="pending">ждём данные</span></div>
+          <div><span class="text-ink/50">Расход:</span> <span class="pending">ждём данные</span></div>
+        </div>
+      </div>
+      <div class="lg:col-span-3">
+        <div class="bg-mint-50 rounded-xl p-4 mb-3">
+          <div class="text-xs text-ink/50 mb-1">B2B канистра</div>
+          <div class="font-bold text-mint-900">5 л · крышка с ручкой</div>
+        </div>
+        <div class="bg-mint-50 rounded-xl p-4">
+          <div class="text-xs text-ink/50 mb-1">Триггер</div>
+          <div class="font-bold text-mint-900">0.75 л · спрей</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 90503 ПОЛЫ -->
+    <div class="sku-detail grid lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-8 mb-8 reveal">
+      <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90503</div>
+        <h3 class="display text-3xl font-black text-mint-900 mb-3">Универсальное средство для мытья полов и поверхностей</h3>
+        <p class="text-ink/70 mb-4">
+          Для всех типов покрытий: плитка, ламинат, керамогранит, мрамор. Совместим с автоматами и поломоечными машинами.
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div><span class="text-ink/50">СГР:</span> BY.70.06.01.015.E.003154.08.16</div>
+          <div><span class="text-ink/50">Штрихкод:</span> 4680788441477</div>
+          <div><span class="text-ink/50">pH:</span> <span class="pending">ждём данные</span></div>
+          <div><span class="text-ink/50">Расход:</span> <span class="pending">ждём данные</span></div>
+        </div>
+      </div>
+      <div class="lg:col-span-4 order-1 lg:order-2 sku-label rounded-2xl p-6 flex items-center justify-center h-72">
+        <img src="../../assets/labels/мытьеполоввектор.svg" alt="">
+      </div>
+      <div class="lg:col-span-3 order-3">
+        <div class="bg-mint-50 rounded-xl p-4 mb-3">
+          <div class="text-xs text-ink/50 mb-1">B2B канистра</div>
+          <div class="font-bold text-mint-900">5 л · крышка с ручкой</div>
+        </div>
+        <div class="bg-mint-50 rounded-xl p-4">
+          <div class="text-xs text-ink/50 mb-1">Розлив</div>
+          <div class="font-bold text-mint-900">1.5 л · крышка зелёная</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 90505 ПОСУДА -->
+    <div class="sku-detail grid lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-8 mb-8 reveal">
+      <div class="lg:col-span-4 sku-label rounded-2xl p-6 flex items-center justify-center h-72">
+        <img src="../../assets/labels/посудавектор.svg" alt="">
+      </div>
+      <div class="lg:col-span-5">
+        <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90505</div>
+        <h3 class="display text-3xl font-black text-mint-900 mb-3">Средство для мытья посуды и рук</h3>
+        <p class="text-ink/70 mb-4">
+          Высокая концентрация ПАВ — экономный расход. Не сушит кожу рук персонала. Подходит для посудомоечных машин на ручном дозировании.
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div><span class="text-ink/50">СГР:</span> BY.70.06.01.015.E.004706.12.16</div>
+          <div><span class="text-ink/50">Штрихкод:</span> 4680788441484</div>
+          <div><span class="text-ink/50">pH:</span> <span class="pending">ждём данные</span></div>
+          <div><span class="text-ink/50">Расход:</span> <span class="pending">ждём данные</span></div>
+        </div>
+      </div>
+      <div class="lg:col-span-3">
+        <div class="bg-mint-50 rounded-xl p-4 mb-3">
+          <div class="text-xs text-ink/50 mb-1">B2B канистра</div>
+          <div class="font-bold text-mint-900">5 л · крышка с ручкой</div>
+        </div>
+        <div class="bg-mint-50 rounded-xl p-4">
+          <div class="text-xs text-ink/50 mb-1">Кухня/мойка</div>
+          <div class="font-bold text-mint-900">0.75 л · дозатор</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 90506 СТИРКА -->
+    <div class="sku-detail grid lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-8 mb-8 reveal">
+      <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90506</div>
+        <h3 class="display text-3xl font-black text-mint-900 mb-3">Жидкое средство для стирки всех видов ткани</h3>
+        <p class="text-ink/70 mb-4">
+          Универсальное: бельё, текстиль, форма персонала. Для прачечных отелей, ресторанов с собственной стиркой.
+          Работает в холодной и тёплой воде.
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div><span class="text-ink/50">СГР:</span> BY.70.06.01.015.E.003860.09.16</div>
+          <div><span class="text-ink/50">Штрихкод:</span> 4680788441507</div>
+          <div><span class="text-ink/50">pH:</span> <span class="pending">ждём данные</span></div>
+          <div><span class="text-ink/50">Расход на загрузку:</span> <span class="pending">ждём данные</span></div>
+        </div>
+      </div>
+      <div class="lg:col-span-4 order-1 lg:order-2 sku-label rounded-2xl p-6 flex items-center justify-center h-72">
+        <img src="../../assets/labels/средстводлястиркивектор.svg" alt="">
+      </div>
+      <div class="lg:col-span-3 order-3">
+        <div class="bg-mint-50 rounded-xl p-4 mb-3">
+          <div class="text-xs text-ink/50 mb-1">Прачечная</div>
+          <div class="font-bold text-mint-900">5 л · крышка с ручкой</div>
+        </div>
+        <div class="bg-mint-50 rounded-xl p-4">
+          <div class="text-xs text-ink/50 mb-1">Розлив</div>
+          <div class="font-bold text-mint-900">1.5 л · крышка зелёная</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 90504 МЫЛО -->
+    <div class="sku-detail grid lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-8 mb-8 reveal">
+      <div class="lg:col-span-4 sku-label rounded-2xl p-6 flex items-center justify-center h-72">
+        <img src="../../assets/labels/хозжидкоемыловектор.svg" alt="">
+      </div>
+      <div class="lg:col-span-5">
+        <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90504</div>
+        <h3 class="display text-3xl font-black text-mint-900 mb-3">Жидкое хозяйственное мыло</h3>
+        <p class="text-ink/70 mb-4">
+          Для санузлов, душевых, общих зон. Подходит для дозаторов в номерном фонде и местах общего пользования.
+        </p>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div><span class="text-ink/50">СГР:</span> BY.70.06.01.015.E.003156.08.16</div>
+          <div><span class="text-ink/50">Штрихкод:</span> 4680788441491</div>
+          <div><span class="text-ink/50">Объём:</span> <span class="pending">ждём данные</span></div>
+          <div><span class="text-ink/50">Аромат:</span> <span class="pending">ждём данные</span></div>
+        </div>
+      </div>
+      <div class="lg:col-span-3">
+        <div class="bg-mint-50 rounded-xl p-4">
+          <div class="text-xs text-ink/50 mb-1">Тара</div>
+          <div class="pending">ждём данные</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 90507 ПЛАСТИФИКАТОР -->
+    <div class="sku-detail grid lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-8 mb-8 reveal">
+      <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="text-xs font-bold text-mint-500 mb-1">Артикул 90507</div>
+        <h3 class="display text-3xl font-black text-mint-900 mb-3">Пластификатор для бетона (противоморозный)</h3>
+        <p class="text-ink/70 mb-4">
+          Для строительных и ремонтных работ при низких температурах. Сохраняет пластичность смеси, ускоряет твердение.
+        </p>
+        <div class="text-sm bg-bamboo-500/10 border-l-4 border-bamboo-500 rounded-r-xl p-3 mb-4">
+          <b>Для HoReCa:</b> релевантно при строительстве/реконструкции объектов в межсезонье.
+        </div>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div><span class="text-ink/50">СГР:</span> BY.70.06.01.008.E.003155.08.16</div>
+          <div><span class="text-ink/50">Штрихкод:</span> 4680788441514</div>
+          <div><span class="text-ink/50">Расход:</span> <span class="pending">ждём данные</span></div>
+          <div><span class="text-ink/50">Морозостойкость:</span> <span class="pending">ждём данные</span></div>
+        </div>
+      </div>
+      <div class="lg:col-span-4 order-1 lg:order-2 sku-label rounded-2xl p-6 flex items-center justify-center h-72">
+        <img src="../../assets/labels/пластификаторвектор.svg" alt="">
+      </div>
+      <div class="lg:col-span-3 order-3">
+        <div class="bg-mint-50 rounded-xl p-4">
+          <div class="text-xs text-ink/50 mb-1">B2B канистра</div>
+          <div class="font-bold text-mint-900">5 л</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 7. СЕГМЕНТЫ HORECA — МАТРИЦА ===================== -->
+<section id="s-segments" class="pin-section bg-white">
+  <div class="max-w-7xl mx-auto px-8 py-24 w-full">
+    <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4 reveal">Применение</div>
+    <h2 class="display text-5xl font-black text-mint-900 mb-4 reveal">Какой SKU — для какой зоны</h2>
+    <p class="text-ink/70 text-lg mb-12 max-w-3xl reveal">
+      Матрица для категорийного менеджера: понятно, что закупать на отель, ресторан или кейтеринг-кухню.
+    </p>
+
+    <div class="reveal overflow-x-auto">
+      <table class="matrix w-full bg-white rounded-xl overflow-hidden">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Кухня</th>
+            <th>Зал / ресепшен</th>
+            <th>Санузел</th>
+            <th>Номерной фонд</th>
+            <th>Прачечная</th>
+            <th>Строй / ремонт</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>90502 · Стёкла</th>
+            <td></td>
+            <td><span class="dot"></span>Витрины, перегородки</td>
+            <td><span class="dot"></span>Зеркала</td>
+            <td><span class="dot"></span>Окна, зеркала</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>90503 · Полы</th>
+            <td><span class="dot"></span>Плитка</td>
+            <td><span class="dot"></span>Все покрытия</td>
+            <td><span class="dot"></span>Кафель</td>
+            <td><span class="dot"></span>Коридоры, лобби</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>90505 · Посуда/руки</th>
+            <td><span class="dot"></span>Основной</td>
+            <td></td>
+            <td><span class="dot"></span>Мытьё рук</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>90506 · Стирка</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="dot"></span>Постельное, полотенца</td>
+            <td><span class="dot"></span>Основной</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>90504 · Жидкое мыло</th>
+            <td></td>
+            <td></td>
+            <td><span class="dot"></span>Дозаторы</td>
+            <td><span class="dot"></span>Дозаторы</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>90501 · Хоз. мыло</th>
+            <td><span class="dot"></span>Доп. мытьё</td>
+            <td></td>
+            <td><span class="dot"></span>Уборка</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>90507 · Пластификатор</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="dot"></span>Зимние работы</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 8. ЭКОНОМИКА И ДОЗИРОВАНИЕ ===================== -->
+<section id="s-economy" class="pin-section bg-cream">
+  <div class="max-w-7xl mx-auto px-8 py-24 w-full">
+    <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4 reveal">Экономика</div>
+    <h2 class="display text-5xl font-black text-mint-900 mb-12 reveal">Стоимость одного применения</h2>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl p-6 reveal">
+        <div class="font-bold text-mint-900 mb-3">Расход на м² (полы)</div>
+        <div class="text-3xl display font-black text-bamboo-700 mb-2">
+          <span class="pending">ждём данные</span>
+        </div>
+        <div class="text-sm text-ink/60">мл концентрата на 1 м² пола</div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 reveal">
+        <div class="font-bold text-mint-900 mb-3">Расход на загрузку (стирка)</div>
+        <div class="text-3xl display font-black text-bamboo-700 mb-2">
+          <span class="pending">ждём данные</span>
+        </div>
+        <div class="text-sm text-ink/60">мл на 1 загрузку машины</div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 reveal">
+        <div class="font-bold text-mint-900 mb-3">Применений из 5 л канистры</div>
+        <div class="text-3xl display font-black text-bamboo-700 mb-2">
+          <span class="pending">ждём данные</span>
+        </div>
+        <div class="text-sm text-ink/60">для среднего отеля 50 номеров</div>
+      </div>
+    </div>
+
+    <div class="mt-8 pending-block reveal">
+      <b>Для этого раздела нужно:</b> данные по рекомендованному разведению каждого SKU (например, 90503 — 30 мл на 5 л воды), цена за единицу B2B,
+      расчёт стоимости одной уборки. Если есть сравнение с конкурентом — отлично, превратим в слайд «Экономия».
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 9. СЕРТИФИКАТЫ ===================== -->
+<section id="s-certs" class="pin-section bg-white">
+  <div class="max-w-7xl mx-auto px-8 py-24 w-full">
+    <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4 reveal">Документы</div>
+    <h2 class="display text-5xl font-black text-mint-900 mb-12 reveal">Сертификаты и регистрации</h2>
+
+    <div class="grid lg:grid-cols-2 gap-10">
+      <div class="reveal">
+        <div class="font-bold text-mint-900 mb-4">Свидетельства о государственной регистрации (СГР)</div>
+        <div class="space-y-3 text-sm">
+          <div class="bg-mint-50 rounded-xl p-4">
+            <div class="font-semibold">BY.70.06.01.015.E.004707.12.16</div>
+            <div class="text-ink/60">Артикул 90501 — мытьё посуды и рук / хоз. мыло · от 12.12.2016</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-4">
+            <div class="font-semibold">BY.70.06.01.015.E.004704.12.16</div>
+            <div class="text-ink/60">Артикул 90502 — мытьё стёкол · от 12.12.2016</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-4">
+            <div class="font-semibold">BY.70.06.01.015.E.003154.08.16</div>
+            <div class="text-ink/60">Артикул 90503 — для полов · от 04.08.2016</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-4">
+            <div class="font-semibold">BY.70.06.01.015.E.003156.08.16</div>
+            <div class="text-ink/60">Артикул 90504 — жидкое мыло · от 04.08.2016</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-4">
+            <div class="font-semibold">BY.70.06.01.015.E.004706.12.16</div>
+            <div class="text-ink/60">Артикул 90505 — посуда и руки · от 12.12.2016</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-4">
+            <div class="font-semibold">BY.70.06.01.015.E.003860.09.16</div>
+            <div class="text-ink/60">Артикул 90506 — стирка · от 26.09.2016</div>
+          </div>
+          <div class="bg-mint-50 rounded-xl p-4">
+            <div class="font-semibold">BY.70.06.01.008.E.003155.08.16</div>
+            <div class="text-ink/60">Артикул 90507 — пластификатор · от 04.08.2016</div>
+          </div>
+        </div>
+        <p class="text-xs text-ink/50 mt-4">
+          СГР выданы по ТР ТС 009/2011 и действуют на территории ЕАЭС, включая РФ.
+        </p>
+      </div>
+
+      <div class="reveal">
+        <div class="font-bold text-mint-900 mb-4">Дополнительные документы</div>
+        <div class="pending-block mb-4">
+          <b>Здесь нужно от вас:</b><br>
+          • Декларации соответствия ТР ТС (если есть отдельно)<br>
+          • Эко-маркировки и зелёные сертификаты (Листок Жизни, ECO, FSC и т.д.)<br>
+          • Протоколы независимых испытаний<br>
+          • Сертификаты системы менеджмента (ISO 9001, 14001, 22000)<br>
+          • Лабораторные отчёты по биоразлагаемости<br>
+          • Сканы документов в PDF — соберём в downloadable-набор для байера
+        </div>
+        <div class="bg-bamboo-500/10 border-l-4 border-bamboo-500 rounded-r-xl p-4 text-sm">
+          <b>Совет:</b> для HoReCa-тендеров сильно играет эко-маркировка и ISO 14001 (экологический менеджмент).
+          Если их пока нет — спланируем этот аргумент через 6–12 мес.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 10. УПАКОВКА И ЛОГИСТИКА ===================== -->
+<section id="s-logi" class="pin-section bg-cream">
+  <div class="max-w-7xl mx-auto px-8 py-24 w-full grid lg:grid-cols-2 gap-12 items-start">
+    <div class="reveal">
+      <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4">Упаковка и логистика</div>
+      <h2 class="display text-5xl font-black text-mint-900 mb-6">Тара и поставки</h2>
+      <p class="text-ink/70 text-lg leading-relaxed mb-6">
+        Основной B2B-формат — ПЭТ-канистра 5 л с крышкой-ручкой.
+        Для точечных операций (триггер-спрей, дозатор) — 0.75 л и 1.5 л.
+      </p>
+      <img src="../../assets/mascots/floor.png" class="mascot-guide" alt="">
+    </div>
+
+    <div class="reveal space-y-4">
+      <div class="bg-white rounded-2xl p-6">
+        <div class="font-bold text-mint-900 mb-3">Логистические параметры</div>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between border-b border-mint-50 pb-2">
+            <span class="text-ink/60">Шт. в коробе (5 л)</span>
+            <span class="pending">ждём данные</span>
+          </div>
+          <div class="flex justify-between border-b border-mint-50 pb-2">
+            <span class="text-ink/60">Шт. в коробе (1.5 л / 0.75 л)</span>
+            <span class="pending">ждём данные</span>
+          </div>
+          <div class="flex justify-between border-b border-mint-50 pb-2">
+            <span class="text-ink/60">Коробов на паллет</span>
+            <span class="pending">ждём данные</span>
+          </div>
+          <div class="flex justify-between border-b border-mint-50 pb-2">
+            <span class="text-ink/60">Вес паллета брутто</span>
+            <span class="pending">ждём данные</span>
+          </div>
+          <div class="flex justify-between border-b border-mint-50 pb-2">
+            <span class="text-ink/60">Срок производства партии</span>
+            <span class="pending">ждём данные</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-ink/60">Срок годности</span>
+            <span class="pending">ждём данные</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-mint-500 text-white rounded-2xl p-6">
+        <div class="font-bold mb-2">География поставок</div>
+        <p class="text-white/90 text-sm">
+          Из Новороссийска удобно покрывать южные регионы:
+          Краснодарский край, Крым, Адыгея, Ростовская обл., Ставрополь, КМВ.
+          В другие регионы — по запросу и под объём.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 11. УСЛОВИЯ ДЛЯ HORECA ===================== -->
+<section id="s-terms" class="pin-section bg-white">
+  <div class="max-w-7xl mx-auto px-8 py-24 w-full">
+    <div class="text-mint-500 font-bold uppercase tracking-widest text-sm mb-4 reveal">Условия</div>
+    <h2 class="display text-5xl font-black text-mint-900 mb-12 reveal">Сотрудничество B2B</h2>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-cream rounded-2xl p-6 reveal">
+        <div class="text-3xl mb-3">📦</div>
+        <div class="font-bold text-mint-900 mb-2">MOQ (минимальная партия)</div>
+        <div class="pending">ждём данные</div>
+      </div>
+      <div class="bg-cream rounded-2xl p-6 reveal">
+        <div class="text-3xl mb-3">💳</div>
+        <div class="font-bold text-mint-900 mb-2">Условия оплаты / отсрочка</div>
+        <div class="pending">ждём данные</div>
+      </div>
+      <div class="bg-cream rounded-2xl p-6 reveal">
+        <div class="text-3xl mb-3">🚚</div>
+        <div class="font-bold text-mint-900 mb-2">Логистика и доставка</div>
+        <div class="pending">ждём данные</div>
+      </div>
+      <div class="bg-cream rounded-2xl p-6 reveal">
+        <div class="text-3xl mb-3">💰</div>
+        <div class="font-bold text-mint-900 mb-2">Прайс-лист</div>
+        <div class="pending">ждём данные</div>
+        <p class="text-xs text-ink/60 mt-2">по запросу выдаём индивидуальную сетку</p>
+      </div>
+      <div class="bg-cream rounded-2xl p-6 reveal">
+        <div class="text-3xl mb-3">🧪</div>
+        <div class="font-bold text-mint-900 mb-2">Образцы</div>
+        <div class="pending">ждём данные</div>
+        <p class="text-xs text-ink/60 mt-2">бесплатно? от какой партии?</p>
+      </div>
+      <div class="bg-cream rounded-2xl p-6 reveal">
+        <div class="text-3xl mb-3">👤</div>
+        <div class="font-bold text-mint-900 mb-2">Персональный менеджер</div>
+        <div class="text-ink/70 text-sm">Закреплённый менеджер на всё время сотрудничества.</div>
+      </div>
+    </div>
+
+    <div class="mt-10 pending-block reveal">
+      <b>Для финальной версии нужны:</b> прайс (или вилка), MOQ в литрах/коробах, отсрочка в днях,
+      условия по доставке (FCA Новороссийск / DAP с включённой доставкой), процент скидки по объёму, образцы.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 12. КОНТАКТЫ + CTA ===================== -->
+<section id="s-contact" class="pin-section relative overflow-hidden">
+  <div class="absolute inset-0 bg-mint-900"></div>
+  <div class="absolute inset-0" style="background:
+      radial-gradient(circle at 30% 50%, rgba(108,179,105,0.4), transparent 55%),
+      radial-gradient(circle at 70% 50%, rgba(31,168,163,0.4), transparent 55%);"></div>
+
+  <div class="relative max-w-7xl mx-auto px-8 py-24 grid lg:grid-cols-2 gap-12 items-center text-white w-full">
+    <div class="reveal">
+      <div class="text-mint-300 font-bold uppercase tracking-widest text-sm mb-4">Контакты</div>
+      <h2 class="display text-5xl lg:text-6xl font-black leading-tight mb-8">
+        Готовы<br>обсудить поставку?
+      </h2>
+      <p class="text-white/80 text-lg mb-10 max-w-md">
+        Отправьте запрос — закрепим менеджера, согласуем образцы и условия в течение рабочего дня.
+      </p>
+
+      <div class="space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-bamboo-500 flex items-center justify-center">📞</div>
+          <div>
+            <div class="text-sm text-white/60">Отдел продаж</div>
+            <div class="font-bold">+7 (918) 468-08-68 · +7 (8617) 71-95-55 · +7 (861) 760-00-88</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-bamboo-500 flex items-center justify-center">✉️</div>
+          <div>
+            <div class="text-sm text-white/60">Email</div>
+            <div class="font-bold">sales@kubanbithim.ru</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-bamboo-500 flex items-center justify-center">🌐</div>
+          <div>
+            <div class="text-sm text-white/60">Партнёрский портал</div>
+            <div class="font-bold">partners.kubanbithim.ru</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-bamboo-500 flex items-center justify-center">📍</div>
+          <div>
+            <div class="text-sm text-white/60">Адрес</div>
+            <div class="font-bold">г. Новороссийск, ул. Кутузовская 117</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal flex items-center justify-center">
+      <img src="../../assets/mascots/dishes.png" class="w-full max-w-md drop-shadow-2xl" alt="">
+    </div>
+  </div>
+</section>
+
+<footer class="bg-ink text-white/60 py-8 text-center text-xs">
+  © 2026 ООО «КубаньБытХим» · Презентация Green Panda для HoReCa · ИНН 2315984520
+</footer>
+
+<!-- ===================== СКРИПТЫ ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Прогресс-бар
+  const bar = document.getElementById('scroll-bar');
+  ScrollTrigger.create({
+    start: 0, end: 'max',
+    onUpdate: self => bar.style.width = (self.progress * 100) + '%'
+  });
+
+  // Reveal-анимации
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      onEnter: () => el.classList.add('visible'),
+      once: true
+    });
+  });
+
+  // Активная точка в боковой навигации
+  const sections = document.querySelectorAll('section[id^="s-"]');
+  const dots = document.querySelectorAll('.side-nav a');
+  sections.forEach((sec, i) => {
+    ScrollTrigger.create({
+      trigger: sec,
+      start: 'top 50%',
+      end: 'bottom 50%',
+      onToggle: self => {
+        if (self.isActive) {
+          dots.forEach(d => d.classList.remove('active'));
+          if (dots[i]) dots[i].classList.add('active');
+        }
+      }
+    });
+  });
+
+  // Тултипы для навигации
+  dots.forEach(d => {
+    const span = document.createElement('span');
+    span.textContent = d.dataset.label;
+    d.appendChild(span);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+# greenpanda nginx — apex serves all static sites, app.<domain> proxies cockpit.
+# Render with: DOMAIN=example.com APP_DOMAIN=app.example.com envsubst '$DOMAIN $APP_DOMAIN' < nginx.conf.tmpl
+# TLS is added automatically by `certbot --nginx`.
+
+server {
+    listen 80;
+    server_name ${DOMAIN} www.${DOMAIN};
+    root /var/www/greenpanda;
+    index index.html;
+
+    # Static marketing: landing at /, plus subfolders for variants/decks/tools.
+    # Files live under the server root above; SPA folders fall back to their
+    # own index.html (no `alias` — alias + try_files-to-a-file 500s in nginx).
+    location / { try_files $uri $uri/ =404; }
+    location /variants/      { try_files $uri $uri/ =404; }
+    location /presentations/ { autoindex on; try_files $uri $uri/ =404; }
+    location /deck/          { try_files $uri /deck/index.html; }
+    location /price/         { try_files $uri /price/index.html; }
+    location /matreshka/     { try_files $uri /matreshka/index.html; }
+
+    client_max_body_size 60m;
+}
+
+# Cockpit (dashboard + Telegram storefront + API). Own origin so the Mini App
+# gets a clean HTTPS host and the app's absolute /api, /shop, /store paths work.
+server {
+    listen 80;
+    server_name ${APP_DOMAIN};
+    client_max_body_size 60m;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}

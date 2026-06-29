@@ -1,0 +1,22 @@
+[Unit]
+Description=greenpanda telegram bot (todo / meetings / transcription)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/greenpanda/tgbot
+EnvironmentFile=/opt/greenpanda/tgbot/.env
+# venv created by deploy.sh: python -m venv .venv && pip install -e .
+ExecStart=/opt/greenpanda/tgbot/.venv/bin/python -m src.main
+Restart=always
+RestartSec=5
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
+
+# NOTE: meeting-recording (Playwright join + faster-whisper) is built for a
+# Mac with a real browser/audio device. On a headless VPS the todo/scheduler
+# parts run fine; audio capture of a video call likely needs extra work
+# (xvfb + virtual audio) or won't work. Enable only the parts you need.

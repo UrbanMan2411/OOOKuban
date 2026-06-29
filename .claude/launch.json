@@ -1,0 +1,99 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gp-variants",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4173",
+        "--directory",
+        "gp-variants"
+      ],
+      "port": 4173
+    },
+    {
+      "name": "landing-root",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4174",
+        "--directory",
+        "."
+      ],
+      "port": 4174
+    },
+    {
+      "name": "horeca-deck",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4175",
+        "--directory",
+        "presentations/horeca"
+      ],
+      "port": 4175
+    },
+    {
+      "name": "video-horeca",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "presentations/video-horeca",
+        "run",
+        "dev",
+        "--",
+        "--no-open"
+      ],
+      "port": 3002
+    },
+    {
+      "name": "deck",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "deck",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4180",
+        "--strictPort"
+      ],
+      "port": 4180
+    },
+    {
+      "name": "price-tool",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "price-tool",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4185",
+        "--strictPort"
+      ],
+      "port": 4185
+    },
+    {
+      "name": "cockpit",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "cockpit",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4186",
+        "--strictPort"
+      ],
+      "port": 4186
+    }
+  ]
+}

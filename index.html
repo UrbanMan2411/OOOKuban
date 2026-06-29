@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GreenPanda — Эко-бытовая химия для маркетплейсов</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          mint:    { 50:'#EEFAF8', 100:'#D6F2EE', 300:'#7DD6CB', 500:'#1FA8A3', 700:'#137C7A', 900:'#0B4B4A' },
+          bamboo:  { 500:'#6CB369', 700:'#3E7F45' },
+          cream:   '#F6F4EE',
+          ink:     '#0F1A1A',
+          accent:  '#C8443E',
+          gold:    '#E5B53D'
+        },
+        fontFamily: {
+          sans: ['Manrope', 'sans-serif'],
+          display: ['Unbounded', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Manrope', sans-serif; background: #F6F4EE; color: #0F1A1A; }
+  .display { font-family: 'Unbounded', sans-serif; letter-spacing: -0.02em; }
+  /* Сетка-плейсхолдер 3D-сцены */
+  .three-placeholder {
+    background:
+      radial-gradient(circle at 30% 30%, rgba(31,168,163,0.18), transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(108,179,105,0.14), transparent 55%),
+      linear-gradient(180deg, #EEFAF8 0%, #FFFFFF 100%);
+    background-image:
+      linear-gradient(rgba(15,26,26,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,26,26,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .three-badge {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(15,26,26,0.85);
+    color: #7DD6CB;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+  }
+  /* Лейбл-обёртка на бутылке (имитация бутылки в 2D) */
+  .bottle-mock {
+    width: 240px; height: 360px;
+    background: linear-gradient(180deg,#FFFFFF 0%, #F2EFE8 100%);
+    border-radius: 28px 28px 36px 36px / 36px 36px 60px 60px;
+    box-shadow: 0 30px 60px -20px rgba(31,124,122,0.35), inset -20px 0 40px rgba(0,0,0,0.06), inset 20px 0 40px rgba(255,255,255,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .bottle-mock::before {
+    content: ''; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    width: 90px; height: 28px; background: #1FA8A3; border-radius: 6px 6px 0 0;
+  }
+  .bottle-mock img {
+    position: absolute; inset: 20px 14px 14px 14px; width: calc(100% - 28px); height: calc(100% - 34px);
+    object-fit: cover; object-position: center; border-radius: 16px;
+  }
+  /* Анимация-плейсхолдер морфинга маскота */
+  .mascot-stage img {
+    transition: opacity 600ms ease, transform 700ms cubic-bezier(.22,1,.36,1);
+  }
+  /* Маркеры секций для wireframe */
+  .wf-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #137C7A; background: #D6F2EE; padding: 4px 10px; border-radius: 999px; display: inline-block;
+  }
+  .wf-note {
+    border: 1px dashed #7DD6CB; background: rgba(214,242,238,0.4);
+    padding: 8px 12px; border-radius: 10px; font-size: 12px; color: #137C7A;
+  }
+  /* JS — простой sticky-морфинг для демонстрации UX */
+</style>
+</head>
+<body class="antialiased">
+
+<!-- ─── HEADER ─── -->
+<header class="sticky top-0 z-50 backdrop-blur bg-cream/80 border-b border-mint-100">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-mint-500 flex items-center justify-center text-white font-bold">GP</div>
+      <div>
+        <div class="display font-bold text-lg leading-none">Green Panda</div>
+        <div class="text-[11px] text-mint-700 font-semibold uppercase tracking-wider">Eco Household Care</div>
+      </div>
+    </div>
+    <nav class="hidden md:flex gap-7 text-sm font-semibold text-ink/70">
+      <a href="#products" class="hover:text-mint-700">Линейка</a>
+      <a href="#formula" class="hover:text-mint-700">Эко-формула</a>
+      <a href="#economics" class="hover:text-mint-700">Условия для сети</a>
+      <a href="#contact" class="hover:text-mint-700">Контакты</a>
+    </nav>
+    <a href="#contact" class="bg-mint-500 hover:bg-mint-700 transition text-white text-sm font-semibold px-5 py-2.5 rounded-full">
+      Скачать каталог →
+    </a>
+  </div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="relative">
+  <div class="max-w-7xl mx-auto px-6 pt-16 pb-24 grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-6">
+      <span class="wf-tag">B2B · для маркетплейсов и сетей</span>
+      <h1 class="display text-5xl md:text-6xl lg:text-7xl font-black mt-5 leading-[0.95]">
+        Эко-бытовая<br />химия,<br />
+        <span class="text-mint-500">которую</span><br />
+        <span class="text-bamboo-700">берут с полки.</span>
+      </h1>
+      <p class="mt-7 text-lg text-ink/70 max-w-xl">
+        6+ SKU из одних рук. Биоразлагаемые ПАВ, премиум-визуал, маржа сети до 38%.
+        Готовая категория «эко» под ваш ассортимент Ozon, WB и офлайн-сетей.
+      </p>
+
+      <!-- USP пилларов -->
+      <div class="mt-10 grid sm:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-5 border border-mint-100 shadow-sm">
+          <div class="text-3xl">🌿</div>
+          <div class="display font-bold mt-2 text-sm">Эко-формула</div>
+          <div class="text-xs text-ink/60 mt-1">Биоразлагаемые ПАВ, без фосфатов, гипоаллергенно</div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-mint-100 shadow-sm">
+          <div class="text-3xl">📦</div>
+          <div class="display font-bold mt-2 text-sm">6+ SKU</div>
+          <div class="text-xs text-ink/60 mt-1">Закрывает 90% категории «уход за домом» одним поставщиком</div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-mint-100 shadow-sm">
+          <div class="text-3xl">📈</div>
+          <div class="display font-bold mt-2 text-sm">Маржа до 38%</div>
+          <div class="text-xs text-ink/60 mt-1">Конкурентный закуп при премиум-восприятии полки</div>
+        </div>
+      </div>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="#contact" class="bg-ink text-white font-semibold px-7 py-4 rounded-full hover:bg-mint-700 transition">
+          Получить PDF-каталог
+        </a>
+        <a href="#products" class="border border-ink/15 text-ink font-semibold px-7 py-4 rounded-full hover:bg-white transition">
+          Посмотреть линейку
+        </a>
+      </div>
+    </div>
+
+    <!-- 3D scene placeholder -->
+    <div class="lg:col-span-6 relative">
+      <div class="three-placeholder relative aspect-[4/5] rounded-3xl overflow-hidden border border-mint-100">
+        <span class="three-badge">Three.js · 3D-сцена hero</span>
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-4">
+          <img src="assets/renders/dishes.png" alt="Маскот" class="w-64 h-64 object-contain drop-shadow-2xl" />
+          <div class="bottle-mock"><img src="assets/renders/dishes.png" alt="бутылка"/></div>
+        </div>
+        <div class="absolute bottom-4 right-4 wf-note">↑ здесь крутится 3D-панда + бутылка</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Скролл-подсказка -->
+  <div class="text-center pb-10 text-mint-700 text-sm font-semibold animate-pulse">
+    ↓ скроллите — маскот переоденется
+  </div>
+</section>
+
+<!-- ─── STICKY PRODUCT SCROLLYTELLING ─── -->
+<section id="products" class="bg-white border-y border-mint-100">
+  <div class="max-w-7xl mx-auto px-6 py-20">
+    <div class="grid lg:grid-cols-12 gap-10">
+
+      <!-- LEFT: sticky 3D / mascot stage -->
+      <div class="lg:col-span-5">
+        <div class="sticky top-28">
+          <span class="wf-tag">Sticky · меняется при скролле</span>
+          <div class="three-placeholder relative aspect-square rounded-3xl overflow-hidden border border-mint-100 mt-4">
+            <span class="three-badge">Three.js · Canvas</span>
+            <div id="mascot-stage" class="mascot-stage absolute inset-0 flex flex-col items-center justify-center gap-3">
+              <img id="mascot-img" src="assets/renders/dishes.png" alt="" class="w-72 h-72 object-contain drop-shadow-2xl" />
+              <div class="bottle-mock" style="width:180px; height:280px;">
+                <img id="bottle-img" src="assets/renders/dishes.png" alt=""/>
+              </div>
+            </div>
+            <div class="absolute bottom-4 left-4 right-4 wf-note">
+              При скролле: <b>панда переодевается</b> + бутылка вращается + фон меняется под палитру продукта
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: 6 product sections -->
+      <div class="lg:col-span-7 space-y-32 lg:py-10">
+
+        <article class="product-section min-h-[60vh] flex flex-col justify-center"
+                 data-mascot="assets/renders/dishes.png" data-color="#1FA8A3">
+          <div class="wf-tag" style="background:#D6F2EE; color:#137C7A;">SKU · 01</div>
+          <h2 class="display text-4xl font-black mt-3">Для посуды</h2>
+          <p class="text-ink/60 mt-3 text-lg">Концентрат с биоразлагаемыми ПАВ. Расщепляет жир в холодной воде, не сушит кожу рук, аромат бамбука и зелёного чая.</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm">
+            <li class="bg-mint-50 rounded-xl p-3"><b>Объём:</b> 500 мл / 1 л / 5 л</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Cost:</b> 78 ₽ / шт (МОQ 1 000)</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>RRP:</b> 219 ₽</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Маржа сети:</b> 35%</li>
+          </ul>
+        </article>
+
+        <article class="product-section min-h-[60vh] flex flex-col justify-center"
+                 data-mascot="assets/renders/glass.png" data-color="#7DD6CB">
+          <div class="wf-tag" style="background:#EEFAF8; color:#137C7A;">SKU · 02</div>
+          <h2 class="display text-4xl font-black mt-3">Для мытья стёкол</h2>
+          <p class="text-ink/60 mt-3 text-lg">Антистатик-формула. Без разводов на хроме и зеркалах. Спирт + ПАВ растительного происхождения.</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm">
+            <li class="bg-mint-50 rounded-xl p-3"><b>Объём:</b> 500 мл триггер-спрей</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Cost:</b> 92 ₽ / шт</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>RRP:</b> 249 ₽</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Маржа сети:</b> 36%</li>
+          </ul>
+        </article>
+
+        <article class="product-section min-h-[60vh] flex flex-col justify-center"
+                 data-mascot="assets/renders/laundry.png" data-color="#6CB369">
+          <div class="wf-tag" style="background:#E8F5DF; color:#3E7F45;">SKU · 03</div>
+          <h2 class="display text-4xl font-black mt-3">Универсальное средство для стирки</h2>
+          <p class="text-ink/60 mt-3 text-lg">Жидкий концентрат. Цветное / белое / детское в одной бутылке. 40 стирок, не оставляет следов на тёмных тканях.</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm">
+            <li class="bg-mint-50 rounded-xl p-3"><b>Объём:</b> 1.5 л / 3 л канистра</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Cost:</b> 245 ₽ / шт</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>RRP:</b> 649 ₽</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Маржа сети:</b> 38%</li>
+          </ul>
+        </article>
+
+        <article class="product-section min-h-[60vh] flex flex-col justify-center"
+                 data-mascot="assets/renders/floor.png" data-color="#C8443E">
+          <div class="wf-tag" style="background:#FBE5E2; color:#8A2A24;">SKU · 04</div>
+          <h2 class="display text-4xl font-black mt-3">Для мытья полов</h2>
+          <p class="text-ink/60 mt-3 text-lg">Универсал для ламината, плитки, дерева. Не оставляет липкости. Антибактериальная база на цитрусовых кислотах.</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm">
+            <li class="bg-mint-50 rounded-xl p-3"><b>Объём:</b> 1 л флакон с дозатором</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Cost:</b> 124 ₽ / шт</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>RRP:</b> 329 ₽</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Маржа сети:</b> 37%</li>
+          </ul>
+        </article>
+
+        <article class="product-section min-h-[60vh] flex flex-col justify-center"
+                 data-mascot="assets/renders/soap.png" data-color="#3E7F45">
+          <div class="wf-tag" style="background:#E8F5DF; color:#3E7F45;">SKU · 05</div>
+          <h2 class="display text-4xl font-black mt-3">Хозяйственное жидкое мыло</h2>
+          <p class="text-ink/60 mt-3 text-lg">Современная альтернатива бруску 72%. Жидкое, в дозаторе, не сушит кожу, удаляет пятна перед стиркой.</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm">
+            <li class="bg-mint-50 rounded-xl p-3"><b>Объём:</b> 500 мл с помпой</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Cost:</b> 86 ₽ / шт</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>RRP:</b> 239 ₽</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Маржа сети:</b> 36%</li>
+          </ul>
+        </article>
+
+        <article class="product-section min-h-[60vh] flex flex-col justify-center"
+                 data-mascot="assets/renders/plasticizer.png" data-color="#E5B53D">
+          <div class="wf-tag" style="background:#FAEFCF; color:#8A6A1F;">SKU · 06 · B2B / стройка</div>
+          <h2 class="display text-4xl font-black mt-3">Пластификатор</h2>
+          <p class="text-ink/60 mt-3 text-lg">Профессиональный продукт для бетона и растворов. Под опт строительным базам и DIY-сетям (Леруа, Petrovich).</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm">
+            <li class="bg-mint-50 rounded-xl p-3"><b>Объём:</b> 5 л / 10 л канистра</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Cost:</b> 412 ₽ / шт</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>RRP:</b> 1 090 ₽</li>
+            <li class="bg-mint-50 rounded-xl p-3"><b>Маржа сети:</b> 32%</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ECO-FORMULA SECTION ─── -->
+<section id="formula" class="py-24 bg-mint-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="wf-tag">Эко-формула</span>
+      <h2 class="display text-4xl md:text-5xl font-black mt-4">Чем мы отличаемся от полки</h2>
+      <p class="text-ink/60 mt-4 max-w-2xl mx-auto">
+        Все продукты на одной базе биоразлагаемых ПАВ растительного происхождения.
+        Никакого SLES, фосфатов и хлора. Безопасно для детей, аквариумов и кожи рук.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Cutaway placeholder -->
+      <div class="three-placeholder relative aspect-square rounded-3xl overflow-hidden border border-mint-100">
+        <span class="three-badge">Three.js · разрез бутылки</span>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="bottle-mock" style="width:220px; height:340px;">
+            <img src="assets/renders/dishes.png" alt=""/>
+          </div>
+        </div>
+        <div class="absolute bottom-4 left-4 right-4 wf-note">
+          Анимация: бутылка «разрезается», показываются слои формулы с подписями
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="bg-white rounded-2xl p-5 flex gap-4 items-start border border-mint-100">
+          <div class="text-2xl">🌱</div>
+          <div>
+            <div class="display font-bold">Биоразлагаемые ПАВ &gt; 95%</div>
+            <div class="text-sm text-ink/60 mt-1">Растительные ПАВ из кокоса и кукурузы. Полное разложение за 28 дней (OECD 301B).</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 flex gap-4 items-start border border-mint-100">
+          <div class="text-2xl">🚫</div>
+          <div>
+            <div class="display font-bold">Без фосфатов, SLES, хлора</div>
+            <div class="text-sm text-ink/60 mt-1">Соответствует Регламенту ЕАЭС ТР 022/2011 и стандартам ЕС для эко-сегмента.</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 flex gap-4 items-start border border-mint-100">
+          <div class="text-2xl">🧴</div>
+          <div>
+            <div class="display font-bold">Концентраты</div>
+            <div class="text-sm text-ink/60 mt-1">Расход в 3× меньше, чем у масс-маркета. Меньше пластика на единицу стирки.</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 flex gap-4 items-start border border-mint-100">
+          <div class="text-2xl">📜</div>
+          <div>
+            <div class="display font-bold">Сертификаты</div>
+            <div class="text-sm text-ink/60 mt-1">EAC, дерматологический сертификат, экспертные заключения Роспотребнадзора.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── B2B ECONOMICS TABLE ─── -->
+<section id="economics" class="py-24 bg-cream">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <span class="wf-tag">Экономика полки</span>
+      <h2 class="display text-4xl md:text-5xl font-black mt-4">Условия для сети</h2>
+      <p class="text-ink/60 mt-4 max-w-2xl mx-auto">
+        Прозрачное ценообразование. Гибкий MOQ. Доставка со склада в МО / СПб.
+      </p>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-mint-100 overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-mint-50">
+            <tr class="text-xs uppercase text-mint-900 tracking-wider">
+              <th class="px-6 py-4">SKU</th>
+              <th class="px-6 py-4">Объём</th>
+              <th class="px-6 py-4">Cost (₽)</th>
+              <th class="px-6 py-4">RRP (₽)</th>
+              <th class="px-6 py-4">Маржа</th>
+              <th class="px-6 py-4">MOQ</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-mint-100 text-sm">
+            <tr><td class="px-6 py-4 font-semibold">Для посуды</td><td class="px-6 py-4">500 мл</td><td class="px-6 py-4">78</td><td class="px-6 py-4">219</td><td class="px-6 py-4 text-bamboo-700 font-bold">35%</td><td class="px-6 py-4">1 000</td></tr>
+            <tr><td class="px-6 py-4 font-semibold">Стёкла-спрей</td><td class="px-6 py-4">500 мл</td><td class="px-6 py-4">92</td><td class="px-6 py-4">249</td><td class="px-6 py-4 text-bamboo-700 font-bold">36%</td><td class="px-6 py-4">800</td></tr>
+            <tr><td class="px-6 py-4 font-semibold">Стирка-концентрат</td><td class="px-6 py-4">1.5 л</td><td class="px-6 py-4">245</td><td class="px-6 py-4">649</td><td class="px-6 py-4 text-bamboo-700 font-bold">38%</td><td class="px-6 py-4">500</td></tr>
+            <tr><td class="px-6 py-4 font-semibold">Для полов</td><td class="px-6 py-4">1 л</td><td class="px-6 py-4">124</td><td class="px-6 py-4">329</td><td class="px-6 py-4 text-bamboo-700 font-bold">37%</td><td class="px-6 py-4">800</td></tr>
+            <tr><td class="px-6 py-4 font-semibold">Хоз. мыло жидкое</td><td class="px-6 py-4">500 мл</td><td class="px-6 py-4">86</td><td class="px-6 py-4">239</td><td class="px-6 py-4 text-bamboo-700 font-bold">36%</td><td class="px-6 py-4">1 000</td></tr>
+            <tr><td class="px-6 py-4 font-semibold">Пластификатор</td><td class="px-6 py-4">5 л</td><td class="px-6 py-4">412</td><td class="px-6 py-4">1 090</td><td class="px-6 py-4 text-bamboo-700 font-bold">32%</td><td class="px-6 py-4">200</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-4 mt-8">
+      <div class="bg-white rounded-2xl p-5 border border-mint-100">
+        <div class="text-3xl">🚚</div>
+        <div class="display font-bold mt-2 text-sm">Логистика</div>
+        <div class="text-xs text-ink/60 mt-1">EXW / FCA Москва, СПб. Сборная отгрузка от 1 паллеты.</div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-mint-100">
+        <div class="text-3xl">💳</div>
+        <div class="display font-bold mt-2 text-sm">Оплата</div>
+        <div class="text-xs text-ink/60 mt-1">Отсрочка до 45 дней для сетей. Авансовая для маркетплейсов.</div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border border-mint-100">
+        <div class="text-3xl">🎁</div>
+        <div class="display font-bold mt-2 text-sm">Промо-бюджет</div>
+        <div class="text-xs text-ink/60 mt-1">До 4% на трейд-маркетинг при годовом контракте.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── LEAD FORM ─── -->
+<section id="contact" class="py-24 bg-ink text-white">
+  <div class="max-w-4xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <span class="wf-tag" style="background:rgba(125,214,203,0.18); color:#7DD6CB;">CTA · Lead capture</span>
+      <h2 class="display text-4xl md:text-5xl font-black mt-4 leading-tight">
+        Получите полный<br />каталог в PDF
+      </h2>
+      <p class="text-white/60 mt-4">
+        Цены, RRP, фото на белом, сертификаты, штрих-коды, размеры палеты — всё в одном файле.
+        Отправим в течение 5 минут на ваш email.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 text-sm text-white/80">
+        <div class="flex items-center gap-2">✓ Полный прайс на 6 SKU</div>
+        <div class="flex items-center gap-2">✓ EAC + декларации соответствия</div>
+        <div class="flex items-center gap-2">✓ Шаблон контракта на отгрузку</div>
+      </div>
+    </div>
+
+    <form class="bg-white text-ink rounded-3xl p-7 space-y-4">
+      <div>
+        <label class="text-xs font-semibold uppercase tracking-wider text-ink/60">Email</label>
+        <input type="email" placeholder="buyer@network.ru" class="mt-1 w-full border-b border-ink/20 py-2 focus:outline-none focus:border-mint-500" />
+      </div>
+      <div>
+        <label class="text-xs font-semibold uppercase tracking-wider text-ink/60">Компания / сеть</label>
+        <input type="text" placeholder="Например: Ozon, Магнит, Перекрёсток" class="mt-1 w-full border-b border-ink/20 py-2 focus:outline-none focus:border-mint-500" />
+      </div>
+      <div>
+        <label class="text-xs font-semibold uppercase tracking-wider text-ink/60">Должность</label>
+        <input type="text" placeholder="Категорийный менеджер" class="mt-1 w-full border-b border-ink/20 py-2 focus:outline-none focus:border-mint-500" />
+      </div>
+      <button type="button" class="w-full bg-mint-500 hover:bg-mint-700 transition text-white font-bold py-4 rounded-full mt-2">
+        Скачать PDF-каталог →
+      </button>
+      <p class="text-[11px] text-ink/40 text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
+    </form>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="bg-ink text-white/60 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-mint-500 flex items-center justify-center text-white font-bold text-xs">GP</div>
+      <span>© 2026 Green Panda · Производство эко-бытовой химии</span>
+    </div>
+    <div class="flex gap-6">
+      <a href="mailto:b2b@greenpanda.ru" class="hover:text-mint-300">b2b@greenpanda.ru</a>
+      <a href="tel:+78001234567" class="hover:text-mint-300">+7 800 123 45 67</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SCRIPT: lightweight mascot-swap для демонстрации UX ─── -->
+<script>
+  const sections = document.querySelectorAll('.product-section');
+  const mascotImg = document.getElementById('mascot-img');
+  const bottleImg = document.getElementById('bottle-img');
+  const stage     = document.getElementById('mascot-stage');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio > 0.4) {
+        const src = e.target.dataset.mascot;
+        const color = e.target.dataset.color;
+        // Плавная замена
+        mascotImg.style.opacity = '0';
+        bottleImg.style.opacity = '0';
+        setTimeout(() => {
+          mascotImg.src = src;
+          bottleImg.src = src;
+          mascotImg.style.opacity = '1';
+          bottleImg.style.opacity = '1';
+        }, 220);
+        // Подкрашиваем сцену
+        if (stage && stage.parentElement) {
+          stage.parentElement.style.background =
+            `radial-gradient(circle at 30% 30%, ${color}33, transparent 55%),
+             radial-gradient(circle at 70% 70%, ${color}22, transparent 55%),
+             linear-gradient(180deg, #EEFAF8 0%, #FFFFFF 100%)`;
+        }
+      }
+    });
+  }, { threshold: [0, 0.4, 0.7, 1] });
+
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

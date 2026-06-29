@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  background: #0A261C;
+  color: #0A1F18;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden; /* full-screen single-page deck */
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Slide canvas — 16:9 with `contain` letterbox on small viewports.
+   Fills the screen when aspect matches; centred with paper bars otherwise. */
+.slide-frame {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #0A261C 0%, #061a13 100%);
+}
+.slide-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: calc(100vh * 16 / 9);
+  max-height: calc(100vw * 9 / 16);
+  background: #FBF6EC;
+  overflow: hidden;
+  box-shadow: 0 60px 120px rgba(0,0,0,.5);
+}
+@media (orientation: landscape) and (min-aspect-ratio: 16/9) {
+  .slide-canvas { max-height: 100vh; }
+}
+
+/* Thin scrollbar inside cards if any overflow */
+.thin-scroll::-webkit-scrollbar { width: 6px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: rgba(15,61,46,.25); border-radius: 4px; }
+
+/* Glass card */
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 40px -10px rgba(15, 61, 46, 0.12);
+}
+.glass-dark {
+  background: rgba(10, 38, 28, 0.55);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Hairline divider */
+.hairline { background: linear-gradient(90deg, transparent, rgba(15,61,46,.25), transparent); height: 1px; }
+.hairline-dark { background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent); height: 1px; }
+
+/* Eyebrow */
+.eyebrow {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-weight: 700; color: #10743F;
+}
+
+/* Display headlines */
+.display { letter-spacing: -0.03em; line-height: 1.02; }
+
+/* Misty bamboo-mountain backdrop (image baked-in, applied to all slides) */
+.misty-bg {
+  background:
+    linear-gradient(180deg, rgba(251, 246, 236, 0.55) 0%, rgba(245, 243, 232, 0.72) 100%),
+    url('/bg.png') center/cover no-repeat,
+    #FBF6EC;
+}
+.misty-bg-dark {
+  background:
+    linear-gradient(180deg, rgba(15, 61, 46, 0.86) 0%, rgba(10, 38, 28, 0.94) 100%),
+    url('/bg.png') center/cover no-repeat,
+    #0A261C;
+}
+
+/* Print: 13 slides, each on its own page, landscape A4 */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body, #root { height: auto !important; overflow: visible !important; background: #fff !important; }
+  body { overflow: visible !important; }
+  .deck-overlay, .deck-nav, .deck-progress, .deck-export { display: none !important; }
+  .slide-frame {
+    width: 100% !important; height: 100vh !important;
+    page-break-after: always; break-after: page;
+    box-shadow: none !important;
+  }
+  .slide-canvas {
+    width: 100% !important; height: 100% !important;
+    max-width: none !important; max-height: none !important;
+    aspect-ratio: auto !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* When printing, render all slides stacked instead of just the active one */
+  .deck-stack > .slide-frame { display: grid !important; }
+}

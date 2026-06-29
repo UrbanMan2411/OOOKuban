@@ -1,0 +1,17 @@
+[Unit]
+Description=greenpanda cockpit (dashboard + Telegram shop)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/greenpanda/cockpit
+# Secrets + storage config live in /opt/greenpanda/cockpit/.env
+EnvironmentFile=/opt/greenpanda/cockpit/.env
+ExecStart=/usr/bin/node server/index.js
+Restart=always
+RestartSec=3
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target

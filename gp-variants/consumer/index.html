@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Green panda — Безопасная бытовая химия для дома</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink-900:#10231B;
+    --ink-700:#283A30;
+    --muted:#6B7A72;
+    --green-900:#0F3D2E;
+    --green-700:#1E5A41;
+    --green-500:#3FA169;
+    --green-200:#BFD9C7;
+    --green-100:#DDEBE2;
+    --green-50:#EEF5F0;
+    --cream:#FAF7EE;
+    --cream-2:#F1ECDB;
+    --paper:#FBFAF6;
+    --line:#E5E3D8;
+    --radius-s:10px;
+    --radius-m:18px;
+    --radius-l:28px;
+    --container:1280px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Manrope", system-ui, -apple-system, sans-serif;
+    color:var(--ink-900);background:var(--paper);
+    font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  img{display:block;max-width:100%}
+  .container{max-width:var(--container);margin:0 auto;padding:0 32px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--green-700);font-weight:600;
+    background:var(--green-50);padding:8px 14px;border-radius:999px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green-500)}
+  .muted{color:var(--muted)}
+  .repl{color:var(--green-500);font-weight:600}
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 26px;border-radius:999px;
+    font-weight:600;font-size:15px;line-height:1;cursor:pointer;
+    border:1px solid transparent;transition:.18s ease;white-space:nowrap;
+  }
+  .btn-primary{background:var(--green-900);color:#fff}
+  .btn-primary:hover{background:#0a2c21;transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--ink-900);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink-900);background:#fff}
+  .btn-soft{background:#fff;color:var(--green-900);border-color:var(--green-200)}
+  .btn-soft:hover{background:var(--green-50)}
+  .btn .arrow{width:14px;height:14px}
+
+  /* Header */
+  header.site{
+    background:rgba(251,250,246,.9);backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;
+  }
+  header.site .inner{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .logo .mark{
+    width:32px;height:32px;border-radius:50%;background:var(--green-900);
+    display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800;
+  }
+  nav.site-nav{display:flex;gap:36px}
+  nav.site-nav a{font-size:14px;color:var(--ink-700);font-weight:500}
+  nav.site-nav a:hover{color:var(--green-900)}
+  header.site .actions{display:flex;align-items:center;gap:14px}
+  header.site .b2b-link{font-size:13px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:6px}
+  header.site .b2b-link::after{content:"→"}
+
+  /* Hero — soft, friendly */
+  .hero{
+    position:relative;padding:80px 0 100px;overflow:hidden;
+    background:
+      radial-gradient(800px 600px at 100% 20%, rgba(63,161,105,.12), transparent 60%),
+      radial-gradient(700px 500px at 0% 100%, rgba(15,61,46,.06), transparent 60%),
+      var(--paper);
+  }
+  .hero-grid{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
+  .hero h1{
+    font-size:clamp(40px,5.4vw,76px);line-height:1.02;letter-spacing:-.03em;
+    font-weight:700;margin:24px 0 24px;
+  }
+  .hero h1 em{font-style:normal;color:var(--green-700);position:relative;display:inline-block}
+  .hero h1 em::after{
+    content:"";position:absolute;left:-4px;right:-4px;bottom:.1em;height:.22em;
+    background:var(--green-100);z-index:-1;border-radius:4px;
+  }
+  .hero .sub{font-size:19px;line-height:1.6;color:var(--ink-700);max-width:520px;margin:0 0 36px;font-weight:300}
+  .hero .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px}
+  .hero .pills{display:flex;flex-wrap:wrap;gap:10px;max-width:560px}
+  .hero .pill{
+    font-size:13px;background:#fff;border:1px solid var(--line);border-radius:999px;
+    padding:10px 16px;color:var(--ink-700);display:inline-flex;align-items:center;gap:8px;font-weight:500;
+  }
+  .hero .pill svg{width:14px;height:14px;color:var(--green-500)}
+
+  /* Hero visual: product bottles mockup */
+  .hero-visual{
+    position:relative;aspect-ratio:5/6;
+    background:linear-gradient(160deg,var(--green-100) 0%, var(--cream-2) 100%);
+    border-radius:var(--radius-l);overflow:hidden;
+    display:flex;align-items:flex-end;justify-content:center;padding:40px;
+  }
+  .hero-visual::before{
+    content:"";position:absolute;width:300px;height:300px;border-radius:50%;
+    background:radial-gradient(circle,rgba(63,161,105,.25),transparent 70%);
+    top:-80px;right:-80px;
+  }
+  .hv-bottles{position:relative;display:flex;gap:16px;align-items:flex-end;width:100%;justify-content:center;height:100%}
+  .bottle{
+    position:relative;border-radius:14px 14px 8px 8px;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    padding:24px 14px 22px;color:#fff;text-align:center;
+    box-shadow:0 20px 40px rgba(15,61,46,.18);
+    transition:transform .3s ease;
+  }
+  .bottle:hover{transform:translateY(-4px)}
+  .bottle::before{
+    content:"";position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+    width:24px;height:32px;background:inherit;border-radius:6px 6px 2px 2px;
+    border-top:3px solid rgba(0,0,0,.15);
+  }
+  .bottle.b1{background:var(--green-900);width:90px;height:200px}
+  .bottle.b2{background:var(--green-500);width:100px;height:240px}
+  .bottle.b3{background:var(--green-700);width:90px;height:180px}
+  .bottle .label{
+    background:rgba(255,255,255,.95);color:var(--green-900);
+    padding:8px 6px;border-radius:6px;width:100%;font-size:10px;font-weight:600;
+    letter-spacing:.06em;line-height:1.3;
+  }
+  .bottle .label .ph{display:block;font-size:8px;color:var(--muted);font-weight:500;margin-top:2px}
+  .hv-floating{
+    position:absolute;background:#fff;border-radius:14px;
+    padding:14px 18px;box-shadow:0 14px 30px rgba(0,0,0,.12);
+    display:flex;align-items:center;gap:12px;
+  }
+  .hv-floating.f1{top:32px;left:32px}
+  .hv-floating.f2{bottom:80px;right:32px}
+  .hv-floating .ic{
+    width:36px;height:36px;border-radius:50%;background:var(--green-50);
+    display:flex;align-items:center;justify-content:center;color:var(--green-700);
+  }
+  .hv-floating .txt{font-size:12px;color:var(--ink-700);line-height:1.3;font-weight:500}
+  .hv-floating .txt strong{display:block;color:var(--green-900);font-size:13px;font-weight:700}
+
+  /* Trust strip */
+  .trust{padding:48px 0;background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+  .trust-item{display:flex;flex-direction:column;gap:6px}
+  .trust-item .num{font-size:38px;font-weight:700;letter-spacing:-.02em;color:var(--green-900);line-height:1}
+  .trust-item .lab{font-size:13px;color:var(--muted);line-height:1.4;max-width:180px}
+
+  /* Section base */
+  section.block{padding:120px 0}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:56px}
+  .section-head .head-left{max-width:680px}
+  .section-head h2{font-size:clamp(32px,3.4vw,52px);font-weight:700;letter-spacing:-.025em;line-height:1.06;margin:16px 0 0}
+  .section-head h2 em{font-style:normal;color:var(--green-700)}
+  .section-head .sub{font-size:17px;color:var(--ink-700);max-width:380px;line-height:1.6;font-weight:300}
+
+  /* Why us — soft */
+  .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .feature{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-m);
+    padding:32px 28px;display:flex;flex-direction:column;min-height:280px;
+    transition:.22s ease;
+  }
+  .feature:hover{transform:translateY(-3px);box-shadow:0 20px 40px rgba(15,61,46,.08);border-color:var(--green-100)}
+  .feature .ic{
+    width:52px;height:52px;border-radius:16px;background:var(--green-50);
+    color:var(--green-700);display:inline-flex;align-items:center;justify-content:center;margin-bottom:24px;
+  }
+  .feature h3{font-size:20px;font-weight:600;margin:0 0 12px;letter-spacing:-.01em;line-height:1.2}
+  .feature p{margin:0;font-size:14px;color:var(--ink-700);line-height:1.6}
+  .feature .num-tag{margin-top:auto;font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding-top:24px;font-weight:600}
+
+  /* Catalog */
+  .catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .cat-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-m);
+    overflow:hidden;display:flex;flex-direction:column;transition:.22s ease;
+  }
+  .cat-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px rgba(15,61,46,.10);border-color:var(--green-100)}
+  .cat-photo{
+    aspect-ratio:5/4;background:linear-gradient(140deg,#E8F0EA 0%,#F1EEE0 100%);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .cat-photo::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 30% 30%, rgba(63,161,105,.18), transparent 55%),
+               radial-gradient(circle at 80% 80%, rgba(200,180,120,.18), transparent 55%);
+  }
+  .cat-photo .ph-inner{
+    position:relative;background:rgba(255,255,255,.94);
+    padding:10px 16px;border:1px solid rgba(15,61,46,.10);border-radius:999px;
+    font-size:12px;color:var(--green-900);font-weight:500;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .cat-photo .price-tag{
+    position:absolute;top:16px;right:16px;
+    background:var(--green-900);color:#fff;
+    padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.04em;
+  }
+  .cat-body{padding:24px 26px}
+  .cat-body h4{margin:0 0 4px;font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .cat-body .count{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .cat-body .cat-foot{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px dashed var(--line)}
+  .cat-body .cat-foot .from{font-size:13px;color:var(--ink-700)}
+  .cat-body .cat-foot .from b{font-size:15px;color:var(--green-900);font-weight:700}
+  .cat-arrow{color:var(--green-900);transition:.2s ease;flex-shrink:0}
+  .cat-card:hover .cat-arrow{transform:translateX(4px)}
+
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .step{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-m);
+    padding:32px 28px;position:relative;
+  }
+  .step .n{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:48px;height:48px;border-radius:50%;
+    background:var(--green-50);color:var(--green-900);font-size:16px;font-weight:700;
+    margin-bottom:24px;
+  }
+  .step h4{margin:0 0 10px;font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .step p{margin:0;font-size:14px;color:var(--ink-700);line-height:1.6}
+
+  /* Audience — broader usage */
+  .audience-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .aud{
+    border:1px solid var(--line);border-radius:var(--radius-m);padding:32px 28px;
+    background:#fff;display:flex;flex-direction:column;gap:14px;min-height:220px;
+    transition:.2s ease;
+  }
+  .aud:hover{background:var(--green-50);border-color:var(--green-100)}
+  .aud .ic{
+    width:40px;height:40px;border-radius:10px;background:var(--green-50);
+    color:var(--green-700);display:inline-flex;align-items:center;justify-content:center;
+  }
+  .aud:hover .ic{background:#fff}
+  .aud h4{margin:6px 0 0;font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .aud p{margin:0;font-size:14px;color:var(--ink-700);line-height:1.55}
+
+  /* B2B callout strip */
+  .b2b-strip{padding:80px 0;background:var(--green-900);color:#fff}
+  .b2b-strip-inner{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+  .b2b-strip h3{font-size:clamp(28px,2.8vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.15;margin:0 0 12px}
+  .b2b-strip p{font-size:16px;color:#cfdbd3;line-height:1.6;max-width:520px;margin:0}
+  .b2b-strip .b2b-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+  .b2b-strip .b2b-actions .btn-primary{background:#fff;color:var(--green-900)}
+  .b2b-strip .b2b-actions .btn-primary:hover{background:var(--cream)}
+  .b2b-strip .b2b-actions .btn-ghost{color:#fff;border-color:rgba(255,255,255,.3)}
+  .b2b-strip .b2b-actions .btn-ghost:hover{border-color:#fff}
+
+  /* Form */
+  .form-section{background:linear-gradient(180deg,var(--cream) 0%, var(--cream-2) 100%);padding:120px 0;position:relative}
+  .form-section .form-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start}
+  .form-section h2{font-size:clamp(32px,3.4vw,48px);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin:16px 0 20px}
+  .form-section .sub{font-size:17px;color:var(--ink-700);line-height:1.6;max-width:440px;margin-bottom:36px;font-weight:300}
+  .form-section ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+  .form-section ul li{display:flex;gap:14px;font-size:15px;color:var(--ink-700);align-items:flex-start}
+  .form-section ul li::before{
+    content:"";width:22px;height:22px;flex-shrink:0;margin-top:1px;border-radius:50%;
+    background:var(--green-50) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E5A41' stroke-width='3'><path d='M5 12.5l5 5L20 7'/></svg>") center/14px no-repeat;
+  }
+  .form-card{
+    background:#fff;border-radius:var(--radius-l);
+    padding:44px;box-shadow:0 24px 60px rgba(15,61,46,.10);border:1px solid var(--line);
+  }
+  .form-card h3{margin:0 0 6px;font-size:24px;font-weight:700;letter-spacing:-.015em}
+  .form-card p.fc-sub{margin:0 0 28px;font-size:14px;color:var(--muted)}
+  .field{display:flex;flex-direction:column;margin-bottom:18px}
+  .field label{font-size:13px;font-weight:500;margin-bottom:8px;color:var(--ink-700)}
+  .field input, .field select{
+    border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;font-size:15px;font-family:inherit;color:var(--ink-900);background:#fff;transition:.15s ease;
+  }
+  .field input:focus, .field select:focus{outline:none;border-color:var(--green-700);box-shadow:0 0 0 4px rgba(63,161,105,.12)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-card .btn-primary{width:100%;justify-content:center;padding:17px;font-size:16px;margin-top:8px}
+  .form-card .fine{margin:14px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+  .form-card .fine a{color:var(--green-900);text-decoration:underline}
+
+  /* Footer */
+  footer.site{padding:72px 0 40px;background:#0a261c;color:#cfdbd3}
+  footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
+  footer.site .col h5{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#7bbf95}
+  footer.site .col a, footer.site .col p{font-size:14px;color:#cfdbd3;margin:6px 0;display:block;line-height:1.5}
+  footer.site .col a:hover{color:#fff}
+  footer.site .logo{color:#fff;margin-bottom:16px}
+  footer.site .logo .mark{background:#fff;color:var(--green-900)}
+  footer.site .blurb{font-size:14px;color:#a7b3ad;line-height:1.55;max-width:320px}
+  footer.site .bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;font-size:12px;color:#7e8c85}
+
+  @media (max-width:980px){
+    .hero{padding:48px 0 64px}
+    .hero-grid{grid-template-columns:1fr;gap:48px}
+    .hero-visual{aspect-ratio:5/4;max-width:520px;margin:0 auto}
+    .trust-grid,.features-grid,.steps,.audience-grid{grid-template-columns:repeat(2,1fr)}
+    .catalog-grid{grid-template-columns:repeat(2,1fr)}
+    .b2b-strip-inner{grid-template-columns:1fr;gap:24px}
+    .b2b-strip .b2b-actions{justify-content:flex-start}
+    .form-section .form-grid{grid-template-columns:1fr;gap:36px}
+    section.block{padding:72px 0}
+    footer.site .top{grid-template-columns:1fr 1fr;gap:32px}
+    nav.site-nav{display:none}
+  }
+  @media (max-width:560px){
+    .container{padding:0 20px}
+    .trust-grid,.features-grid,.catalog-grid,.audience-grid,.steps{grid-template-columns:1fr}
+    .field-row{grid-template-columns:1fr}
+    .section-head{flex-direction:column;align-items:flex-start}
+    footer.site .top{grid-template-columns:1fr}
+    .form-card{padding:32px 26px}
+    header.site .b2b-link{display:none}
+    .bottle.b1{width:70px;height:160px}
+    .bottle.b2{width:80px;height:200px}
+    .bottle.b3{width:70px;height:140px}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="container inner">
+    <a href="#" class="logo"><span class="mark">G</span>Green panda</a>
+    <nav class="site-nav">
+      <a href="#catalog">Каталог</a>
+      <a href="#advantages">О бренде</a>
+      <a href="#audience">Где применять</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="actions">
+      <a href="#b2b" class="b2b-link">Опт для бизнеса</a>
+      <a href="#" class="btn btn-soft">Где купить</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Безопасная химия с [ЗАМЕНИ: 2014]</div>
+      <h1>Бытовая химия<br/>на <em>все случаи</em><br/>жизни</h1>
+      <p class="sub">От ежедневной уборки квартиры до генеральной чистки на даче. Биоразлагаемые формулы, безопасные для семей с детьми и животными.</p>
+      <div class="cta-row">
+        <a href="#catalog" class="btn btn-primary">Смотреть каталог
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#" class="btn btn-ghost">Где купить</a>
+      </div>
+      <div class="pills">
+        <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l5 5L20 7"/></svg>Безопасно для детей</span>
+        <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l5 5L20 7"/></svg>Биоразлагаемая формула</span>
+        <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l5 5L20 7"/></svg>Без хлора и фосфатов</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hv-floating f1">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="txt"><strong>СГР · ДС</strong>сертифицировано</div>
+      </div>
+      <div class="hv-bottles">
+        <div class="bottle b1"><div class="label">ДЛЯ ПОЛА<span class="ph">[ЗАМЕНИ]</span></div></div>
+        <div class="bottle b2"><div class="label">ДЛЯ ПОСУДЫ<span class="ph">[ЗАМЕНИ]</span></div></div>
+        <div class="bottle b3"><div class="label">ДЛЯ СТЁКОЛ<span class="ph">[ЗАМЕНИ]</span></div></div>
+      </div>
+      <div class="hv-floating f2">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18l-2 13H5z"/><path d="M8 7V5a4 4 0 018 0v2"/></svg></div>
+        <div class="txt"><strong>[ЗАМЕНИ: 80+] SKU</strong>розничный каталог</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust">
+  <div class="container trust-grid">
+    <div class="trust-item"><div class="num">[ЗАМЕНИ: 12]</div><div class="lab">лет на рынке бытовой химии</div></div>
+    <div class="trust-item"><div class="num">[ЗАМЕНИ: 400]+</div><div class="lab">SKU в общем каталоге</div></div>
+    <div class="trust-item"><div class="num">[ЗАМЕНИ: 200K]+</div><div class="lab">семей выбрали Green panda</div></div>
+    <div class="trust-item"><div class="num">[ЗАМЕНИ: 4.8]</div><div class="lab">средняя оценка на маркетплейсах</div></div>
+  </div>
+</section>
+
+<!-- ADVANTAGES -->
+<section class="block" id="advantages">
+  <div class="container">
+    <div class="section-head">
+      <div class="head-left">
+        <div class="eyebrow"><span class="dot"></span>Почему мы</div>
+        <h2>Бытовая химия,<br/>которой можно <em>доверять</em></h2>
+      </div>
+      <p class="sub">Мы делаем средства, которые работают эффективно и при этом безопасны для семьи, дома и природы. Без компромиссов.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature">
+        <span class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <h3>Безопасный состав</h3>
+        <p>Биоразлагаемые ПАВ, без хлора и фосфатов. Подходит семьям с детьми, аллергикам и животным. <span class="repl">[ЗАМЕНИ: сертификаты и безопасность]</span></p>
+        <div class="num-tag">01 · Состав</div>
+      </div>
+      <div class="feature">
+        <span class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-7 9 7v9H3z"/><path d="M9 21v-7h6v7"/></svg></span>
+        <h3>Своя цена</h3>
+        <p>Прямой производитель без посредников. Розничные цены ниже за счёт собственного производства. <span class="repl">[ЗАМЕНИ: своя цена]</span></p>
+        <div class="num-tag">02 · Цена</div>
+      </div>
+      <div class="feature">
+        <span class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg></span>
+        <h3>Удобный формат</h3>
+        <p>0.5 / 1 / 1.5 л для дома, концентраты для экономии и многоразовые рефиллы. <span class="repl">[ЗАМЕНИ: форматы фасовки]</span></p>
+        <div class="num-tag">03 · Формат</div>
+      </div>
+      <div class="feature">
+        <span class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22V12"/></svg></span>
+        <h3>Экологичность</h3>
+        <p>Перерабатываемая упаковка, биоразлагаемые формулы и подписка с многоразовой тарой. <span class="repl">[ЗАМЕНИ: экологичность]</span></p>
+        <div class="num-tag">04 · Эко</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="block" id="catalog" style="background:var(--cream)">
+  <div class="container">
+    <div class="section-head">
+      <div class="head-left">
+        <div class="eyebrow"><span class="dot"></span>Каталог</div>
+        <h2>Шесть категорий — <em>всё для дома</em></h2>
+      </div>
+      <p class="sub">Розничные форматы 0.5–1.5 л, концентраты для экономии и многоразовые рефиллы. Доступно в магазинах-партнёрах и на маркетплейсах.</p>
+    </div>
+    <div class="catalog-grid">
+      <a href="#" class="cat-card">
+        <div class="cat-photo">
+          <span class="price-tag">от [ЗАМЕНИ: 149 ₽]</span>
+          <span class="ph-inner">[ЗАМЕНИ: фото категории]</span>
+        </div>
+        <div class="cat-body">
+          <h4>Для пола</h4>
+          <div class="count">[ЗАМЕНИ: 14] позиций</div>
+          <div class="cat-foot">
+            <div class="from">Концентрат · от <b>[ЗАМЕНИ: 219 ₽]</b></div>
+            <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo">
+          <span class="price-tag">от [ЗАМЕНИ: 119 ₽]</span>
+          <span class="ph-inner">[ЗАМЕНИ: фото категории]</span>
+        </div>
+        <div class="cat-body">
+          <h4>Для посуды</h4>
+          <div class="count">[ЗАМЕНИ: 11] позиций</div>
+          <div class="cat-foot">
+            <div class="from">Гель · от <b>[ЗАМЕНИ: 159 ₽]</b></div>
+            <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo">
+          <span class="price-tag">от [ЗАМЕНИ: 129 ₽]</span>
+          <span class="ph-inner">[ЗАМЕНИ: фото категории]</span>
+        </div>
+        <div class="cat-body">
+          <h4>Для стёкол</h4>
+          <div class="count">[ЗАМЕНИ: 8] позиций</div>
+          <div class="cat-foot">
+            <div class="from">Спрей · от <b>[ЗАМЕНИ: 149 ₽]</b></div>
+            <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo">
+          <span class="price-tag">от [ЗАМЕНИ: 169 ₽]</span>
+          <span class="ph-inner">[ЗАМЕНИ: фото категории]</span>
+        </div>
+        <div class="cat-body">
+          <h4>Дезинфекция</h4>
+          <div class="count">[ЗАМЕНИ: 9] позиций</div>
+          <div class="cat-foot">
+            <div class="from">Спрей · от <b>[ЗАМЕНИ: 199 ₽]</b></div>
+            <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo">
+          <span class="price-tag">от [ЗАМЕНИ: 159 ₽]</span>
+          <span class="ph-inner">[ЗАМЕНИ: фото категории]</span>
+        </div>
+        <div class="cat-body">
+          <h4>Для сантехники</h4>
+          <div class="count">[ЗАМЕНИ: 12] позиций</div>
+          <div class="cat-foot">
+            <div class="from">Гель · от <b>[ЗАМЕНИ: 189 ₽]</b></div>
+            <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo">
+          <span class="price-tag">от [ЗАМЕНИ: 289 ₽]</span>
+          <span class="ph-inner">[ЗАМЕНИ: фото категории]</span>
+        </div>
+        <div class="cat-body">
+          <h4>Стирка</h4>
+          <div class="count">[ЗАМЕНИ: 18] позиций</div>
+          <div class="cat-foot">
+            <div class="from">Капсулы · от <b>[ЗАМЕНИ: 449 ₽]</b></div>
+            <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE — broader use cases -->
+<section class="block" id="audience">
+  <div class="container">
+    <div class="section-head">
+      <div class="head-left">
+        <div class="eyebrow"><span class="dot"></span>Где применять</div>
+        <h2>Чистота <em>в любой ситуации</em></h2>
+      </div>
+      <p class="sub">Подобрали ассортимент под разные сценарии — от ежедневной уборки до сложных задач.</p>
+    </div>
+    <div class="audience-grid">
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12L12 3l9 9"/><path d="M5 10v11h14V10"/></svg></span>
+        <h4>Квартира</h4>
+        <p>Ежедневная уборка кухни, ванной и жилых комнат — мягкие формулы для регулярного применения.</p>
+      </div>
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18M12 3v18"/></svg></span>
+        <h4>Загородный дом</h4>
+        <p>Сезонная генеральная уборка, мытьё террас, окон и фасадов — концентраты для большой площади.</p>
+      </div>
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M5 9h2M17 9h2M9 17v2M9 5v2M15 17v2M15 5v2"/></svg></span>
+        <h4>Семьи с детьми</h4>
+        <p>Гипоаллергенные составы без хлора и резких отдушек — безопасно для кожи и дыхательных путей.</p>
+      </div>
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="3"/><path d="M12 8v4M8 16c0-2 2-3 4-3s4 1 4 3v5H8z"/></svg></span>
+        <h4>Питомцы</h4>
+        <p>Без агрессивных запахов, безопасно при контакте с лапами и шерстью. Уборка после животных.</p>
+      </div>
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M5 12V8a2 2 0 012-2h10a2 2 0 012 2v4M5 12v8h14v-8"/></svg></span>
+        <h4>Аренда квартир</h4>
+        <p>Компактные форматы для самозанятых уборщиков и обработки квартир посуточно.</p>
+      </div>
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg></span>
+        <h4>Подписка на дом</h4>
+        <p>Регулярная доставка средств раз в [ЗАМЕНИ: 1–2 мес] с многоразовой тарой и скидкой.</p>
+      </div>
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 17l9 4 9-4M3 12l9 4 9-4"/></svg></span>
+        <h4>Эко-семьи</h4>
+        <p>Биоразлагаемые формулы, многоразовая тара и рефиллы — меньше пластика и отходов.</p>
+      </div>
+      <div class="aud">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></span>
+        <h4>Офис</h4>
+        <p>Розничные форматы для небольших офисов и студий — заказ на маркетплейсе или через подписку.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- B2B CALLOUT -->
+<section class="b2b-strip" id="b2b">
+  <div class="container b2b-strip-inner">
+    <div>
+      <div class="eyebrow" style="background:rgba(123,191,149,.15);color:#7bbf95">
+        <span class="dot" style="background:#7bbf95"></span>Для бизнеса · опт
+      </div>
+      <h3 style="margin-top:16px">Профессиональные концентраты<br/>для опта — от паллеты</h3>
+      <p>Магазинам, клининговым компаниям, HoReCa и УК — собственная логистика, отсрочка, документы для тендеров. Прямой производитель без посредников.</p>
+    </div>
+    <div class="b2b-actions">
+      <a href="#request" class="btn btn-primary">Получить оптовый прайс
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#" class="btn btn-ghost">Каталог опта</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO BUY -->
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <div class="head-left">
+        <div class="eyebrow"><span class="dot"></span>Как купить</div>
+        <h2>Четыре способа <em>получить Green panda</em></h2>
+      </div>
+      <p class="sub">Выбирайте формат, который удобнее: магазин у дома, маркетплейс, подписка или оптовая поставка.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h4>Магазин-партнёр</h4><p>Найдите ближайший магазин на карте — раздел <a href="#" style="color:var(--green-700);text-decoration:underline">«Где купить»</a>.</p></div>
+      <div class="step"><div class="n">2</div><h4>Маркетплейсы</h4><p>[ЗАМЕНИ: Ozon, Wildberries, Я.Маркет]. Доставка по всей России.</p></div>
+      <div class="step"><div class="n">3</div><h4>Подписка</h4><p>Доставка раз в [ЗАМЕНИ: 1–2 мес] с многоразовой тарой. Скидка [ЗАМЕНИ: 15%].</p></div>
+      <div class="step"><div class="n">4</div><h4>Опт</h4><p>Юрлицам и ИП — отдельная <a href="#request" style="color:var(--green-700);text-decoration:underline">заявка на прайс</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM — wholesale request (still primary CTA in this brief) -->
+<section class="form-section" id="request">
+  <div class="container form-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Заявка</div>
+      <h2>Получить оптовый прайс</h2>
+      <p class="sub">Если вы юрлицо или ИП — отправьте заявку, менеджер свяжется в течение [ЗАМЕНИ: 30 минут] и подготовит цены под ваш объём.</p>
+      <ul>
+        <li>Цены под ваш объём и формат фасовки</li>
+        <li>Расчёт логистики до вашего склада</li>
+        <li>Пакет документов и сертификатов</li>
+        <li>Образцы по запросу — [ЗАМЕНИ: условия]</li>
+      </ul>
+    </div>
+    <form class="form-card" onsubmit="event.preventDefault();return false;">
+      <h3>Оставьте заявку</h3>
+      <p class="fc-sub">Поля отмечены звёздочкой — обязательны. Это макет: данные никуда не отправляются.</p>
+      <div class="field"><label for="name">Имя *</label><input id="name" type="text" placeholder="Иван Петров" required /></div>
+      <div class="field-row">
+        <div class="field"><label for="phone">Телефон *</label><input id="phone" type="tel" placeholder="+7 (___) ___-__-__" required /></div>
+        <div class="field"><label for="email">E-mail *</label><input id="email" type="email" placeholder="you@company.ru" required /></div>
+      </div>
+      <div class="field">
+        <label for="biz">Тип бизнеса *</label>
+        <select id="biz" required>
+          <option value="">Выберите тип</option>
+          <option>Розничный магазин / сеть</option>
+          <option>Клининговая компания</option>
+          <option>HoReCa (отель, ресторан, кейтеринг)</option>
+          <option>Управляющая компания / ЖКХ</option>
+          <option>Производство / другое</option>
+        </select>
+      </div>
+      <a href="#" class="btn btn-primary">Получить прайс
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <p class="fine">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой обработки персональных данных</a>.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site" id="contacts">
+  <div class="container">
+    <div class="top">
+      <div class="col">
+        <div class="logo"><span class="mark">G</span>Green panda</div>
+        <p class="blurb">Бытовая химия для дома и бизнеса. Безопасные формулы, прямой производитель.</p>
+      </div>
+      <div class="col">
+        <h5>Розница</h5>
+        <a href="#">Где купить</a>
+        <a href="#">Маркетплейсы</a>
+        <a href="#">Подписка</a>
+        <a href="#">Состав и безопасность</a>
+      </div>
+      <div class="col">
+        <h5>Опт</h5>
+        <a href="#request">Получить прайс</a>
+        <a href="mailto:opt@greenpanda.ru">opt@greenpanda.ru</a>
+        <a href="#">Сертификаты</a>
+        <a href="#">Реквизиты</a>
+      </div>
+      <div class="col">
+        <h5>Контакты</h5>
+        <a href="tel:+70000000000">[ЗАМЕНИ: +7 (XXX) XXX-XX-XX]</a>
+        <p>[ЗАМЕНИ: пн–пт, 9:00–18:00]</p>
+        <a href="#">Договор-оферта</a>
+        <a href="#">Политика ПДн</a>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© [ЗАМЕНИ: 2014–2026] Green panda. [ЗАМЕНИ: ООО «Грин Панда», ИНН 0000000000]</span>
+      <a href="#">Карта сайта</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "cockpit",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node --env-file=.env server/index.js",
+    "serve": "node server/index.js",
+    "test": "node test/parse.test.mjs"
+  },
+  "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "@vercel/blob": "^2.4.0",
+    "express": "^4.22.2",
+    "jszip": "^3.10.1",
+    "multer": "^2.2.0",
+    "pdf-lib": "^1.17.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.21"
+  }
+}

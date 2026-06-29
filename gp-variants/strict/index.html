@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Green panda — Оптовая бытовая химия</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink-900:#0A1F18;
+    --ink-700:#1F352B;
+    --muted:#6B7A72;
+    --green-900:#0F3D2E;
+    --green-500:#2F8F5C;
+    --green-50:#EEF3EF;
+    --paper:#ffffff;
+    --paper-2:#F5F6F4;
+    --line:#E3E7E3;
+    --radius-s:6px;
+    --radius-m:10px;
+    --radius-l:16px;
+    --container:1280px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Manrope", system-ui, -apple-system, sans-serif;
+    color:var(--ink-900);
+    background:var(--paper);
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  img{display:block;max-width:100%}
+  .container{max-width:var(--container);margin:0 auto;padding:0 32px}
+  .eyebrow{
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-900);
+    font-weight:600;
+  }
+  .muted{color:var(--muted)}
+  .repl{color:var(--green-500);font-weight:600}
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:var(--radius-s);
+    font-weight:600;font-size:15px;line-height:1;cursor:pointer;
+    border:1px solid transparent;transition:.15s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--green-900);color:#fff}
+  .btn-primary:hover{background:#0a2c21}
+  .btn-ghost{background:transparent;color:var(--ink-900);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink-900)}
+  .btn .arrow{width:14px;height:14px;display:inline-block}
+
+  /* Header */
+  header.site{
+    border-bottom:1px solid var(--line);
+    background:#fff;position:sticky;top:0;z-index:10;
+  }
+  header.site .inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .logo .mark{
+    width:24px;height:24px;border-radius:4px;background:var(--green-900);
+    display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800;
+    letter-spacing:0;
+  }
+  nav.site-nav{display:flex;gap:32px}
+  nav.site-nav a{font-size:14px;color:var(--ink-700);font-weight:500}
+  nav.site-nav a:hover{color:var(--green-900)}
+  header.site .actions{display:flex;align-items:center;gap:12px}
+  header.site .phone{font-size:14px;font-weight:600;color:var(--ink-900)}
+
+  /* Hero */
+  .hero{padding:88px 0 96px;border-bottom:1px solid var(--line)}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:center}
+  .hero h1{
+    font-size:clamp(40px,4.6vw,64px);line-height:1.05;letter-spacing:-.02em;
+    font-weight:700;margin:18px 0 20px;color:var(--ink-900);
+  }
+  .hero h1 em{font-style:normal;color:var(--green-900)}
+  .hero .sub{font-size:18px;line-height:1.55;color:var(--ink-700);max-width:560px;margin:0 0 32px}
+  .hero .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px}
+  .hero .meta{display:flex;gap:32px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--line);max-width:560px}
+  .hero .meta div{font-size:13px;color:var(--muted)}
+  .hero .meta strong{display:block;font-size:15px;color:var(--ink-900);font-weight:600;margin-bottom:2px}
+
+  .hero-card{
+    border:1px solid var(--line);border-radius:var(--radius-m);background:#fff;
+    padding:28px;
+  }
+  .hero-card h3{font-size:14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+  .price-row{display:flex;align-items:baseline;justify-content:space-between;padding:14px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .price-row:last-child{border-bottom:0}
+  .price-row .name{color:var(--ink-900);font-weight:500}
+  .price-row .val{color:var(--muted);font-variant-numeric:tabular-nums}
+  .price-row .val b{color:var(--green-900);font-weight:600}
+  .hero-card .foot{margin-top:18px;font-size:12px;color:var(--muted);line-height:1.5}
+
+  /* Stats strip */
+  .stats{padding:48px 0;border-bottom:1px solid var(--line);background:var(--paper-2)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+  .stat .num{font-size:44px;font-weight:700;letter-spacing:-.02em;color:var(--green-900);line-height:1}
+  .stat .lab{font-size:13px;color:var(--muted);margin-top:8px;max-width:200px;line-height:1.4}
+
+  /* Section base */
+  section.block{padding:112px 0;border-bottom:1px solid var(--line)}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:48px}
+  .section-head h2{font-size:clamp(30px,3vw,44px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin:8px 0 0;max-width:720px}
+  .section-head .sub{font-size:16px;color:var(--muted);max-width:380px;line-height:1.55}
+
+  /* Features */
+  .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .feature{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-m);
+    padding:32px 28px;display:flex;flex-direction:column;min-height:240px;
+    transition:.2s ease;
+  }
+  .feature:hover{border-color:var(--green-900)}
+  .feature .ic{
+    width:40px;height:40px;border-radius:var(--radius-s);background:var(--green-50);
+    color:var(--green-900);display:inline-flex;align-items:center;justify-content:center;
+    margin-bottom:24px;
+  }
+  .feature h3{font-size:18px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+  .feature p{margin:0;font-size:14px;color:var(--ink-700);line-height:1.55}
+  .feature .num-tag{margin-top:auto;font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding-top:24px}
+
+  /* Catalog */
+  .catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .cat-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-m);
+    overflow:hidden;display:flex;flex-direction:column;transition:.2s ease;
+  }
+  .cat-card:hover{border-color:var(--green-900)}
+  .cat-photo{
+    aspect-ratio:4/3;background:var(--paper-2);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);font-size:13px;text-align:center;padding:24px;
+    border-bottom:1px solid var(--line);
+    background-image:
+      linear-gradient(45deg,transparent 48%,var(--line) 49%,var(--line) 51%,transparent 52%),
+      linear-gradient(-45deg,transparent 48%,var(--line) 49%,var(--line) 51%,transparent 52%);
+    background-size:32px 32px;background-position:center;
+  }
+  .cat-photo .ph-inner{background:var(--paper-2);padding:8px 14px;border:1px solid var(--line);border-radius:4px;font-size:12px;color:var(--muted)}
+  .cat-body{padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .cat-body h4{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+  .cat-body .count{font-size:12px;color:var(--muted)}
+  .cat-arrow{color:var(--green-900);transition:.2s ease}
+  .cat-card:hover .cat-arrow{transform:translateX(4px)}
+
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden;background:#fff}
+  .step{padding:36px 28px;border-right:1px solid var(--line);position:relative}
+  .step:last-child{border-right:0}
+  .step .n{font-size:14px;font-weight:600;color:var(--green-500);letter-spacing:.04em}
+  .step h4{margin:24px 0 10px;font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .step p{margin:0;font-size:14px;color:var(--ink-700);line-height:1.55}
+  .step .line{position:absolute;top:50%;right:-7px;width:14px;height:14px;border-top:1px solid var(--green-900);border-right:1px solid var(--green-900);transform:translateY(-50%) rotate(45deg);background:#fff;display:none}
+
+  /* Audience */
+  .audience-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .aud{
+    border:1px solid var(--line);border-radius:var(--radius-m);padding:32px 28px;
+    background:#fff;display:flex;flex-direction:column;gap:14px;min-height:200px;
+  }
+  .aud h4{margin:0;font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .aud p{margin:0;font-size:14px;color:var(--ink-700);line-height:1.55}
+  .aud .tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-900);font-weight:600}
+
+  /* Form section */
+  .form-section{background:var(--green-900);color:#fff;padding:112px 0;border-bottom:0}
+  .form-section .form-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start}
+  .form-section h2{font-size:clamp(32px,3.2vw,46px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin:8px 0 18px}
+  .form-section .sub{font-size:17px;color:#cfdbd3;line-height:1.6;max-width:440px;margin-bottom:32px}
+  .form-section .eyebrow{color:#7bbf95}
+  .form-section ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+  .form-section ul li{display:flex;gap:12px;font-size:15px;color:#dfe7e2}
+  .form-section ul li::before{
+    content:"";width:18px;height:18px;flex-shrink:0;margin-top:3px;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237bbf95' stroke-width='2.5'><path d='M5 12.5l5 5L20 7'/></svg>") center/contain no-repeat;
+  }
+  .form-card{
+    background:#fff;color:var(--ink-900);border-radius:var(--radius-l);
+    padding:40px;box-shadow:0 24px 60px rgba(0,0,0,.18);
+  }
+  .form-card h3{margin:0 0 6px;font-size:22px;font-weight:700;letter-spacing:-.01em}
+  .form-card p.fc-sub{margin:0 0 28px;font-size:14px;color:var(--muted)}
+  .field{display:flex;flex-direction:column;margin-bottom:18px}
+  .field label{font-size:13px;font-weight:500;margin-bottom:8px;color:var(--ink-700)}
+  .field input, .field select{
+    border:1px solid var(--line);border-radius:var(--radius-s);
+    padding:13px 14px;font-size:15px;font-family:inherit;color:var(--ink-900);
+    background:#fff;transition:.15s ease;
+  }
+  .field input:focus, .field select:focus{outline:none;border-color:var(--green-900);box-shadow:0 0 0 3px rgba(15,61,46,.1)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-card .btn-primary{width:100%;justify-content:center;padding:16px;font-size:16px;margin-top:6px}
+  .form-card .fine{margin:14px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+  .form-card .fine a{color:var(--green-900);text-decoration:underline}
+
+  /* Footer */
+  footer.site{padding:64px 0 40px;background:#0a261c;color:#cfdbd3}
+  footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
+  footer.site .col h5{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#7bbf95}
+  footer.site .col a, footer.site .col p{font-size:14px;color:#cfdbd3;margin:6px 0;display:block;line-height:1.5}
+  footer.site .col a:hover{color:#fff}
+  footer.site .logo{color:#fff;margin-bottom:16px}
+  footer.site .logo .mark{background:#fff;color:var(--green-900)}
+  footer.site .blurb{font-size:14px;color:#a7b3ad;line-height:1.55;max-width:320px}
+  footer.site .bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;font-size:12px;color:#7e8c85}
+  footer.site .bottom a{color:#a7b3ad}
+
+  @media (max-width:980px){
+    .hero{padding:56px 0 64px}
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .stats-grid,.features-grid,.steps,.catalog-grid,.audience-grid{grid-template-columns:repeat(2,1fr)}
+    .steps{border-radius:var(--radius-m)}
+    .step{border-right:0;border-bottom:1px solid var(--line)}
+    .step:nth-child(2){border-right:0}
+    .form-section .form-grid{grid-template-columns:1fr;gap:36px}
+    section.block{padding:72px 0}
+    .form-section{padding:72px 0}
+    footer.site .top{grid-template-columns:1fr 1fr;gap:32px}
+    nav.site-nav{display:none}
+  }
+  @media (max-width:560px){
+    .container{padding:0 20px}
+    .stats-grid,.features-grid,.catalog-grid,.audience-grid{grid-template-columns:1fr}
+    .field-row{grid-template-columns:1fr}
+    .section-head{flex-direction:column;align-items:flex-start}
+    footer.site .top{grid-template-columns:1fr}
+    .form-card{padding:28px}
+    header.site .phone{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="container inner">
+    <a href="#" class="logo"><span class="mark">G</span>Green panda</a>
+    <nav class="site-nav">
+      <a href="#catalog">Каталог</a>
+      <a href="#process">Как работаем</a>
+      <a href="#audience">Кому подходит</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="actions">
+      <span class="phone">[ЗАМЕНИ: +7 (XXX) XXX-XX-XX]</span>
+      <a href="#request" class="btn btn-primary">Получить прайс
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Оптовый поставщик · с [ЗАМЕНИ: 2014] года</div>
+      <h1>Бытовая химия<br/>для бизнеса <em>оптом</em></h1>
+      <p class="sub">Поставляем профессиональные моющие, чистящие и дезинфицирующие средства напрямую с производства. Стабильные цены, прозрачные условия, отгрузка от [ЗАМЕНИ: 1 паллеты].</p>
+      <div class="cta-row">
+        <a href="#request" class="btn btn-primary">Получить оптовый прайс
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#catalog" class="btn btn-ghost">Смотреть каталог</a>
+      </div>
+      <div class="meta">
+        <div><strong>[ЗАМЕНИ: 320+]</strong>SKU в наличии</div>
+        <div><strong>[ЗАМЕНИ: 1–3 дня]</strong>доставка по региону</div>
+        <div><strong>Отсрочка</strong>для постоянных клиентов</div>
+      </div>
+    </div>
+
+    <aside class="hero-card" aria-label="Образец прайса">
+      <h3>Выдержка из прайса</h3>
+      <div class="price-row"><span class="name">Средство для пола, концентрат 5 л</span><span class="val">от <b>[ЗАМЕНИ: 420 ₽]</b></span></div>
+      <div class="price-row"><span class="name">Жидкость для посуды, 5 л</span><span class="val">от <b>[ЗАМЕНИ: 510 ₽]</b></span></div>
+      <div class="price-row"><span class="name">Дезинфектант, канистра 5 л</span><span class="val">от <b>[ЗАМЕНИ: 690 ₽]</b></span></div>
+      <div class="price-row"><span class="name">Средство для стёкол, 5 л</span><span class="val">от <b>[ЗАМЕНИ: 380 ₽]</b></span></div>
+      <div class="price-row"><span class="name">Порошок стиральный, 10 кг</span><span class="val">от <b>[ЗАМЕНИ: 1 240 ₽]</b></span></div>
+      <p class="foot">Цены указаны при заказе от [ЗАМЕНИ: 1 паллеты]. Полный прайс — по заявке, с учётом объёма и условий доставки.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="container stats-grid">
+    <div class="stat"><div class="num">[ЗАМЕНИ: 12]</div><div class="lab">лет на оптовом рынке профхимии</div></div>
+    <div class="stat"><div class="num">[ЗАМЕНИ: 320]+</div><div class="lab">SKU в собственном каталоге</div></div>
+    <div class="stat"><div class="num">[ЗАМЕНИ: 1 800]</div><div class="lab">B2B-клиентов по [ЗАМЕНИ: 4 ФО]</div></div>
+    <div class="stat"><div class="num">[ЗАМЕНИ: 98%]</div><div class="lab">заказов отгружено в срок за [ЗАМЕНИ: 2025]</div></div>
+  </div>
+</section>
+
+<!-- ADVANTAGES -->
+<section class="block" id="advantages">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Почему мы</div>
+        <h2>Условия, на которых строится оптовая закупка</h2>
+      </div>
+      <p class="sub">Работаем напрямую с производством, без дилерской наценки. Все условия фиксируются в договоре поставки.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-7 9 7v9H3z"/><path d="M9 21v-7h6v7"/></svg></span>
+        <h3>Своя цена</h3>
+        <p>Прямой производитель — оптовая стоимость без посредников. <span class="repl">[ЗАМЕНИ: своя цена / прямой производитель]</span></p>
+        <div class="num-tag">01 — Производство</div>
+      </div>
+      <div class="feature">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="13" height="10" rx="1"/><path d="M15 10h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span>
+        <h3>Доставка по региону</h3>
+        <p>Собственная логистика. Отгрузка от паллеты. <span class="repl">[ЗАМЕНИ: доставка по региону за N дней]</span></p>
+        <div class="num-tag">02 — Логистика</div>
+      </div>
+      <div class="feature">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <h3>Сертификаты и безопасность</h3>
+        <p>СГР, декларации соответствия, паспорта безопасности по запросу. <span class="repl">[ЗАМЕНИ: сертификаты и безопасность]</span></p>
+        <div class="num-tag">03 — Документы</div>
+      </div>
+      <div class="feature">
+        <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2"/></svg></span>
+        <h3>Гибкие условия</h3>
+        <p>Отсрочка платежа, индивидуальные цены для постоянных клиентов. <span class="repl">[ЗАМЕНИ: гибкие условия для постоянных клиентов]</span></p>
+        <div class="num-tag">04 — Контракт</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="block" id="catalog" style="background:var(--paper-2)">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Каталог</div>
+        <h2>Шесть категорий, закрывающих ежедневный спрос</h2>
+      </div>
+      <p class="sub">Профессиональные концентраты в канистрах 5/10/20 л и розничные форматы для перепродажи.</p>
+    </div>
+    <div class="catalog-grid">
+      <a href="#" class="cat-card">
+        <div class="cat-photo"><span class="ph-inner">[ЗАМЕНИ: фото категории]</span></div>
+        <div class="cat-body"><div><h4>Для пола</h4><div class="count">[ЗАМЕНИ: 42] SKU</div></div>
+          <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo"><span class="ph-inner">[ЗАМЕНИ: фото категории]</span></div>
+        <div class="cat-body"><div><h4>Для посуды</h4><div class="count">[ЗАМЕНИ: 28] SKU</div></div>
+          <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo"><span class="ph-inner">[ЗАМЕНИ: фото категории]</span></div>
+        <div class="cat-body"><div><h4>Для стёкол и зеркал</h4><div class="count">[ЗАМЕНИ: 16] SKU</div></div>
+          <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo"><span class="ph-inner">[ЗАМЕНИ: фото категории]</span></div>
+        <div class="cat-body"><div><h4>Дезинфекция</h4><div class="count">[ЗАМЕНИ: 34] SKU</div></div>
+          <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo"><span class="ph-inner">[ЗАМЕНИ: фото категории]</span></div>
+        <div class="cat-body"><div><h4>Для сантехники</h4><div class="count">[ЗАМЕНИ: 22] SKU</div></div>
+          <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="#" class="cat-card">
+        <div class="cat-photo"><span class="ph-inner">[ЗАМЕНИ: фото категории]</span></div>
+        <div class="cat-body"><div><h4>Стирка</h4><div class="count">[ЗАМЕНИ: 38] SKU</div></div>
+          <svg class="cat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="block" id="process">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Процесс</div>
+        <h2>Четыре шага от заявки до отгрузки</h2>
+      </div>
+      <p class="sub">Менеджер ведёт сделку от первого контакта до повторных поставок. Документы и расчёт — в течение [ЗАМЕНИ: 1 рабочего дня].</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h4>Заявка</h4><p>Оставляете контакты и тип бизнеса. Перезваниваем в течение [ЗАМЕНИ: 30 минут] в рабочее время.</p></div>
+      <div class="step"><div class="n">02</div><h4>Расчёт прайса</h4><p>Менеджер готовит коммерческое предложение под ваш объём и логистику.</p></div>
+      <div class="step"><div class="n">03</div><h4>Договор</h4><p>Подписываем договор поставки. Возможна отсрочка [ЗАМЕНИ: до 30 дней] и индивидуальные условия.</p></div>
+      <div class="step"><div class="n">04</div><h4>Поставка</h4><p>Отгружаем со склада в [ЗАМЕНИ: городе]. Регулярные поставки — по графику.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<section class="block" id="audience" style="background:var(--paper-2)">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Кому подходит</div>
+        <h2>Работаем с теми, кому нужен стабильный поток химии</h2>
+      </div>
+      <p class="sub">Подбираем ассортимент и формат фасовки под профиль клиента — от розничного магазина до сетевого клининга.</p>
+    </div>
+    <div class="audience-grid">
+      <div class="aud">
+        <div class="tag">Розница</div>
+        <h4>Магазины и сети</h4>
+        <p>Розничные форматы, торговые марки и сопровождение поставок для магазинов у дома и региональных сетей.</p>
+      </div>
+      <div class="aud">
+        <div class="tag">Клининг</div>
+        <h4>Клининговые компании</h4>
+        <p>Профессиональные концентраты, документы для тендеров и регулярные отгрузки по графику.</p>
+      </div>
+      <div class="aud">
+        <div class="tag">HoReCa</div>
+        <h4>Отели, рестораны, кейтеринг</h4>
+        <p>Линейки для кухни, посуды, текстиля и санзон с подтверждённой пищевой безопасностью.</p>
+      </div>
+      <div class="aud">
+        <div class="tag">ЖКХ</div>
+        <h4>Управляющие компании</h4>
+        <p>Закрываем потребность УК и подрядчиков по уборке МОП, дезинфекции и сезонной обработке.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section" id="request">
+  <div class="container form-grid">
+    <div>
+      <div class="eyebrow">Заявка</div>
+      <h2>Получить оптовый прайс</h2>
+      <p class="sub">Отправьте заявку — менеджер свяжется в течение [ЗАМЕНИ: 30 минут] в рабочее время и подготовит цены под ваш профиль и объём.</p>
+      <ul>
+        <li>Цены под ваш объём и формат фасовки</li>
+        <li>Расчёт логистики до вашего склада</li>
+        <li>Пакет документов и сертификатов</li>
+        <li>Образцы по запросу — [ЗАМЕНИ: условия]</li>
+      </ul>
+    </div>
+    <form class="form-card" onsubmit="event.preventDefault();return false;">
+      <h3>Оставьте заявку</h3>
+      <p class="fc-sub">Поля отмечены звёздочкой — обязательны. Это макет: данные никуда не отправляются.</p>
+      <div class="field"><label for="name">Имя *</label><input id="name" type="text" placeholder="Иван Петров" required /></div>
+      <div class="field-row">
+        <div class="field"><label for="phone">Телефон *</label><input id="phone" type="tel" placeholder="+7 (___) ___-__-__" required /></div>
+        <div class="field"><label for="email">E-mail *</label><input id="email" type="email" placeholder="you@company.ru" required /></div>
+      </div>
+      <div class="field">
+        <label for="biz">Тип бизнеса *</label>
+        <select id="biz" required>
+          <option value="">Выберите тип</option>
+          <option>Розничный магазин / сеть</option>
+          <option>Клининговая компания</option>
+          <option>HoReCa (отель, ресторан, кейтеринг)</option>
+          <option>Управляющая компания / ЖКХ</option>
+          <option>Производство / другое</option>
+        </select>
+      </div>
+      <a href="#" class="btn btn-primary">Получить прайс
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <p class="fine">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой обработки персональных данных</a>.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site" id="contacts">
+  <div class="container">
+    <div class="top">
+      <div class="col">
+        <div class="logo"><span class="mark">G</span>Green panda</div>
+        <p class="blurb">Оптовая поставка профессиональной бытовой химии для бизнеса. Производство, склад, доставка по [ЗАМЕНИ: региону].</p>
+      </div>
+      <div class="col">
+        <h5>Контакты</h5>
+        <a href="tel:+70000000000">[ЗАМЕНИ: +7 (XXX) XXX-XX-XX]</a>
+        <a href="mailto:opt@greenpanda.ru">opt@greenpanda.ru</a>
+        <p>[ЗАМЕНИ: пн–пт, 9:00–18:00]</p>
+      </div>
+      <div class="col">
+        <h5>Каталог</h5>
+        <a href="#catalog">Для пола</a>
+        <a href="#catalog">Для посуды</a>
+        <a href="#catalog">Дезинфекция</a>
+        <a href="#catalog">Стирка</a>
+      </div>
+      <div class="col">
+        <h5>Документы</h5>
+        <a href="#">Реквизиты</a>
+        <a href="#">Сертификаты</a>
+        <a href="#">Договор-оферта</a>
+        <a href="#">Политика обработки ПДн</a>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© [ЗАМЕНИ: 2014–2026] Green panda. [ЗАМЕНИ: ООО «Грин Панда», ИНН 0000000000]</span>
+      <a href="#">Карта сайта</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+# Installed agent skills (~1MB, managed by `npx skills`)
+.agents/
+skills-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (на будущее)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Локальные данные / приватные
+*.local
+.env
+.env.*
+!.env.example
+
+# Blender bckup
+*.blend1
+*.blend2
+
+# Логи
+*.log

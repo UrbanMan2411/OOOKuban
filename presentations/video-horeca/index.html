@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>Green Panda для HoReCa — video</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<!-- Шрифты embedded компилятором hyperframes (без внешней загрузки = быстрый рендер) -->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+    background: #F6F4EE;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: #0F1A1A;
+  }
+  .display { font-family: 'Unbounded', sans-serif; letter-spacing: -0.02em; font-weight: 800; }
+
+  /* Все сцены — overlay полноэкранные */
+  .scene {
+    position: absolute; inset: 0;
+    width: 1920px; height: 1080px;
+    overflow: hidden;
+  }
+
+  /* Фоновые градиенты */
+  .bg-cream { background: #F6F4EE; }
+  .bg-mint-dark {
+    background: #0B4B4A;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(108,179,105,0.35), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(31,168,163,0.35), transparent 50%);
+  }
+  .bg-mint-light {
+    background:
+      radial-gradient(circle at 30% 40%, rgba(31,168,163,0.18), transparent 55%),
+      radial-gradient(circle at 70% 60%, rgba(108,179,105,0.18), transparent 55%),
+      linear-gradient(180deg, #EEFAF8 0%, #F6F4EE 100%);
+  }
+
+  /* Контейнер контента */
+  .content {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 120px 160px;
+    box-sizing: border-box;
+  }
+
+  /* Лого pill */
+  .brand-pill {
+    display: inline-flex; align-items: center; gap: 18px;
+    padding: 14px 28px 14px 18px;
+    background: rgba(15,26,26,0.06);
+    border-radius: 999px;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #0B4B4A;
+    width: fit-content;
+  }
+  .brand-pill .dot {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: #6CB369;
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 900;
+  }
+
+  /* ---------------- SCENE 1: COVER ---------------- */
+  #s1-headline {
+    font-size: 180px;
+    line-height: 0.92;
+    color: #0B4B4A;
+  }
+  #s1-headline .green { color: #3E7F45; }
+  #s1-subtitle {
+    font-size: 36px;
+    color: #137C7A;
+    margin-top: 32px;
+    max-width: 900px;
+    line-height: 1.4;
+  }
+  #s1-mascot {
+    position: absolute;
+    right: 80px; bottom: 0;
+    width: 720px;
+    filter: drop-shadow(0 30px 50px rgba(15,26,26,0.20));
+  }
+  #s1-badges {
+    display: flex; gap: 12px;
+    margin-top: 40px;
+  }
+  #s1-badges .badge {
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+  }
+  #s1-badges .b1 { background: #1FA8A3; }
+  #s1-badges .b2 { background: #6CB369; }
+  #s1-badges .b3 { background: #0B4B4A; }
+
+  /* ---------------- SCENE 2: ABOUT ---------------- */
+  #s2 .content { padding: 100px 160px; }
+  #s2-eyebrow {
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #1FA8A3;
+    margin-bottom: 24px;
+  }
+  #s2-title {
+    font-size: 130px; line-height: 0.95;
+    color: #0B4B4A; margin-bottom: 60px;
+  }
+  #s2-title .accent { color: #3E7F45; }
+  #s2-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .stat-card {
+    background: white;
+    padding: 36px 32px;
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(15,26,26,0.08);
+  }
+  .stat-card .num {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: 84px;
+    color: #137C7A;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .stat-card .label {
+    font-size: 22px;
+    color: #0F1A1A;
+    opacity: 0.7;
+    line-height: 1.3;
+  }
+
+  /* ---------------- SCENE 3: MISSION ---------------- */
+  #s3 .content { color: white; }
+  #s3-title {
+    font-size: 140px;
+    line-height: 0.95;
+    color: white;
+    max-width: 1400px;
+  }
+  #s3-title .leaf { color: #6CB369; }
+  #s3-pillars {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    margin-top: 64px;
+  }
+  .pillar {
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 36px;
+    border-radius: 24px;
+    color: white;
+  }
+  .pillar .icon { font-size: 56px; margin-bottom: 20px; }
+  .pillar .ph { font-size: 28px; font-weight: 800; margin-bottom: 12px; font-family: 'Unbounded', sans-serif; }
+  .pillar .pd { font-size: 22px; line-height: 1.5; color: rgba(255,255,255,0.85); }
+
+  /* ---------------- SCENE 4: RANGE ---------------- */
+  #s4-eyebrow {
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #1FA8A3; margin-bottom: 20px;
+  }
+  #s4-title {
+    font-size: 110px; line-height: 0.95;
+    color: #0B4B4A;
+    margin-bottom: 60px;
+  }
+  #s4-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 28px;
+    height: 580px;
+  }
+  .sku-tile {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 8px 25px rgba(15,26,26,0.06);
+  }
+  .sku-tile .label-img {
+    flex: 1;
+    width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, #EEFAF8 0%, #FFFFFF 100%);
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .sku-tile img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .sku-tile .sku-name {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #0B4B4A;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .sku-tile .sku-vol {
+    font-size: 18px;
+    color: #137C7A;
+    opacity: 0.7;
+    margin-top: 6px;
+  }
+
+  /* ---------------- SCENE 5: SEGMENTS ---------------- */
+  #s5-eyebrow {
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #1FA8A3; margin-bottom: 20px;
+  }
+  #s5-title {
+    font-size: 110px; line-height: 0.95;
+    color: #0B4B4A; margin-bottom: 60px;
+  }
+  #s5-zones {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+    height: 520px;
+  }
+  .zone-card {
+    background: white;
+    border-radius: 24px;
+    padding: 32px 24px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 8px 25px rgba(15,26,26,0.06);
+  }
+  .zone-card .zicon { font-size: 64px; margin-bottom: 16px; }
+  .zone-card .zname {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: #0B4B4A;
+    margin-bottom: 20px;
+  }
+  .zone-card .skus { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .zone-card .skuchip {
+    background: #EEFAF8;
+    color: #0B4B4A;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .zone-card .skuchip.primary { background: #6CB369; color: white; }
+
+  /* ---------------- SCENE 6: LOGISTICS ---------------- */
+  #s6-title {
+    font-size: 130px; line-height: 0.95;
+    color: white;
+    max-width: 1300px;
+    margin-bottom: 40px;
+  }
+  #s6-title .y { color: #E5B53D; }
+  #s6-text {
+    font-size: 32px;
+    color: rgba(255,255,255,0.85);
+    max-width: 1100px;
+    line-height: 1.4;
+  }
+  #s6-regions {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin-top: 50px;
+  }
+  #s6-regions .reg {
+    padding: 14px 28px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  #s6-mascot {
+    position: absolute;
+    right: 100px; bottom: 60px;
+    width: 480px;
+    filter: drop-shadow(0 30px 50px rgba(0,0,0,0.30));
+  }
+
+  /* ---------------- SCENE 7: CTA ---------------- */
+  #s7 .content { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  #s7-title {
+    font-size: 180px; line-height: 0.92;
+    color: #0B4B4A;
+  }
+  #s7-title .accent { color: #3E7F45; }
+  #s7-contacts {
+    display: flex; flex-direction: column; gap: 20px;
+    margin-top: 60px;
+    align-items: center;
+  }
+  #s7-contacts .line {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 38px;
+    color: #137C7A;
+  }
+  #s7-contacts .small {
+    font-size: 24px;
+    color: rgba(15,26,26,0.6);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+  }
+  #s7-mascot {
+    position: absolute;
+    left: 80px; bottom: 0;
+    width: 400px;
+    filter: drop-shadow(0 30px 50px rgba(15,26,26,0.20));
+  }
+
+  /* ---- Декоративные элементы ---- */
+  .leaf-deco {
+    position: absolute;
+    font-size: 260px;
+    opacity: 0.06;
+    color: #3E7F45;
+    pointer-events: none;
+  }
+
+  /* Прогресс-бар внизу */
+  #progress {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 6px;
+    width: 0%;
+    background: linear-gradient(90deg, #1FA8A3 0%, #6CB369 100%);
+    z-index: 100;
+  }
+
+  /* Watermark */
+  .wm {
+    position: absolute;
+    bottom: 24px; right: 32px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(15,26,26,0.35);
+    font-family: 'Manrope', sans-serif;
+    z-index: 90;
+  }
+  .wm.dark { color: rgba(255,255,255,0.5); }
+</style>
+</head>
+
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="60" data-width="1920" data-height="1080">
+
+  <!-- Прогресс-бар (вне сцен, всегда видим) -->
+  <div id="progress" class="clip" data-start="0" data-duration="60" data-track-index="20"></div>
+
+  <!-- ============ SCENE 1: COVER (0 - 7.5s) ============ -->
+  <div id="s1" class="scene clip bg-mint-light" data-start="0" data-duration="7.5" data-track-index="1">
+    <div class="leaf-deco" style="top: -60px; right: -40px;">🎋</div>
+    <div class="leaf-deco" style="bottom: -60px; left: -40px; transform: rotate(180deg);">🎋</div>
+    <div class="content">
+      <div id="s1-brand" class="brand-pill">
+        <div class="dot">G</div>
+        <span>GREEN PANDA</span>
+      </div>
+      <h1 id="s1-headline" class="display" style="margin-top: 60px;">
+        Эко-химия<br><span class="green">для HoReCa</span>
+      </h1>
+      <p id="s1-subtitle">
+        6 SKU для кухни, прачечной, номерного фонда.<br>
+        Производство в Новороссийске. 10 лет на рынке.
+      </p>
+      <div id="s1-badges">
+        <div class="badge b1">Eco-friendly</div>
+        <div class="badge b2">Гипоаллергенно</div>
+        <div class="badge b3">СГР ЕАЭС</div>
+      </div>
+    </div>
+    <img id="s1-mascot" src="../../assets/mascots/floor.png" alt="">
+    <div class="wm">2026 · ООО «КубаньБытХим»</div>
+  </div>
+
+  <!-- ============ SCENE 2: ABOUT (7 - 14.5s) ============ -->
+  <div id="s2" class="scene clip bg-cream" data-start="7" data-duration="7.5" data-track-index="2">
+    <div class="leaf-deco" style="top: 40px; right: 100px;">🎋</div>
+    <div class="content">
+      <div id="s2-eyebrow">О компании</div>
+      <h2 id="s2-title" class="display">
+        10 лет<br><span class="accent">в Новороссийске</span>
+      </h2>
+      <div id="s2-stats">
+        <div class="stat-card" id="s2-stat-1">
+          <div class="num">2015</div>
+          <div class="label">Год основания производства</div>
+        </div>
+        <div class="stat-card" id="s2-stat-2">
+          <div class="num">10</div>
+          <div class="label">Лет стабильных поставок</div>
+        </div>
+        <div class="stat-card" id="s2-stat-3">
+          <div class="num">6</div>
+          <div class="label">SKU в линейке Green Panda</div>
+        </div>
+        <div class="stat-card" id="s2-stat-4">
+          <div class="num">2</div>
+          <div class="label">Бренда: Матрёшка + Green Panda</div>
+        </div>
+      </div>
+    </div>
+    <div class="wm">ИНН 2315984520 · ОГРН 1152315004005</div>
+  </div>
+
+  <!-- ============ SCENE 3: MISSION (14 - 21s) ============ -->
+  <div id="s3" class="scene clip bg-mint-dark" data-start="14" data-duration="7" data-track-index="3">
+    <div class="content">
+      <div id="s3-eyebrow" style="font-size: 24px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #7DD6CB; margin-bottom: 24px;">Миссия</div>
+      <h2 id="s3-title" class="display">
+        Безопасные продукты,<br>которые заботятся<br>о <span class="leaf">здоровье людей</span>.
+      </h2>
+      <div id="s3-pillars">
+        <div class="pillar" id="s3-p1">
+          <div class="icon">🌿</div>
+          <div class="ph">Натуральные ПАВ</div>
+          <div class="pd">Биоразлагаемая основа без агрессивной щёлочи.</div>
+        </div>
+        <div class="pillar" id="s3-p2">
+          <div class="icon">🤝</div>
+          <div class="ph">Безопасно персоналу</div>
+          <div class="pd">Гипоаллергенно. Снижает жалобы и текучку.</div>
+        </div>
+        <div class="pillar" id="s3-p3">
+          <div class="icon">🏨</div>
+          <div class="ph">ESG отелю</div>
+          <div class="pd">Эко-аргумент для гостей и ESG-тендеров.</div>
+        </div>
+      </div>
+    </div>
+    <div class="wm dark">matreshka-eco.ru</div>
+  </div>
+
+  <!-- ============ SCENE 4: RANGE 6 SKU (20.5 - 33s) ============ -->
+  <div id="s4" class="scene clip bg-cream" data-start="20.5" data-duration="12.5" data-track-index="4">
+    <div class="leaf-deco" style="bottom: 40px; left: 80px;">🎋</div>
+    <div class="content">
+      <div id="s4-eyebrow">Линейка</div>
+      <h2 id="s4-title" class="display">6 SKU · все задачи HoReCa</h2>
+      <div id="s4-grid">
+        <div class="sku-tile" id="s4-t1">
+          <div class="label-img"><img src="../../assets/labels/длямытьястеколвектор.svg"></div>
+          <div class="sku-name">Стёкла и зеркала</div>
+          <div class="sku-vol">90502 · 5 л / 0.75 л</div>
+        </div>
+        <div class="sku-tile" id="s4-t2">
+          <div class="label-img"><img src="../../assets/labels/мытьеполоввектор.svg"></div>
+          <div class="sku-name">Полы и поверхности</div>
+          <div class="sku-vol">90503 · 5 л / 1.5 л</div>
+        </div>
+        <div class="sku-tile" id="s4-t3">
+          <div class="label-img"><img src="../../assets/labels/посудавектор.svg"></div>
+          <div class="sku-name">Посуда и руки</div>
+          <div class="sku-vol">90505 · 5 л / 0.75 л</div>
+        </div>
+        <div class="sku-tile" id="s4-t4">
+          <div class="label-img"><img src="../../assets/labels/средстводлястиркивектор.svg"></div>
+          <div class="sku-name">Стирка</div>
+          <div class="sku-vol">90506 · 5 л / 1.5 л</div>
+        </div>
+        <div class="sku-tile" id="s4-t5">
+          <div class="label-img"><img src="../../assets/labels/хозжидкоемыловектор.svg"></div>
+          <div class="sku-name">Жидкое мыло</div>
+          <div class="sku-vol">90504 · 5 л</div>
+        </div>
+        <div class="sku-tile" id="s4-t6">
+          <div class="label-img"><img src="../../assets/labels/пластификаторвектор.svg"></div>
+          <div class="sku-name">Пластификатор</div>
+          <div class="sku-vol">90507 · 5 л · противоморозный</div>
+        </div>
+      </div>
+    </div>
+    <div class="wm">7 СГР · все на территории ЕАЭС</div>
+  </div>
+
+  <!-- ============ SCENE 5: SEGMENTS (32.5 - 43s) ============ -->
+  <div id="s5" class="scene clip bg-mint-light" data-start="32.5" data-duration="10.5" data-track-index="5">
+    <div class="content">
+      <div id="s5-eyebrow">Применение</div>
+      <h2 id="s5-title" class="display">Какой SKU — где работает</h2>
+      <div id="s5-zones">
+        <div class="zone-card" id="s5-z1">
+          <div class="zicon">🍳</div>
+          <div class="zname">Кухня</div>
+          <div class="skus">
+            <div class="skuchip primary">Посуда 90505</div>
+            <div class="skuchip">Полы 90503</div>
+            <div class="skuchip">Мыло 90501</div>
+          </div>
+        </div>
+        <div class="zone-card" id="s5-z2">
+          <div class="zicon">🛎️</div>
+          <div class="zname">Зал/ресепшен</div>
+          <div class="skus">
+            <div class="skuchip primary">Стёкла 90502</div>
+            <div class="skuchip">Полы 90503</div>
+          </div>
+        </div>
+        <div class="zone-card" id="s5-z3">
+          <div class="zicon">🚿</div>
+          <div class="zname">Санузлы</div>
+          <div class="skus">
+            <div class="skuchip primary">Мыло 90504</div>
+            <div class="skuchip">Полы 90503</div>
+            <div class="skuchip">Стёкла 90502</div>
+          </div>
+        </div>
+        <div class="zone-card" id="s5-z4">
+          <div class="zicon">🛏️</div>
+          <div class="zname">Номера</div>
+          <div class="skus">
+            <div class="skuchip primary">Стёкла 90502</div>
+            <div class="skuchip">Полы 90503</div>
+            <div class="skuchip">Мыло 90504</div>
+          </div>
+        </div>
+        <div class="zone-card" id="s5-z5">
+          <div class="zicon">👕</div>
+          <div class="zname">Прачечная</div>
+          <div class="skus">
+            <div class="skuchip primary">Стирка 90506</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCENE 6: LOGISTICS (42.5 - 51s) ============ -->
+  <div id="s6" class="scene clip bg-mint-dark" data-start="42.5" data-duration="8.5" data-track-index="6">
+    <div class="content">
+      <div id="s6-eyebrow" style="font-size: 24px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #7DD6CB; margin-bottom: 24px;">Логистическое плечо</div>
+      <h2 id="s6-title" class="display">
+        Новороссийск<br>= <span class="y">юг РФ</span> за день
+      </h2>
+      <p id="s6-text">
+        Производство и склад на одной площадке.<br>
+        Курортные кластеры в радиусе одного дня доставки.
+      </p>
+      <div id="s6-regions">
+        <div class="reg">Краснодарский край</div>
+        <div class="reg">Крым</div>
+        <div class="reg">Ростовская обл.</div>
+        <div class="reg">Ставрополь</div>
+        <div class="reg">КМВ</div>
+        <div class="reg">Адыгея</div>
+      </div>
+    </div>
+    <img id="s6-mascot" src="../../assets/mascots/laundry.png" alt="">
+    <div class="wm dark">5 л канистра · ПЭТ · крышка с ручкой</div>
+  </div>
+
+  <!-- ============ SCENE 7: CTA (50.5 - 60s) ============ -->
+  <div id="s7" class="scene clip bg-mint-light" data-start="50.5" data-duration="9.5" data-track-index="7">
+    <div class="leaf-deco" style="top: -60px; right: -40px;">🎋</div>
+    <div class="content">
+      <h2 id="s7-title" class="display">
+        Готовы<br>обсудить <span class="accent">поставку?</span>
+      </h2>
+      <div id="s7-contacts">
+        <div class="line" id="s7-c1">+7 (918) 468-08-68</div>
+        <div class="line" id="s7-c2">sales@kubanbithim.ru</div>
+        <div class="small" id="s7-c3">partners.kubanbithim.ru · г. Новороссийск, Кутузовская 117</div>
+      </div>
+    </div>
+    <img id="s7-mascot" src="../../assets/mascots/dishes.png" alt="">
+    <div class="wm">Green Panda · 2026</div>
+  </div>
+
+</div>
+
+<!-- ============ ТАЙМЛАЙН ============ -->
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+
+  // Прогресс-бар на весь ролик
+  tl.fromTo("#progress", { width: "0%" }, { width: "100%", duration: 60, ease: "none" }, 0);
+
+  // ===== SCENE 1 (0 - 7.5) =====
+  tl.from("#s1", { opacity: 0, duration: 0.4, ease: "power2.out" }, 0);
+  tl.from("#s1-brand", { x: -60, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.3);
+  tl.from("#s1-headline", { y: 80, opacity: 0, duration: 0.9, ease: "power3.out" }, 0.6);
+  tl.from("#s1-subtitle", { y: 40, opacity: 0, duration: 0.7, ease: "power2.out" }, 1.1);
+  tl.from("#s1-badges .badge", { y: 30, opacity: 0, duration: 0.5, ease: "back.out(1.4)", stagger: 0.1 }, 1.5);
+  tl.from("#s1-mascot", { x: 200, opacity: 0, duration: 1.0, ease: "expo.out" }, 0.4);
+
+  // Выход s1 (последний слой — отдельный случай, scene-swap через crossfade)
+  tl.to("#s1", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 7.0);
+
+  // ===== SCENE 2 (7 - 14.5) =====
+  tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 7.0);
+  tl.from("#s2-eyebrow", { x: -40, opacity: 0, duration: 0.5, ease: "power3.out" }, 7.5);
+  tl.from("#s2-title", { y: 60, opacity: 0, duration: 0.8, ease: "power3.out" }, 7.8);
+  tl.from("#s2-stats .stat-card", {
+    y: 50, opacity: 0, scale: 0.92, duration: 0.6,
+    ease: "back.out(1.3)", stagger: 0.12
+  }, 8.6);
+  tl.from("#s2-stats .num", { textContent: 0, duration: 1.2, snap: { textContent: 1 }, ease: "power2.out", stagger: 0.12 }, 8.6);
+  tl.to("#s2", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 14.0);
+
+  // ===== SCENE 3 (14 - 21) =====
+  tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 14.0);
+  tl.from("#s3-eyebrow", { x: -40, opacity: 0, duration: 0.5, ease: "power3.out" }, 14.5);
+  tl.from("#s3-title", { y: 60, opacity: 0, duration: 0.9, ease: "expo.out" }, 14.8);
+  tl.from("#s3-pillars .pillar", {
+    y: 60, opacity: 0, duration: 0.6,
+    ease: "power3.out", stagger: 0.15
+  }, 16.0);
+  tl.to("#s3", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 20.5);
+
+  // ===== SCENE 4 (20.5 - 33) =====
+  tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 20.5);
+  tl.from("#s4-eyebrow", { x: -40, opacity: 0, duration: 0.5, ease: "power3.out" }, 21.0);
+  tl.from("#s4-title", { y: 60, opacity: 0, duration: 0.8, ease: "power3.out" }, 21.3);
+  tl.from("#s4-grid .sku-tile", {
+    y: 80, opacity: 0, scale: 0.9, duration: 0.7,
+    ease: "back.out(1.5)", stagger: 0.10
+  }, 22.0);
+  // лёгкая «дышащая» пульсация на плитках в режиме hold
+  tl.to("#s4-grid .sku-tile", { y: -8, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 2, stagger: 0.04 }, 25.5);
+  tl.to("#s4", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 32.5);
+
+  // ===== SCENE 5 (32.5 - 43) =====
+  tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 32.5);
+  tl.from("#s5-eyebrow", { x: -40, opacity: 0, duration: 0.5, ease: "power3.out" }, 33.0);
+  tl.from("#s5-title", { y: 60, opacity: 0, duration: 0.8, ease: "power3.out" }, 33.3);
+  tl.from("#s5-zones .zone-card", {
+    y: 80, opacity: 0, duration: 0.6,
+    ease: "back.out(1.4)", stagger: 0.12
+  }, 34.2);
+  tl.from("#s5-zones .skuchip", {
+    x: -20, opacity: 0, duration: 0.4,
+    ease: "power2.out", stagger: { each: 0.04, from: "start" }
+  }, 35.0);
+  tl.to("#s5", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 42.5);
+
+  // ===== SCENE 6 (42.5 - 51) =====
+  tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 42.5);
+  tl.from("#s6-eyebrow", { x: -40, opacity: 0, duration: 0.5, ease: "power3.out" }, 43.0);
+  tl.from("#s6-title", { y: 60, opacity: 0, duration: 0.9, ease: "expo.out" }, 43.3);
+  tl.from("#s6-text", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" }, 44.0);
+  tl.from("#s6-regions .reg", {
+    scale: 0.6, opacity: 0, duration: 0.5,
+    ease: "back.out(1.6)", stagger: 0.08
+  }, 44.5);
+  tl.from("#s6-mascot", { x: 200, opacity: 0, duration: 1.0, ease: "expo.out" }, 43.5);
+  tl.to("#s6", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 50.5);
+
+  // ===== SCENE 7 (50.5 - 60) =====
+  tl.fromTo("#s7", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 50.5);
+  tl.from("#s7-title", { y: 80, opacity: 0, duration: 1.0, ease: "expo.out" }, 51.0);
+  tl.from("#s7-contacts .line", { y: 40, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.2 }, 52.0);
+  tl.from("#s7-contacts .small", { y: 20, opacity: 0, duration: 0.5, ease: "power2.out" }, 52.6);
+  tl.from("#s7-mascot", { x: -200, opacity: 0, duration: 1.0, ease: "expo.out" }, 51.0);
+
+  // Финал — небольшой fade-out (разрешён только на последней сцене по правилам)
+  tl.to("#s7-title", { scale: 1.04, duration: 2.0, ease: "sine.inOut" }, 56.0);
+
+  window.__timelines["main"] = tl;
+</script>
+
+</body>
+</html>
