@@ -70,11 +70,15 @@ app.post('/api/downloads/upload', multer({ limits: { fileSize: 60 * 1024 * 1024 
 // Stored files (uploaded photos, JSON, etc.).
 if (STORAGE_DIR) app.use(STORAGE_PREFIX, express.static(STORAGE_DIR, { fallthrough: false }))
 
+// Product catalogs (Ozon/WB): static HTML+photos generated into STORAGE_DIR/catalogs
+// by gen_catalogs.mjs (run it on the server to refresh from marketplace APIs).
+if (STORAGE_DIR) app.use('/catalogs', express.static(path.join(STORAGE_DIR, 'catalogs')))
+
 // Built assets, then the two HTML entries with SPA fallback.
 app.use(express.static(DIST, { index: false }))
 app.get('/shop', (req, res) => res.sendFile(path.join(DIST, 'shop.html')))
 app.get('*', (req, res) => {
-  if (req.path.startsWith('/api/') || req.path.startsWith(STORAGE_PREFIX)) return res.status(404).json({ error: 'not_found' })
+  if (req.path.startsWith('/api/') || req.path.startsWith(STORAGE_PREFIX) || req.path.startsWith('/catalogs')) return res.status(404).json({ error: 'not_found' })
   res.sendFile(path.join(DIST, 'index.html'))
 })
 
