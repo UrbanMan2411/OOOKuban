@@ -186,5 +186,6 @@ a.card:hover{transform:translateY(-3px)}
 <div class="wrap">
 <a class="card" href="ozon/"><div class="ic">🟦</div><div class="t">Каталог Ozon</div><div class="s">карточки, фото, описания</div></a>
 <a class="card" href="wb/"><div class="ic">🟪</div><div class="t">Каталог Wildberries</div><div class="s">карточки, фото, описания</div></a>
+<a class="card" href="visuals/"><div class="ic">🎨</div><div class="t">Визуалы</div><div class="s">наклейки и рендеры (обновить: node yd_visuals.mjs)</div></a>
 </div></body></html>`);
 console.log("✓ готово:", OUT);
