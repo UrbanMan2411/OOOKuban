@@ -125,10 +125,62 @@ export default async function handler(req, res) {
     it.sources.wb = { nmId: w.nmId, stock: w.stock }
   }
 
-  // 3) Ozon — match by article-from-name to existing items; else add standalone.
+  // 3) Ozon — merge into primary items by product fingerprint (type+scent+volume),
+  //    because Ozon marketing titles never equal price-list names verbatim.
+  //    Unmatched items stay standalone (unique Ozon-only positions).
+  // volume from the RAW string — normName strips «0,45»/«1.1» separators
+  const volOf = (raw) => {
+    const s = String(raw).toLowerCase()
+    const l = s.match(/(\d+(?:[.,]\d+)?)\s*л(?![а-яa-z])|(\d+(?:[.,]\d+)?)\s*литр/)
+    if (l) return Math.round(parseFloat((l[1] || l[2]).replace(',', '.')) * 1000)
+    const ml = s.match(/(\d+)\s*мл/)
+    if (ml) return +ml[1]
+    return 0
+  }
+  const productKey = (name, volume) => {
+    const raw = String(name || '') + ' ' + String(volume || '')
+    const s = normName(raw)
+    if (/набор|2\s*шт|3\s*шт|2шт|2х|2x/.test(s)) return null // sets: too ambiguous, keep as-is
+    const vol = volOf(raw)
+    let type = '', scent = ''
+    const scentOf = (pairs) => { for (const [re, v] of pairs) if (re.test(s)) return v; return '' }
+    // порядок важен: специфичные типы раньше общих слов («универсальный»,
+    // «для стирки» встречаются в маркетинговых хвостах имён Ozon)
+    if (/антижир/.test(s)) type = 'antizhir'
+    else if (/хозяйствен/.test(s)) type = 'hozmylo'
+    else if (/кондиционер|ополаскиватель/.test(s)) { type = 'kond'; scent = scentOf([[/лаванд/, 'lavanda'], [/морозн/, 'moroz'], [/сияни/, 'siyanie'], [/хлопк|хлопок/, 'hlopok'], [/южн/, 'yuzh'], [/миндал/, 'mindal'], [/детск/, 'kids']]) }
+    else if (/стирк|стиральн/.test(s)) { type = 'gel'; scent = scentOf([[/детск/, 'kids'], [/цветн/, 'color'], [/черно|чёрно|темн/, 'black'], [/белого|белое/, 'white'], [/лаванд/, 'lavanda'], [/морозн|пятновывод/, 'moroz'], [/хлопк|хлопок/, 'hlopok'], [/миндал/, 'mindal']]) }
+    else if (/кухня|кухни/.test(s) && /eco|эко/.test(s)) type = 'kuhnya'
+    else if (/ванн/.test(s)) type = 'vanna'
+    else if (/туалет|сантехник/.test(s)) type = /eco|эко/.test(s) ? 'tualet-eco' : 'tualet'
+    else if (/антизасор/.test(s)) type = 'antizasor'
+    else if (/антисептик/.test(s)) type = 'antiseptik'
+    // NB: \b не работает с кириллицей в JS — границы через пробелы/край строки
+    else if (/(^|\s)пол(ы|ов|а)($|\s)|мытья пол/.test(s)) {
+      type = 'poly'; scent = scentOf([[/цитрус/, 'citrus'], [/прохлад|морск/, 'sea'], [/стронг|ph/, 'strong'], [/полевы/, 'field']])
+      if (!scent && /уборк|универсал/.test(s)) { type = 'uborka'; } // «уборка-эко … для мытья пола» — это уборка
+    }
+    else if (/пенка/.test(s)) { type = 'penka'; scent = scentOf([[/клубник/, 'klubnika'], [/бергамот/, 'bergamot'], [/мелисс/, 'melissa'], [/лемонграсс/, 'lemongrass'], [/детск|0\+/, 'kids']]) }
+    else if (/посуд/.test(s)) { type = 'posuda'; scent = scentOf([[/изумруд/, 'izumrud'], [/лаванд/, 'lavanda'], [/ромашк/, 'romashka'], [/delicate|деликат/, 'delicate']]) }
+    else if (/мыло/.test(s)) { type = 'mylo'; scent = scentOf([[/виноград/, 'vinograd'], [/вишн/, 'vishnya'], [/клубник/, 'klubnika'], [/кокос/, 'kokos'], [/алоэ/, 'aloe'], [/детск|0\+/, 'kids']]) }
+    else if (/вода/.test(s) && /утюг|парогенератор/.test(s)) type = 'voda'
+    else if (/белизна/.test(s)) type = 'belizna'
+    else if (/уборк|универсал/.test(s)) type = 'uborka'
+    if (!type) return null
+    // scent is mandatory where one product type has many variants
+    if (['gel', 'kond', 'mylo', 'posuda', 'poly', 'penka'].includes(type) && !scent) return null
+    if (!vol) return null
+    const v = (type === 'gel' && vol === 1000) ? 1100 : vol // гелей «1 л» не бывает — опечатка прайса вместо 1,1 л
+    return `${type}|${scent}|${v}`
+  }
+  const byFp = new Map()
+  for (const it of map.values()) {
+    const k = productKey(it.name, it.volume)
+    if (k && !byFp.has(k)) byFp.set(k, it)
+  }
   const byNorm = new Map([...map.values()].map((it) => [normName(it.name), it]))
   for (const o of ozon.items) {
-    const hit = byNorm.get(normName(o.name))
+    const hit = byNorm.get(normName(o.name)) || byFp.get(productKey(o.name, '') || ' ')
     if (hit) {
       if (!hit.priceRetail && o.priceRetail) hit.priceRetail = Math.round(o.priceRetail)
       hit.sources.ozon = { sku: o.sku }
