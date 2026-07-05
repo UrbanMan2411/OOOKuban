@@ -664,9 +664,9 @@
         <li>Образцы по согласованию с менеджером</li>
       </ul>
     </div>
-    <form class="form-card" onsubmit="event.preventDefault();var g=function(i){return (document.getElementById(i)||{}).value||''};var b=encodeURIComponent('Имя: '+g('name')+'\nТелефон: '+g('phone')+'\nE-mail: '+g('email'));location.href='mailto:info@greenpanda-eco.ru?subject=Заявка с сайта Matr%D1%91shka&body='+b;return false;">
+    <form class="form-card" id="leadForm">
       <h3>Оставьте заявку</h3>
-      <p class="fc-sub">Поля отмечены звёздочкой — обязательны. Это макет: данные никуда не отправляются.</p>
+      <p class="fc-sub">Поля отмечены звёздочкой — обязательны. Менеджер свяжется в течение 30 минут в рабочее время.</p>
       <div class="field"><label for="name">Имя *</label><input id="name" type="text" placeholder="Иван Петров" required /></div>
       <div class="field-row">
         <div class="field"><label for="phone">Телефон *</label><input id="phone" type="tel" placeholder="+7 (___) ___-__-__" required /></div>
@@ -683,6 +683,7 @@
           <option>Производство / другое</option>
         </select>
       </div>
+      <input type="text" id="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true" />
       <button type="submit" class="btn btn-primary">Получить прайс
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </button>
@@ -1528,6 +1529,28 @@
   try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e) {}
 </script>
 
+<script>
+(function(){
+  var f=document.getElementById('leadForm'); if(!f) return;
+  var btn=f.querySelector('button[type=submit]');
+  f.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var v=function(id){var el=f.querySelector('#'+id);return el?el.value:''};
+    var old=btn.innerHTML; btn.disabled=true; btn.textContent='Отправляю…';
+    try{
+      var r=await fetch('https://app.greenpanda-eco.ru/api/shop/lead',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name:v('name'),phone:v('phone'),email:v('email'),biz:v('biz'),website:v('website'),source:'matreshka-landing'})});
+      if(!r.ok) throw new Error('http '+r.status);
+      f.innerHTML='<h3>Спасибо! Заявка отправлена ✅</h3><p class="fc-sub">Менеджер свяжется с вами в течение 30 минут в рабочее время.</p>';
+    }catch(err){
+      btn.disabled=false; btn.innerHTML=old;
+      var m=f.querySelector('.lead-err')||f.appendChild(Object.assign(document.createElement('p'),{className:'lead-err'}));
+      m.style.cssText='color:#c0392b;font-size:13px;margin-top:10px';
+      m.textContent='Не удалось отправить. Позвоните: 8 (8617) 60-00-88 или info@kubanbithim.ru';
+    }
+  });
+})();
+</script>
 </body>
 <script>
   // Load video via fetch → blob URL (workaround for servers without range request support)

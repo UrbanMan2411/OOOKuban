@@ -32,6 +32,7 @@ export const SHOP = {
   pricelist: '_shop/pricelist', // imported from price xlsx: { [article]: {name,volume,barcode,perBox,pallet,priceRetail,priceOpt} }
   orders: '_shop/orders',       // { seq, list:[order] }
   settings: '_shop/settings',   // non-secret store settings
+  leads: '_shop/leads',         // заявки на прайс с лендингов { seq, list:[lead] }
 }
 
 // Normalise an article/vendorCode/offer_id into a stable dedup key.

@@ -35,6 +35,7 @@ const ROUTES = [
   ['/api/shop/catalog', '../api/shop/catalog.js'],
   ['/api/shop/settings', '../api/shop/settings.js'],
   ['/api/shop/order', '../api/shop/order.js'],
+  ['/api/shop/lead', '../api/shop/lead.js'],
   ['/api/shop/bot', '../api/shop/bot.js'],
   ['/api/shop/admin/sync', '../api/shop/admin/sync.js'],
   ['/api/shop/admin/catalog', '../api/shop/admin/catalog.js'],
