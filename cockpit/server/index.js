@@ -68,11 +68,13 @@ app.post('/api/downloads/upload', multer({ limits: { fileSize: 60 * 1024 * 1024 
 })
 
 // Stored files (uploaded photos, JSON, etc.).
-if (STORAGE_DIR) app.use(STORAGE_PREFIX, express.static(STORAGE_DIR, { fallthrough: false }))
+// CORS: card images are reused cross-origin (price tools on the apex domain).
+if (STORAGE_DIR) app.use(STORAGE_PREFIX, (req, res, next) => { res.set('Access-Control-Allow-Origin', '*'); next() }, express.static(STORAGE_DIR, { fallthrough: false }))
 
 // Product catalogs (Ozon/WB): static HTML+photos generated into STORAGE_DIR/catalogs
 // by gen_catalogs.mjs (run it on the server to refresh from marketplace APIs).
-if (STORAGE_DIR) app.use('/catalogs', express.static(path.join(STORAGE_DIR, 'catalogs')))
+// CORS: renders are pulled cross-origin (e.g. as image-gen references).
+if (STORAGE_DIR) app.use('/catalogs', (req, res, next) => { res.set('Access-Control-Allow-Origin', '*'); next() }, express.static(path.join(STORAGE_DIR, 'catalogs')))
 
 // Built assets, then the two HTML entries with SPA fallback.
 app.use(express.static(DIST, { index: false }))

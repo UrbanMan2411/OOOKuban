@@ -2,6 +2,34 @@ import React, { useState, useCallback, useRef } from 'react'
 import { parsePriceXlsx } from './lib/parseXlsx'
 import { buildPriceListPdf } from './lib/buildPdf'
 
+// Фирменные карточки Matrёshka: подставляем фото по артикулу, если в xlsx его нет.
+// Сервер отдаёт /_storage/cards с CORS, конвертируем в JPEG (pdf-lib не умеет webp).
+const CARDS_BASE = 'https://app.greenpanda-eco.ru/_storage/cards/'
+async function fetchBrandCard(sku) {
+  try {
+    const r = await fetch(CARDS_BASE + encodeURIComponent(sku) + '.webp', { mode: 'cors' })
+    if (!r.ok) return null
+    const bmp = await createImageBitmap(await r.blob())
+    const c = document.createElement('canvas')
+    c.width = bmp.width; c.height = bmp.height
+    c.getContext('2d').drawImage(bmp, 0, 0)
+    return c.toDataURL('image/jpeg', 0.85)
+  } catch { return null }
+}
+async function enrichWithBrandCards(rows, onProgress) {
+  const out = [...rows]
+  const CHUNK = 8
+  for (let i = 0; i < out.length; i += CHUNK) {
+    await Promise.all(out.slice(i, i + CHUNK).map(async (r, k) => {
+      if (r.image || !r.sku) return
+      const img = await fetchBrandCard(r.sku)
+      if (img) out[i + k] = { ...r, image: img, brandCard: true }
+    }))
+    onProgress?.(Math.min(i + CHUNK, out.length), out.length)
+  }
+  return out
+}
+
 export default function App() {
   const [status, setStatus] = useState('idle') // idle | parsing | ready | building | done | error
   const [error, setError] = useState('')
@@ -35,6 +63,8 @@ export default function App() {
       const { rows } = await parsePriceXlsx(file)
       if (!rows.length) throw new Error('Не нашёл товаров. Проверьте, что лист в формате эталонного прайса.')
       setRows(rows)
+      // не блокируем интерфейс: фирменные карточки подтягиваются фоном
+      enrichWithBrandCards(rows).then((enriched) => setRows(enriched))
       setStatus('ready')
     } catch (e) {
       console.error(e)
@@ -83,7 +113,8 @@ export default function App() {
         <h1>Прайс-лист из Excel</h1>
         <p className="lead">
           Загрузите <b>.xlsx</b> в формате эталонного прайса MATRЁSHKA —
-          получите готовый PDF с фирменным оформлением. Фото берутся из самого файла.
+          получите готовый PDF с фирменным оформлением. Фото берутся из файла,
+          а для товаров MATRЁSHKA автоматически подставляются фирменные карточки.
         </p>
 
         <div
