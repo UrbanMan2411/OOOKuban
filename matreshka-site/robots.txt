@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://greenpanda-eco.ru/zavod/sitemap.xml
