@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATRЁSHKA — макет «Полка» | завод эко-бытовой химии</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='14' fill='%23ffb03a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#26312d; --ink-2:#54615c; --muted:#8b968f;
+  --teal:#2f8079; --teal-soft:#e3f1ee;
+  --sun:#ffb03a; --sun-soft:#fff3dd;
+  --coral:#f0846a; --coral-soft:#ffe9e1;
+  --lav:#9d8bd8; --lav-soft:#efeaff;
+  --sky:#5aa7d4; --sky-soft:#e3f2fb;
+  --rose:#e58bb1; --rose-soft:#fdeaf3;
+  --bg:#fffdf9; --line:#eee7db;
+  --sans:"Manrope",system-ui,sans-serif; --hand:"Caveat",cursive;
+  --r:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16.5px;line-height:1.6}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 22px}
+a{color:inherit}
+h1,h2,h3{font-weight:800;line-height:1.15}
+
+header{position:sticky;top:0;z-index:60;background:rgba(255,253,249,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav img{height:28px}
+.nav ul{display:flex;gap:4px;list-style:none;align-items:center}
+.nav a{text-decoration:none;font-size:14.5px;font-weight:700;color:var(--ink-2);padding:9px 14px;border-radius:999px}
+.nav a:hover{background:var(--teal-soft);color:var(--teal)}
+.nav .cta{background:var(--ink);color:#fff}
+.nav .cta:hover{background:var(--teal);color:#fff}
+@media(max-width:840px){.nav ul{display:none}}
+
+/* compact hero */
+.hero{padding:54px 0 8px;text-align:center}
+.hero .hand{font-family:var(--hand);font-size:26px;color:var(--coral)}
+.hero h1{font-size:clamp(30px,4.6vw,52px);max-width:760px;margin:6px auto 14px;letter-spacing:-.015em}
+.hero h1 mark{background:linear-gradient(180deg,transparent 62%,#ffd9a3 62%);color:inherit;padding:0 2px}
+.hero p{color:var(--ink-2);max-width:540px;margin:0 auto 26px;font-size:17.5px}
+.trust{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;color:var(--muted);font-size:13.5px;font-weight:700;margin-bottom:8px}
+.trust b{color:var(--ink);font-size:16px;display:block}
+
+/* SHELF — главный блок */
+.shelf-zone{padding:38px 0 66px}
+.shelf{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;align-items:end}
+.sku{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 14px 16px;text-align:center;text-decoration:none;position:relative;transition:transform .18s ease,box-shadow .18s ease;cursor:pointer}
+.sku:hover{transform:translateY(-6px);box-shadow:0 18px 38px rgba(38,49,45,.14)}
+.sku .pad{border-radius:16px;padding:16px 8px 10px;margin-bottom:12px;display:flex;align-items:flex-end;justify-content:center;height:168px}
+.p-teal{background:var(--teal-soft)}.p-sun{background:var(--sun-soft)}.p-coral{background:var(--coral-soft)}.p-lav{background:var(--lav-soft)}.p-sky{background:var(--sky-soft)}.p-rose{background:var(--rose-soft)}
+.sku img{max-height:100%;width:auto;filter:drop-shadow(0 12px 12px rgba(38,49,45,.18));transition:transform .18s ease}
+.sku:hover img{transform:scale(1.05)}
+.sku h3{font-size:15.5px;margin-bottom:2px}
+.sku span{font-size:12.5px;color:var(--muted);font-weight:700}
+.badge{position:absolute;top:10px;left:10px;font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:999px;background:var(--ink);color:#fff}
+.badge.eco{background:var(--teal)}
+.badge.hit{background:var(--coral)}
+.shelf-board{margin-top:-4px;height:16px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,#e8dfd0,#d9cfbd);box-shadow:0 14px 24px rgba(38,49,45,.12)}
+.shelf-note{text-align:center;margin-top:22px;font-family:var(--hand);font-size:22px;color:var(--ink-2)}
+.shelf-note a{color:var(--teal)}
+@media(max-width:980px){.shelf{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.shelf{grid-template-columns:1fr 1fr}}
+
+section{padding:64px 0}
+.sh{display:flex;align-items:baseline;gap:14px;margin-bottom:32px;flex-wrap:wrap}
+.sh h2{font-size:clamp(24px,3.4vw,36px)}
+.sh .hand{font-family:var(--hand);font-size:24px;color:var(--coral)}
+
+/* benefits strip — цветные плашки */
+.ben{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.bn{border-radius:var(--r);padding:22px;font-weight:700;font-size:15px}
+.bn b{display:block;font-size:17px;margin-bottom:4px}
+.bn span{font-weight:600;color:rgba(38,49,45,.72);font-size:13.5px}
+.bn1{background:var(--teal-soft)}.bn2{background:var(--sun-soft)}.bn3{background:var(--coral-soft)}.bn4{background:var(--lav-soft)}
+@media(max-width:880px){.ben{grid-template-columns:1fr 1fr}}
+
+/* about strip */
+.about{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.about-g{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+.about p{color:var(--ink-2);margin-bottom:14px}
+.about p b{color:var(--ink)}
+.stats-inline{display:flex;gap:30px;flex-wrap:wrap;margin-top:20px}
+.stats-inline div b{font-size:30px;font-weight:800;display:block;color:var(--teal)}
+.stats-inline div span{font-size:12.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.ph-slot{border:2px dashed var(--teal);border-radius:var(--r);background:var(--teal-soft);aspect-ratio:16/10;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;color:var(--teal);font-weight:700;font-size:14px}
+@media(max-width:840px){.about-g{grid-template-columns:1fr}}
+
+/* buy — большие кнопки */
+.buy-g{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.buy{border:1px solid var(--line);background:#fff;border-radius:var(--r);padding:22px 24px;display:flex;align-items:center;gap:16px;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease;cursor:pointer}
+.buy:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(38,49,45,.12)}
+.buy .mk{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:21px;flex:none}
+.buy b{font-size:18px;display:block}
+.buy span{font-size:13.5px;color:var(--muted);font-weight:600}
+.buy .go{margin-left:auto;color:var(--muted)}
+.mk-wb{background:#a73afd}.mk-oz{background:#005bff}.mk-mv{background:#e30613}.mk-tb{background:var(--teal)}
+@media(max-width:720px){.buy-g{grid-template-columns:1fr}}
+
+/* b2b банner */
+.b2b{padding-bottom:80px}
+.b2b-card{background:var(--sun);border-radius:30px;padding:clamp(28px,4.6vw,50px);display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;position:relative;overflow:hidden}
+.b2b-card::after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;right:-120px;top:-140px;background:rgba(255,255,255,.35)}
+.b2b-card h2{font-size:clamp(23px,3.2vw,34px);margin-bottom:10px}
+.b2b-card p{color:#6b5327;margin-bottom:24px;font-weight:600;max-width:460px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;min-height:50px;border-radius:999px;text-decoration:none;font-weight:800;font-size:15.5px;transition:all .18s ease;cursor:pointer}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#111;transform:translateY(-2px)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.b2b-contact{background:#fff;border-radius:22px;padding:28px;position:relative}
+.b2b-contact a{display:block;text-decoration:none;font-weight:800;font-size:clamp(17px,2vw,21px);margin-bottom:10px}
+.b2b-contact a:hover{color:var(--teal)}
+.b2b-contact small{color:var(--muted);font-size:12.5px;line-height:1.55;display:block;margin-top:10px}
+@media(max-width:840px){.b2b-card{grid-template-columns:1fr}}
+
+footer{padding:30px 0 96px;color:var(--muted);font-size:13.5px}
+.f{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+
+.vsw{position:fixed;right:16px;bottom:16px;z-index:99;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;display:flex;gap:8px;align-items:center;font-size:13px;box-shadow:0 8px 26px rgba(38,49,45,.16)}
+.vsw b{color:var(--muted);font-weight:700}
+.vsw a{text-decoration:none;font-weight:800;color:var(--ink-2);padding:4px 8px;border-radius:999px}
+.vsw a.on{background:var(--sun);color:var(--ink)}
+.vsw a:hover:not(.on){background:var(--sun-soft)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <img src="../assets/logo-wordmark.png" alt="MATRЁSHKA">
+    <ul>
+      <li><a href="#shelf">Полка</a></li>
+      <li><a href="#why">Почему мы</a></li>
+      <li><a href="#about">Завод</a></li>
+      <li><a href="#buy">Где купить</a></li>
+      <li><a class="cta" href="#b2b">Оптом</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <span class="hand">— как в любимом магазине —</span>
+    <h1>Вся полка MATRЁSHKA — <mark>с завода у Чёрного моря</mark></h1>
+    <p>Выбирайте, как с полки супермаркета: шесть линеек эко-средств без хлора и фосфатов. Производим сами с 2015 года.</p>
+    <div class="trust">
+      <div><b>70+</b>наименований</div>
+      <div><b>2015</b>год основания</div>
+      <div><b>6</b>линеек</div>
+      <div><b>1000 т</b>план — 2026</div>
+    </div>
+  </div>
+</section>
+
+<section class="shelf-zone" id="shelf">
+  <div class="wrap">
+    <div class="shelf">
+      <a class="sku" href="#buy"><span class="badge hit">хит</span><div class="pad p-teal"><img src="../assets/products/laundry.png" alt="Гели для стирки" loading="lazy"></div><h3>Стирка</h3><span>4 вида белья</span></a>
+      <a class="sku" href="#buy"><div class="pad p-lav"><img src="../assets/products/conditioner.png" alt="Кондиционеры" loading="lazy"></div><h3>Кондиционеры</h3><span>4 аромата</span></a>
+      <a class="sku" href="#buy"><span class="badge eco">детям</span><div class="pad p-sky"><img src="../assets/products/dishes.png" alt="Посуда" loading="lazy"></div><h3>Посуда</h3><span>гели и спреи</span></a>
+      <a class="sku" href="#buy"><div class="pad p-rose"><img src="../assets/products/cream-soap.png" alt="Крем-мыло" loading="lazy"></div><h3>Крем-мыло</h3><span>4 вкуса</span></a>
+      <a class="sku" href="#buy"><div class="pad p-coral"><img src="../assets/products/bath.png" alt="Уборка" loading="lazy"></div><h3>Уборка</h3><span>вся квартира</span></a>
+      <a class="sku" href="#buy"><span class="badge">5 л</span><div class="pad p-sun"><img src="../assets/products/floors.png" alt="Полы и техника" loading="lazy"></div><h3>Полы</h3><span>и вода для утюгов</span></a>
+    </div>
+    <div class="shelf-board" aria-hidden="true"></div>
+    <p class="shelf-note">…а ещё канистры 5 л и выгодные наборы — <a href="#buy">смотреть где купить</a></p>
+  </div>
+</section>
+
+<section id="why" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sh"><h2>Почему MATRЁSHKA</h2><span class="hand">четыре причины</span></div>
+    <div class="ben">
+      <div class="bn bn1"><b>Без хлора и фосфатов</b><span>бережные формулы — для кожи, поверхностей и природы</span></div>
+      <div class="bn bn2"><b>Подходит детям</b><span>сертифицировано для детских вещей, посуды и игрушек</span></div>
+      <div class="bn bn3"><b>Концентраты</b><span>меньше расход — больше стирок и уборок с одной бутылки</span></div>
+      <div class="bn bn4"><b>Южные ароматы</b><span>от морской прохлады до грейпфрута — сделано у моря</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="wrap about-g">
+    <div>
+      <div class="sh" style="margin-bottom:18px"><h2>Производим сами</h2></div>
+      <p><b>ООО «КубаньБытХим»</b> — завод полного цикла в Новороссийске: рецептура, варка, розлив, упаковка и склад на собственной площадке на Кутузовской, 117.</p>
+      <p>Рецептуры разрабатываем со своими технологами, второй бренд — <b>Green Panda</b> — для HoReCa. Продукция на полках «Табриса» и федеральных маркетплейсов.</p>
+      <div class="stats-inline">
+        <div><b>2015</b><span>основан</span></div>
+        <div><b>70+</b><span>SKU</span></div>
+        <div><b>1000 т</b><span>план 2026</span></div>
+      </div>
+    </div>
+    <div class="ph-slot">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 15-4.5-4.5L9 18"/></svg>
+      фото производства — скоро
+    </div>
+  </div>
+</section>
+
+<section id="buy">
+  <div class="wrap">
+    <div class="sh"><h2>Где купить</h2><span class="hand">рядом и онлайн</span></div>
+    <div class="buy-g">
+      <a class="buy" href="https://www.wildberries.ru/catalog/0/search.aspx?search=MATRESHKA%20%D0%B1%D1%8B%D1%82%D0%BE%D0%B2%D0%B0%D1%8F%20%D1%85%D0%B8%D0%BC%D0%B8%D1%8F" target="_blank" rel="noopener"><span class="mk mk-wb">W</span><div><b>Wildberries</b><span>полный каталог бренда</span></div><span class="go">→</span></a>
+      <a class="buy" href="https://www.ozon.ru/brand/matreshka-78063485/" target="_blank" rel="noopener"><span class="mk mk-oz">O</span><div><b>Ozon</b><span>официальный бренд-магазин</span></div><span class="go">→</span></a>
+      <div class="buy"><span class="mk mk-mv">М</span><div><b>М.Видео</b><span>бытовая химия для дома и техники</span></div></div>
+      <div class="buy"><span class="mk mk-tb">Т</span><div><b>Табрис</b><span>Краснодар · Новороссийск · Геленджик</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="b2b" class="b2b">
+  <div class="wrap">
+    <div class="b2b-card">
+      <div>
+        <h2>Поставим MATRЁSHKA на вашу полку</h2>
+        <p>Сетям, дистрибьюторам и HoReCa: отгрузка из Новороссийска, гибкие объёмы, готовый контент для полки — рендеры, инфографика, A+ карточки.</p>
+        <a class="btn btn-ink" href="https://greenpanda-eco.ru/matreshka" target="_blank" rel="noopener">Получить оптовый прайс</a>
+      </div>
+      <div class="b2b-contact">
+        <a href="tel:+78617600088">8 (8617) 60-00-88</a>
+        <a href="mailto:info@kubanbithim.ru">info@kubanbithim.ru</a>
+        <small>ООО «КубаньБытХим» · 353917, г. Новороссийск, ул. Кутузовская, 117 · ИНН 2315984520</small>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap f">
+    <span>© ООО «КубаньБытХим» · ТМ MATRЁSHKA</span>
+    <span>Макет 5 — «Полка»</span>
+  </div>
+</footer>
+
+<nav class="vsw" aria-label="Варианты макета"><b>Макет:</b><a href="v1-boutique.html">1</a><a href="v2-noir.html">2</a><a href="v3-editorial.html">3</a><a href="v4-laguna.html">4</a><a class="on" href="v5-polka.html" aria-current="page">5</a><a href="v6-chertezh.html">6</a></nav>
+</body>
+</html>
