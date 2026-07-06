@@ -16,13 +16,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink-900:#2c3a37; --ink-700:#44524e; --muted:#7d8b87;
+  --ink-900:#2c3a37; --ink-700:#44524e; --muted:#66746f;
   --teal-900:#2f8079; --teal-700:#3a9a91; --teal-50:#eaf4f1;
-  --coral:#e8967e; --coral-dark:#d97f65;
-  --paper:#ffffff; --cream:#fbf7f0; --line:#e4eae7;
-  --radius-s:8px; --radius-m:14px; --radius-l:22px;
+  --coral:#e8967e; --coral-dark:#d97f65; --coral-50:#fdeee8;
+  --paper:#ffffff; --cream:#faf6ef; --line:#ece5d8;
+  --r:24px; --r-s:16px;
+  --gap:16px;
   --container:1180px;
-  --shadow:0 8px 30px rgba(44,58,55,.08);
+  --shadow:0 10px 34px rgba(44,58,55,.10);
+  --shadow-s:0 3px 14px rgba(44,58,55,.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -32,21 +34,57 @@ img{max-width:100%;display:block}
 a{color:var(--teal-900)}
 .container{max-width:var(--container);margin:0 auto;padding:0 20px}
 .hand{font-family:"Caveat",cursive;color:var(--teal-900)}
-h1,h2,h3{line-height:1.2;font-weight:800}
-h2{font-size:clamp(26px,4vw,38px);margin-bottom:14px}
-.kicker{font-family:"Caveat",cursive;font-size:26px;color:var(--coral-dark);display:block;margin-bottom:2px}
-.sub{color:var(--ink-700);max-width:640px}
-section{padding:72px 0;scroll-margin-top:70px}
+h1,h2,h3{line-height:1.15;font-weight:800}
+section{padding:34px 0;scroll-margin-top:76px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:14px 0 18px}
+.sec-head h2{font-size:clamp(24px,3.4vw,34px)}
+.sec-head .kicker{font-family:"Caveat",cursive;font-size:25px;color:var(--coral-dark)}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;border:2px solid transparent;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease, background .18s ease;min-height:48px}
 .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
 .btn:focus-visible{outline:3px solid var(--teal-700);outline-offset:2px}
 .btn-primary{background:var(--coral);color:#fff}
 .btn-primary:hover{background:var(--coral-dark)}
 .btn-ghost{background:transparent;color:var(--ink-900);border-color:var(--ink-900)}
-.btn-teal{background:var(--teal-900);color:#fff}
+.btn-light{background:#fff;color:var(--teal-900)}
+
+/* ── Bento core ── */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px;position:relative;overflow:hidden;box-shadow:var(--shadow-s);transition:transform .2s ease, box-shadow .2s ease}
+.tile:hover{transform:translateY(-3px) scale(1.008);box-shadow:var(--shadow)}
+a.tile{display:flex;text-decoration:none;color:inherit;cursor:pointer}
+a.tile:focus-visible{outline:3px solid var(--teal-700);outline-offset:2px}
+.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}
+.r2{grid-row:span 2}
+.tile-teal{background:var(--teal-900);border-color:var(--teal-900);color:#fff}
+.tile-teal .hand{color:#ffd9cb}
+.tile-coral{background:var(--coral);border-color:var(--coral);color:#fff}
+.tile-soft{background:var(--teal-50);border-color:#d9eae5}
+.tile-cream{background:var(--cream)}
+.tile .t-ico{width:34px;height:34px;margin-bottom:12px}
+.tile h3{font-size:18px;margin-bottom:6px}
+.tile p{font-size:15px;color:var(--ink-700)}
+.tile-teal p,.tile-coral p{color:rgba(255,255,255,.88)}
+.tag{display:inline-block;margin-top:12px;font-family:"Caveat",cursive;font-size:20px;color:var(--coral-dark)}
+.tile-teal .tag,.tile-coral .tag{color:#ffe6dc}
+@media (max-width:920px){
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .c3,.c4{grid-column:span 2}
+}
+@media (max-width:560px){
+  .bento{grid-template-columns:1fr}
+  .c2,.c3,.c4{grid-column:span 1}
+  .r2{grid-row:span 1}
+  .tile{padding:22px}
+}
+
+/* reveal */
+.tile{opacity:0;transform:translateY(14px)}
+.tile.in{opacity:1;transform:none;transition:opacity .45s ease, transform .45s ease, box-shadow .2s ease}
+.tile.in:hover{transform:translateY(-3px) scale(1.008)}
+@media (prefers-reduced-motion: reduce){.tile{opacity:1;transform:none}}
 
 /* ── Nav ── */
-header{position:sticky;top:0;z-index:100;background:rgba(251,247,240,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:100;background:rgba(250,246,239,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
 .nav-logo img{height:30px;width:auto}
 .nav-links{display:flex;gap:26px;list-style:none}
@@ -63,110 +101,88 @@ header{position:sticky;top:0;z-index:100;background:rgba(251,247,240,.92);backdr
   .nav-cta{display:none}
 }
 
-/* ── Hero ── */
-.hero{position:relative;padding:90px 0 84px;overflow:hidden;background:var(--paper)}
-.hero::before{content:"";position:absolute;inset:0;background:url("assets/bg-watercolor.webp") center/cover no-repeat;opacity:.5}
-.hero .container{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
-.hero-word{height:54px;width:auto;margin-bottom:26px}
-.hero h1{font-size:clamp(30px,4.6vw,50px);margin-bottom:16px}
-.hero h1 .hand{font-size:1.15em}
-.hero p{font-size:19px;color:var(--ink-700);max-width:520px;margin-bottom:30px}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-.hero-media{position:relative}
-.hero-media video,.hero-media img{width:100%;border-radius:var(--radius-l);box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover}
-.hero-badge{position:absolute;left:-14px;bottom:22px;background:var(--paper);border-radius:var(--radius-m);box-shadow:var(--shadow);padding:12px 18px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
-.hero-badge svg{width:26px;height:26px;flex:none}
-@media (max-width:900px){.hero .container{grid-template-columns:1fr}.hero{padding:56px 0}}
+/* ── Hero bento ── */
+.hero{padding-top:26px}
+.hero-main{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;justify-content:center;padding:40px 38px;background:#fff}
+.hero-main::before{content:"";position:absolute;inset:0;background:url("assets/bg-watercolor.webp") center/cover no-repeat;opacity:.32;pointer-events:none}
+.hero-main>*{position:relative}
+.hero-main h1{font-size:clamp(30px,4.4vw,48px);margin:18px 0 14px}
+.hero-main h1 .hand{font-size:1.12em}
+.hero-main p{font-size:18px;color:var(--ink-700);max-width:460px;margin-bottom:26px}
+.hero-word{height:44px;width:auto}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-video{grid-column:span 2;grid-row:span 2;padding:0;min-height:320px}
+.hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-badge{position:absolute;left:16px;bottom:16px;background:rgba(255,255,255,.95);border-radius:var(--r-s);box-shadow:var(--shadow-s);padding:11px 16px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px}
+.hero-badge svg{width:24px;height:24px;flex:none}
+.stat{display:flex;flex-direction:column;justify-content:center;text-align:center;gap:2px;min-height:128px}
+.stat b{font-size:clamp(28px,3.6vw,40px);font-weight:800;line-height:1.05}
+.stat span{font-size:14px;color:var(--muted)}
+.tile-teal.stat span,.tile-coral.stat span{color:rgba(255,255,255,.85)}
+.stat .hand{font-size:19px}
+@media (max-width:920px){.hero-main{grid-row:span 1;padding:30px 26px}.hero-video{grid-row:span 1;min-height:260px}}
 
-/* ── Stats ── */
-.stats{background:var(--teal-900);color:#fff;padding:44px 0}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;text-align:center}
-.stat b{display:block;font-size:clamp(30px,4vw,44px);font-weight:800;line-height:1.1}
-.stat span{font-size:15px;opacity:.85}
-.stat .hand{color:#ffd9cb;font-size:22px;display:block}
-@media (max-width:760px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
-
-/* ── About / factory ── */
-.about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
-.about ul{list-style:none;margin-top:20px;display:grid;gap:14px}
-.about li{display:flex;gap:12px;align-items:flex-start;color:var(--ink-700)}
-.about li svg{width:22px;height:22px;flex:none;margin-top:3px}
-.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.photo-slot{border-radius:var(--radius-m);background:var(--teal-50);border:1.5px dashed var(--teal-700);aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--teal-900);font-weight:600;font-size:14px;text-align:center;padding:12px}
+/* ── About ── */
+.about-text{display:flex;flex-direction:column;justify-content:center}
+.about-text ul{list-style:none;margin-top:18px;display:grid;gap:13px}
+.about-text li{display:flex;gap:12px;align-items:flex-start;color:var(--ink-700);font-size:15.5px}
+.about-text li svg{width:22px;height:22px;flex:none;margin-top:3px}
+.photo-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--teal-900);font-weight:600;font-size:14px;text-align:center;border-style:dashed;border-width:1.5px;border-color:var(--teal-700);background:var(--teal-50);min-height:150px}
 .photo-slot svg{width:30px;height:30px;opacity:.7}
-.photo-slot.wide{grid-column:1/-1;aspect-ratio:21/9}
-@media (max-width:900px){.about-grid{grid-template-columns:1fr}}
+.map-tile{display:flex;flex-direction:column;justify-content:flex-end;min-height:150px;background:linear-gradient(160deg,#eaf4f1 0%,#d3e9e4 100%)}
+.map-tile .wave{position:absolute;inset:auto 0 0 0;height:56px;opacity:.5}
+.map-tile b{font-size:16px}
+.map-tile span{font-size:13.5px;color:var(--ink-700)}
 
-/* ── Achievements ── */
-.ach{background:var(--paper)}
-.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
-.ach-card{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius-m);padding:26px 24px;transition:transform .18s ease, box-shadow .18s ease}
-.ach-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.ach-card svg{width:34px;height:34px;margin-bottom:14px}
-.ach-card h3{font-size:18px;margin-bottom:8px}
-.ach-card p{font-size:15px;color:var(--ink-700)}
-.ach-card .tag{display:inline-block;margin-top:12px;font-family:"Caveat",cursive;font-size:20px;color:var(--coral-dark)}
-@media (max-width:900px){.ach-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:600px){.ach-grid{grid-template-columns:1fr}}
-
-/* ── Principles ── */
-.princ-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
-.princ{background:var(--paper);border-radius:var(--radius-m);padding:22px;display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line)}
-.princ svg{width:30px;height:30px;flex:none}
-.princ b{display:block;margin-bottom:4px;font-size:16px}
-.princ span{font-size:14.5px;color:var(--ink-700)}
-@media (max-width:900px){.princ-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:600px){.princ-grid{grid-template-columns:1fr}}
+/* ── Achievements big tile ── */
+.ach-big{display:flex;flex-direction:column;justify-content:space-between;gap:18px;background:var(--teal-900);border-color:var(--teal-900);color:#fff}
+.ach-big .num{font-size:clamp(52px,7vw,84px);font-weight:800;line-height:1;letter-spacing:-.02em}
+.ach-big p{color:rgba(255,255,255,.88)}
+.mp-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mark{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;color:#fff;flex:none}
+.mark-wb{background:#a73afd}.mark-oz{background:#005bff}.mark-mv{background:#e30613}.mark-tb{background:var(--teal-900)}
 
 /* ── Catalog ── */
-.cat{background:var(--paper)}
-.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
-.cat-card{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden;text-decoration:none;color:var(--ink-900);transition:transform .18s ease, box-shadow .18s ease;display:block}
-.cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.cat-card .ph{background:linear-gradient(180deg,var(--teal-50),#fff);display:flex;align-items:center;justify-content:center;padding:18px;height:210px}
-.cat-card img{max-height:100%;width:auto;object-fit:contain}
-.cat-card .cb{padding:16px 18px 20px}
-.cat-card h3{font-size:17px;margin-bottom:4px}
-.cat-card span{font-size:14px;color:var(--muted)}
-@media (max-width:900px){.cat-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:560px){.cat-grid{grid-template-columns:1fr}}
-
-/* ── Where to buy ── */
-.buy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px}
-.buy{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-m);padding:26px 22px;text-align:center;text-decoration:none;color:var(--ink-900);transition:transform .18s ease, box-shadow .18s ease;display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;min-height:150px}
-a.buy:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.buy b{font-size:19px}
-.buy span{font-size:14px;color:var(--muted)}
-.buy .mark{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff}
-.mark-wb{background:#a73afd}.mark-oz{background:#005bff}.mark-mv{background:#e30613}.mark-tb{background:var(--teal-900)}
-@media (max-width:900px){.buy-grid{grid-template-columns:1fr 1fr}}
+.cat-tile{padding:0;display:flex;flex-direction:column}
+.cat-tile .ph{background:linear-gradient(180deg,var(--teal-50),#fff);display:flex;align-items:center;justify-content:center;padding:18px;flex:1;min-height:150px}
+.cat-tile img{max-height:150px;width:auto;object-fit:contain}
+.cat-tile.big .ph{min-height:280px}
+.cat-tile.big img{max-height:300px}
+.cat-tile .cb{padding:16px 20px 20px}
+.cat-tile h3{font-size:17px;margin-bottom:3px}
+.cat-tile span{font-size:14px;color:var(--muted)}
+.cat-cta{display:flex;flex-direction:column;justify-content:center;gap:10px}
+.cat-cta .hand{font-size:24px}
+.cat-cta h3{font-size:22px}
 
 /* ── Certificates ── */
-.cert{background:var(--paper)}
-.cert-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
-.cert-slot{border:1.5px dashed var(--line);border-radius:var(--radius-m);aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-size:14px;font-weight:600;text-align:center;padding:14px;background:var(--cream)}
+.cert-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-size:14px;font-weight:600;text-align:center;border-style:dashed;min-height:170px;background:var(--paper)}
 .cert-slot svg{width:30px;height:30px;opacity:.6}
-.cert-slot img{max-height:56px;width:auto;opacity:.9}
-@media (max-width:760px){.cert-row{grid-template-columns:1fr 1fr}}
+.cert-slot img{max-height:52px;width:auto;opacity:.9}
+
+/* ── Buy tiles ── */
+.buy{align-items:center;justify-content:center;text-align:center;display:flex;flex-direction:column;gap:8px;min-height:158px}
+.buy b{font-size:19px}
+.buy span{font-size:13.5px;color:var(--muted)}
+.buy .mark{width:46px;height:46px;border-radius:13px;font-size:20px}
 
 /* ── B2B ── */
-.b2b{background:var(--teal-900);color:#fff}
-.b2b .kicker{color:#ffd9cb}
-.b2b-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
-.b2b ul{list-style:none;margin:22px 0 30px;display:grid;gap:12px}
-.b2b li{display:flex;gap:12px;align-items:flex-start;font-size:16.5px}
-.b2b li svg{width:22px;height:22px;flex:none;margin-top:3px}
-.b2b-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius-l);padding:32px}
-.b2b-card h3{font-size:20px;margin-bottom:18px}
-.b2b-card a{color:#fff;font-weight:700;text-decoration:none;font-size:19px}
-.b2b-card a:hover{text-decoration:underline}
-.b2b-card .row{display:flex;gap:12px;align-items:center;margin-bottom:14px}
-.b2b-card .row svg{width:22px;height:22px;flex:none;opacity:.85}
-.b2b-card small{opacity:.75;font-size:13.5px;display:block;margin-top:16px;line-height:1.5}
-@media (max-width:900px){.b2b-grid{grid-template-columns:1fr}}
+.b2b-main{background:var(--teal-900);border-color:var(--teal-900);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:36px}
+.b2b-main h2{font-size:clamp(24px,3.2vw,32px);margin-bottom:6px}
+.b2b-main .kicker{font-family:"Caveat",cursive;font-size:24px;color:#ffd9cb}
+.b2b-main ul{list-style:none;margin:18px 0 26px;display:grid;gap:11px}
+.b2b-main li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:rgba(255,255,255,.92)}
+.b2b-main li svg{width:21px;height:21px;flex:none;margin-top:3px}
+.b2b-card{display:flex;flex-direction:column;justify-content:center;gap:4px}
+.b2b-card h3{font-size:19px;margin-bottom:12px}
+.b2b-card .row{display:flex;gap:11px;align-items:center;margin-bottom:12px}
+.b2b-card .row svg{width:21px;height:21px;flex:none;opacity:.75}
+.b2b-card a{color:var(--ink-900);font-weight:700;text-decoration:none;font-size:17px}
+.b2b-card a:hover{color:var(--teal-900)}
+.b2b-card small{color:var(--muted);font-size:13px;line-height:1.5;margin-top:10px}
 
 /* ── Footer ── */
-footer{padding:44px 0 60px;color:var(--muted);font-size:14px}
+footer{padding:34px 0 56px;color:var(--muted);font-size:14px}
 .f-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
 footer b{color:var(--ink-700)}
 footer a{color:var(--ink-700)}
@@ -181,7 +197,6 @@ footer a{color:var(--ink-700)}
       <ul class="nav-links" id="navLinks">
         <li><a href="#about">О заводе</a></li>
         <li><a href="#achievements">Достижения</a></li>
-        <li><a href="#principles">Принципы</a></li>
         <li><a href="#catalog">Продукция</a></li>
         <li><a href="#buy">Где купить</a></li>
         <li><a href="#b2b">Сотрудничество</a></li>
@@ -196,111 +211,104 @@ footer a{color:var(--ink-700)}
 
 <main id="top">
 
-<!-- HERO -->
-<section class="hero">
-  <div class="container">
-    <div>
-      <img class="hero-word" src="assets/logo-wordmark.png" alt="MATRЁSHKA">
-      <h1>Завод эко-бытовой химии <span class="hand">на юге, у Чёрного моря</span></h1>
-      <p>Уже 10 лет варим безопасные средства для дома на собственном производстве в Новороссийске — от гелей для стирки до средств для посуды. Без хлора и фосфатов, с заботой о семье и природе.</p>
+<!-- HERO BENTO -->
+<section class="hero" aria-label="Завод MATRЁSHKA">
+  <div class="container bento">
+    <div class="tile hero-main">
+      <img class="hero-word" src="assets/logo-wordmark.png" alt="MATRЁSHKA" width="220" height="44">
+      <h1>Завод эко-бытовой химии <span class="hand">у Чёрного моря</span></h1>
+      <p>Уже 10 лет варим безопасные средства для дома на собственном производстве в Новороссийске. Без хлора и фосфатов — с заботой о семье и природе.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#buy">Где купить</a>
         <a class="btn btn-ghost" href="#b2b">Стать партнёром</a>
       </div>
     </div>
-    <div class="hero-media">
+    <div class="tile hero-video">
       <video src="assets/hero-video.mp4" autoplay muted loop playsinline aria-label="Продукция MATRЁSHKA"></video>
       <div class="hero-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4.97-2.28 8-6.03 8-11V5l-8-3-8 3v6c0 4.97 3.03 8.72 8 11z"/><path d="m9 12 2 2 4-4"/></svg>
         Собственное производство
       </div>
     </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="stats" aria-label="Завод в цифрах">
-  <div class="container stats-grid">
-    <div class="stat"><b>2015</b><span>год основания завода</span></div>
-    <div class="stat"><b>10 лет</b><span>на рынке бытовой химии</span></div>
-    <div class="stat"><b>70+</b><span>наименований продукции</span></div>
-    <div class="stat"><b>1000 т</b><span class="hand">план производства — 2026</span><span>продукции в год</span></div>
+    <div class="tile stat"><b>2015</b><span>год основания завода</span></div>
+    <div class="tile stat tile-teal"><b>10 лет</b><span>на рынке бытовой химии</span></div>
+    <div class="tile stat"><b>70+</b><span>наименований продукции</span></div>
+    <div class="tile stat tile-coral"><b>1000 т</b><span class="hand">план — 2026</span><span>продукции в год</span></div>
   </div>
 </section>
 
 <!-- ABOUT -->
-<section id="about" class="about">
-  <div class="container about-grid">
-    <div>
-      <span class="kicker">о заводе</span>
-      <h2>Производим сами — от рецептуры до полки</h2>
-      <p class="sub">ООО «КубаньБытХим» — производитель бытовой химии полного цикла из Новороссийска. Всю продукцию торговой марки MATRЁSHKA мы разрабатываем и выпускаем на собственной площадке на улице Кутузовской, 117.</p>
-      <ul>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6m-3 0v6m-7 4 7-4 7 4M4 21h16M6 21V11m12 10V11"/></svg><span><b>Собственный цех и склад</b> — контролируем каждый этап: сырьё, варку, розлив, упаковку и отгрузку.</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6.5L5 17a3 3 0 0 0 2.7 4.3h8.6A3 3 0 0 0 19 17l-5-8.5V2M8 2h8"/></svg><span><b>Свои технологи</b> — рецептуры разрабатываем вместе с ведущими российскими производителями ароматических композиций.</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7 12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4m0 0 8-4m-8 4v10"/></svg><span><b>Два бренда</b> — MATRЁSHKA для дома и Green Panda для профессиональной сферы HoReCa.</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span><b>Короткое плечо поставки</b> — из Новороссийска удобно отгружать по югу России, в Крым и по всей стране.</span></li>
-      </ul>
-    </div>
-    <div class="photo-grid">
-      <div class="photo-slot wide">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 15-4.5-4.5L9 18"/></svg>
-        Фото производственной линии<br>— скоро здесь
+<section id="about">
+  <div class="container">
+    <div class="sec-head"><span class="kicker">о заводе</span><h2>Производим сами — от рецептуры до полки</h2></div>
+    <div class="bento">
+      <div class="tile c2 r2 about-text">
+        <p style="color:var(--ink-700)">ООО «КубаньБытХим» — производитель бытовой химии полного цикла из Новороссийска. Всю продукцию торговой марки MATRЁSHKA мы разрабатываем и выпускаем на собственной площадке на улице Кутузовской, 117.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6m-3 0v6m-7 4 7-4 7 4M4 21h16M6 21V11m12 10V11"/></svg><span><b>Собственный цех и склад</b> — контролируем каждый этап: сырьё, варку, розлив, упаковку и отгрузку.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6.5L5 17a3 3 0 0 0 2.7 4.3h8.6A3 3 0 0 0 19 17l-5-8.5V2M8 2h8"/></svg><span><b>Свои технологи</b> — рецептуры разрабатываем вместе с ведущими российскими производителями ароматических композиций.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7 12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4m0 0 8-4m-8 4v10"/></svg><span><b>Два бренда</b> — MATRЁSHKA для дома и Green Panda для профессиональной сферы HoReCa.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span><b>Короткое плечо поставки</b> — из Новороссийска удобно отгружать по югу России, в Крым и по всей стране.</span></li>
+        </ul>
       </div>
-      <div class="photo-slot">
+      <div class="tile c2 photo-slot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 15-4.5-4.5L9 18"/></svg>
+        Фото производственной линии — скоро здесь
+      </div>
+      <div class="tile photo-slot">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 15-4.5-4.5L9 18"/></svg>
         Цех розлива
       </div>
-      <div class="photo-slot">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 15-4.5-4.5L9 18"/></svg>
-        Команда завода
+      <div class="tile map-tile">
+        <svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 Q50 10 100 30 T200 30 T300 30 T400 30 V60 H0 Z" fill="#2f8079"/></svg>
+        <b>Новороссийск</b>
+        <span>ул. Кутузовская, 117 — цех, склад, отгрузка</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ACHIEVEMENTS -->
-<section id="achievements" class="ach">
+<section id="achievements">
   <div class="container">
-    <span class="kicker">чем гордимся</span>
-    <h2>Достижения завода</h2>
-    <p class="sub">За десять лет мы выросли из локального производителя в бренд, который знают на полках супермаркетов и федеральных маркетплейсов.</p>
-    <div class="ach-grid">
-      <div class="ach-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M9 13h.01M15 9h.01M15 13h.01M10 21v-4h4v4"/></svg>
-        <h3>Собственный завод с 2015 года</h3>
-        <p>Начали с небольшого цеха в Новороссийске — сегодня выпускаем более 70 наименований и планируем выйти на 1000 тонн продукции в год.</p>
-        <span class="tag">своя площадка</span>
+    <div class="sec-head"><span class="kicker">чем гордимся</span><h2>Достижения завода</h2></div>
+    <div class="bento">
+      <div class="tile c2 r2 ach-big">
+        <div>
+          <span class="num">70+</span>
+          <h3 style="font-size:22px;margin-top:10px">Собственный завод с 2015 года</h3>
+          <p style="margin-top:8px">Начали с небольшого цеха в Новороссийске — сегодня выпускаем более 70 наименований и планируем выйти на 1000 тонн продукции в год.</p>
+        </div>
+        <span class="tag">своя площадка, свои рецептуры</span>
       </div>
-      <div class="ach-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+      <div class="tile">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
         <h3>Полки сети «Табрис»</h3>
-        <p>Продукция MATRЁSHKA представлена в супермаркетах «Табрис» — Краснодар, Новороссийск, Геленджик.</p>
-        <span class="tag">розничные сети</span>
+        <p>MATRЁSHKA в супермаркетах «Табрис»: Краснодар, Новороссийск, Геленджик.</p>
       </div>
-      <div class="ach-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <div class="tile">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         <h3>Федеральные маркетплейсы</h3>
-        <p>Полный каталог бренда — на Wildberries, Ozon и в М.Видео: заказ с доставкой в любую точку России.</p>
-        <span class="tag">вся Россия</span>
+        <p>Полный каталог — на Wildberries, Ozon и в М.Видео с доставкой по всей России.</p>
+        <div class="mp-row"><span class="mark mark-wb">W</span><span class="mark mark-oz">O</span><span class="mark mark-mv">М</span></div>
       </div>
-      <div class="ach-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8m-4-4v4m-6-9a6 6 0 0 0 12 0V3H6v9z"/><path d="M18 5h3v2a3 3 0 0 1-3 3M6 5H3v2a3 3 0 0 0 3 3"/></svg>
+      <div class="tile">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8m-4-4v4m-6-9a6 6 0 0 0 12 0V3H6v9z"/><path d="M18 5h3v2a3 3 0 0 1-3 3M6 5H3v2a3 3 0 0 0 3 3"/></svg>
         <h3>Выставка CHEMICOS</h3>
-        <p>Громко заявили о себе на международной выставке бытовой химии и косметики CHEMICOS в «Крокус Экспо».</p>
+        <p>Заявили о себе на международной выставке бытовой химии и косметики в «Крокус Экспо».</p>
         <span class="tag">Москва</span>
       </div>
-      <div class="ach-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18v2a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8v-2zM7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div class="tile">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18v2a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8v-2zM7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>RestoHotelMarket</h3>
-        <p>Участник 8-й международной выставки комплексного оснащения HoReCa — представили профессиональную линейку Green Panda.</p>
+        <p>Представили профессиональную линейку Green Panda на 8-й выставке оснащения HoReCa.</p>
         <span class="tag">HoReCa</span>
       </div>
-      <div class="ach-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#e8967e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4.97-2.28 8-6.03 8-11V5l-8-3-8 3v6c0 4.97 3.03 8.72 8 11z"/><path d="m9 12 2 2 4-4"/></svg>
+      <div class="tile c2 tile-coral">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4.97-2.28 8-6.03 8-11V5l-8-3-8 3v6c0 4.97 3.03 8.72 8 11z"/><path d="m9 12 2 2 4-4"/></svg>
         <h3>Безопасно для детей</h3>
-        <p>Средства сертифицированы и подходят для стирки детских вещей и мытья детской посуды и игрушек.</p>
-        <span class="tag">гипоаллергенно</span>
+        <p>Средства сертифицированы и подходят для стирки детских вещей, мытья детской посуды и игрушек.</p>
+        <span class="tag">гипоаллергенно, сертифицировано</span>
       </div>
     </div>
   </div>
@@ -309,50 +317,84 @@ footer a{color:var(--ink-700)}
 <!-- PRINCIPLES -->
 <section id="principles">
   <div class="container">
-    <span class="kicker">наши принципы</span>
-    <h2>Эко — не приставка, а рецептура</h2>
-    <div class="princ-grid">
-      <div class="princ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-        <div><b>Без хлора и фосфатов</b><span>Активные компоненты без агрессивной химии — бережно к коже и поверхностям.</span></div>
+    <div class="sec-head"><span class="kicker">наши принципы</span><h2>Эко — не приставка, а рецептура</h2></div>
+    <div class="bento">
+      <div class="tile">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+        <h3>Без хлора и фосфатов</h3><p>Активные компоненты без агрессивной химии — бережно к коже и поверхностям.</p>
       </div>
-      <div class="princ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3M8.293 13.596 7.196 9.5 3.1 10.598M9.344 5.811 11.464 2.5a1.785 1.785 0 0 1 3.057.034L15.75 4.5"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>
-        <div><b>Биоразлагаемые формулы</b><span>Составы на основе растительных компонентов, безопасные для септиков и природы.</span></div>
+      <div class="tile">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3M8.293 13.596 7.196 9.5 3.1 10.598M9.344 5.811 11.464 2.5a1.785 1.785 0 0 1 3.057.034L15.75 4.5"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>
+        <h3>Биоразлагаемые формулы</h3><p>Составы на растительной основе — безопасно для септиков и природы.</p>
       </div>
-      <div class="princ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><circle cx="12" cy="12" r="9"/></svg>
-        <div><b>Подходит детям</b><span>Линейки для детского белья и посуды — гипоаллергенно, сертифицировано.</span></div>
+      <div class="tile">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><circle cx="12" cy="12" r="9"/></svg>
+        <h3>Подходит детям</h3><p>Линейки для детского белья и посуды — гипоаллергенно, сертифицировано.</p>
       </div>
-      <div class="princ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5.63 5.63 12 12l6.37-6.37M5.63 18.37 12 12l6.37 6.37"/><circle cx="12" cy="12" r="9"/></svg>
-        <div><b>Процент — на переработку</b><span>Часть прибыли с каждой бутылочки направляем на переработку упаковки.</span></div>
+      <div class="tile tile-soft">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5.63 5.63 12 12l6.37-6.37M5.63 18.37 12 12l6.37 6.37"/><circle cx="12" cy="12" r="9"/></svg>
+        <h3>Процент — на переработку</h3><p>Часть прибыли с каждой бутылочки направляем на переработку упаковки.</p>
       </div>
-      <div class="princ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M2 12c0 5 2 8 5 8s5-3 5-8-2-8-5-8-5 3-5 8zm10 0c0 5 2 8 5 8s5-3 5-8-2-8-5-8-5 3-5 8z" transform="scale(.8) translate(3 3)"/></svg>
-        <div><b>Концентраты</b><span>Экономичный расход: меньше пластика, меньше перевозок, больше стирок и уборок.</span></div>
+      <div class="tile tile-soft">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31A6 6 0 1 0 14 9.3V2"/><path d="M8.5 2h7"/></svg>
+        <h3>Концентраты</h3><p>Экономичный расход: меньше пластика и перевозок, больше стирок и уборок.</p>
       </div>
-      <div class="princ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-        <div><b>Сделано у моря</b><span>Производим на юге России — и ароматы у нас тоже южные: от морской прохлады до грейпфрута.</span></div>
+      <div class="tile tile-soft">
+        <svg class="t-ico" viewBox="0 0 24 24" fill="none" stroke="#2f8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <h3>Сделано у моря</h3><p>Производим на юге России — и ароматы южные: от морской прохлады до грейпфрута.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CATALOG -->
-<section id="catalog" class="cat">
+<section id="catalog">
   <div class="container">
-    <span class="kicker">продукция</span>
-    <h2>Всё для чистого дома — шесть линеек</h2>
-    <p class="sub">Более 70 наименований: от флаконов на каждый день до канистр 5 литров и выгодных наборов.</p>
-    <div class="cat-grid">
-      <a class="cat-card" href="#buy"><div class="ph"><img src="assets/products/laundry.png" alt="Гели для стирки MATRЁSHKA" loading="lazy"></div><div class="cb"><h3>Стирка</h3><span>гели для белого, чёрного, цветного и детского белья</span></div></a>
-      <a class="cat-card" href="#buy"><div class="ph"><img src="assets/products/conditioner.png" alt="Кондиционеры для белья MATRЁSHKA" loading="lazy"></div><div class="cb"><h3>Кондиционеры</h3><span>лаванда и роза, морозный день, хлопок, южная ночь</span></div></a>
-      <a class="cat-card" href="#buy"><div class="ph"><img src="assets/products/dishes.png" alt="Средства для посуды MATRЁSHKA" loading="lazy"></div><div class="cb"><h3>Посуда</h3><span>гели и спреи — подходят для детской посуды и игрушек</span></div></a>
-      <a class="cat-card" href="#buy"><div class="ph"><img src="assets/products/cream-soap.png" alt="Крем-мыло MATRЁSHKA" loading="lazy"></div><div class="cb"><h3>Мыло</h3><span>жидкое крем-мыло: виноград, вишня, клубника, кокос</span></div></a>
-      <a class="cat-card" href="#buy"><div class="ph"><img src="assets/products/bath.png" alt="Средства для ванной и кухни MATRЁSHKA" loading="lazy"></div><div class="cb"><h3>Уборка</h3><span>антижир, кухня-эко, ванна и душ, туалет, универсальные</span></div></a>
-      <a class="cat-card" href="#buy"><div class="ph"><img src="assets/products/floors.png" alt="Средства для мытья полов MATRЁSHKA" loading="lazy"></div><div class="cb"><h3>Полы и техника</h3><span>средства для полов, вода для утюгов и парогенераторов</span></div></a>
+    <div class="sec-head"><span class="kicker">продукция</span><h2>Всё для чистого дома — шесть линеек</h2></div>
+    <div class="bento">
+      <a class="tile c2 r2 cat-tile big" href="#buy">
+        <div style="display:flex;flex-direction:column;width:100%">
+          <div class="ph"><img src="assets/products/laundry.png" alt="Гели для стирки MATRЁSHKA" loading="lazy"></div>
+          <div class="cb"><h3>Стирка</h3><span>гели для белого, чёрного, цветного и детского белья</span></div>
+        </div>
+      </a>
+      <a class="tile cat-tile" href="#buy">
+        <div style="display:flex;flex-direction:column;width:100%">
+          <div class="ph"><img src="assets/products/conditioner.png" alt="Кондиционеры для белья MATRЁSHKA" loading="lazy"></div>
+          <div class="cb"><h3>Кондиционеры</h3><span>лаванда и роза, морозный день, хлопок</span></div>
+        </div>
+      </a>
+      <a class="tile cat-tile" href="#buy">
+        <div style="display:flex;flex-direction:column;width:100%">
+          <div class="ph"><img src="assets/products/dishes.png" alt="Средства для посуды MATRЁSHKA" loading="lazy"></div>
+          <div class="cb"><h3>Посуда</h3><span>подходят для детской посуды и игрушек</span></div>
+        </div>
+      </a>
+      <a class="tile cat-tile" href="#buy">
+        <div style="display:flex;flex-direction:column;width:100%">
+          <div class="ph"><img src="assets/products/cream-soap.png" alt="Крем-мыло MATRЁSHKA" loading="lazy"></div>
+          <div class="cb"><h3>Мыло</h3><span>виноград, вишня, клубника, кокос</span></div>
+        </div>
+      </a>
+      <a class="tile cat-tile" href="#buy">
+        <div style="display:flex;flex-direction:column;width:100%">
+          <div class="ph"><img src="assets/products/bath.png" alt="Средства для ванной и кухни MATRЁSHKA" loading="lazy"></div>
+          <div class="cb"><h3>Уборка</h3><span>антижир, кухня-эко, ванна и душ, туалет</span></div>
+        </div>
+      </a>
+      <a class="tile cat-tile" href="#buy">
+        <div style="display:flex;flex-direction:column;width:100%">
+          <div class="ph"><img src="assets/products/floors.png" alt="Средства для мытья полов MATRЁSHKA" loading="lazy"></div>
+          <div class="cb"><h3>Полы и техника</h3><span>полы, вода для утюгов и парогенераторов</span></div>
+        </div>
+      </a>
+      <a class="tile c2 tile-teal cat-cta" href="#buy">
+        <span class="hand">больше 70 наименований</span>
+        <h3>Флаконы на каждый день, канистры 5 л и выгодные наборы</h3>
+        <span style="font-weight:700;display:inline-flex;align-items:center;gap:8px">Смотреть, где купить
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </span>
+      </a>
     </div>
   </div>
 </section>
@@ -360,19 +402,18 @@ footer a{color:var(--ink-700)}
 <!-- BUY -->
 <section id="buy">
   <div class="container">
-    <span class="kicker">где купить</span>
-    <h2>На полке рядом с домом и онлайн</h2>
-    <div class="buy-grid">
-      <a class="buy" href="https://www.wildberries.ru/catalog/0/search.aspx?search=MATRESHKA%20%D0%B1%D1%8B%D1%82%D0%BE%D0%B2%D0%B0%D1%8F%20%D1%85%D0%B8%D0%BC%D0%B8%D1%8F" target="_blank" rel="noopener">
+    <div class="sec-head"><span class="kicker">где купить</span><h2>На полке рядом с домом и онлайн</h2></div>
+    <div class="bento">
+      <a class="tile buy" href="https://www.wildberries.ru/catalog/0/search.aspx?search=MATRESHKA%20%D0%B1%D1%8B%D1%82%D0%BE%D0%B2%D0%B0%D1%8F%20%D1%85%D0%B8%D0%BC%D0%B8%D1%8F" target="_blank" rel="noopener">
         <span class="mark mark-wb">W</span><b>Wildberries</b><span>полный каталог бренда</span>
       </a>
-      <a class="buy" href="https://www.ozon.ru/brand/matreshka-78063485/" target="_blank" rel="noopener">
+      <a class="tile buy" href="https://www.ozon.ru/brand/matreshka-78063485/" target="_blank" rel="noopener">
         <span class="mark mark-oz">O</span><b>Ozon</b><span>официальный бренд-магазин</span>
       </a>
-      <div class="buy">
+      <div class="tile buy">
         <span class="mark mark-mv">М</span><b>М.Видео</b><span>бытовая химия для дома и техники</span>
       </div>
-      <div class="buy">
+      <div class="tile buy">
         <span class="mark mark-tb">Т</span><b>Табрис</b><span>Краснодар · Новороссийск · Геленджик</span>
       </div>
     </div>
@@ -380,40 +421,40 @@ footer a{color:var(--ink-700)}
 </section>
 
 <!-- CERTIFICATES -->
-<section class="cert" id="certificates">
+<section id="certificates">
   <div class="container">
-    <span class="kicker">качество</span>
-    <h2>Сертификаты и декларации</h2>
-    <p class="sub">Продукция декларирована по требованиям ЕАЭС. Сканы документов появятся здесь — по запросу вышлем полный пакет для сетей и дистрибьюторов.</p>
-    <div class="cert-row">
-      <div class="cert-slot"><img src="assets/logo-eac.png" alt="Знак EAC — Евразийское соответствие">Декларации ЕАЭС</div>
-      <div class="cert-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6M9 15h6M9 11h2"/></svg>Скан декларации —<br>скоро</div>
-      <div class="cert-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6M9 15h6M9 11h2"/></svg>Скан сертификата —<br>скоро</div>
-      <div class="cert-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg>Награды выставок —<br>скоро</div>
+    <div class="sec-head"><span class="kicker">качество</span><h2>Сертификаты и декларации</h2></div>
+    <div class="bento">
+      <div class="tile cert-slot" style="border-style:solid"><img src="assets/logo-eac.png" alt="Знак EAC — Евразийское соответствие">Декларации ЕАЭС</div>
+      <div class="tile cert-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6M9 15h6M9 11h2"/></svg>Скан декларации — скоро</div>
+      <div class="tile cert-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6M9 15h6M9 11h2"/></svg>Скан сертификата — скоро</div>
+      <div class="tile cert-slot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg>Награды выставок — скоро</div>
     </div>
   </div>
 </section>
 
 <!-- B2B -->
-<section id="b2b" class="b2b">
-  <div class="container b2b-grid">
-    <div>
-      <span class="kicker">сотрудничество</span>
-      <h2>Сетям, дистрибьюторам и HoReCa</h2>
-      <ul>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Отгрузка с собственного склада в Новороссийске — строго по согласованному графику</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Гибкие объёмы и короткий срок производства под заказ</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Готовый контент для полки и онлайн-каталогов: рендеры, инфографика, A+ карточки</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Профессиональная линейка Green Panda для отелей и ресторанов</li>
-      </ul>
-      <a class="btn btn-primary" href="https://greenpanda-eco.ru/matreshka" target="_blank" rel="noopener">Получить оптовый прайс</a>
-    </div>
-    <div class="b2b-card">
-      <h3>Отдел продаж</h3>
-      <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+78617600088">8 (8617) 60-00-88</a></div>
-      <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+78617719555">8 (8617) 71-95-55</a></div>
-      <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><a href="mailto:info@kubanbithim.ru">info@kubanbithim.ru</a></div>
-      <small>ООО «КубаньБытХим» · 353917, Краснодарский край, г. Новороссийск, ул. Кутузовская, 117</small>
+<section id="b2b">
+  <div class="container">
+    <div class="bento">
+      <div class="tile c2 r2 b2b-main">
+        <span class="kicker">сотрудничество</span>
+        <h2>Сетям, дистрибьюторам и HoReCa</h2>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Отгрузка со склада в Новороссийске — строго по согласованному графику</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Гибкие объёмы и короткий срок производства под заказ</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Готовый контент для полки и онлайн-каталогов: рендеры, инфографика, A+ карточки</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#ffd9cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Профессиональная линейка Green Panda для отелей и ресторанов</li>
+        </ul>
+        <div><a class="btn btn-light" href="https://greenpanda-eco.ru/matreshka" target="_blank" rel="noopener">Получить оптовый прайс</a></div>
+      </div>
+      <div class="tile c2 r2 b2b-card">
+        <h3>Отдел продаж</h3>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+78617600088">8 (8617) 60-00-88</a></div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:+78617719555">8 (8617) 71-95-55</a></div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><a href="mailto:info@kubanbithim.ru">info@kubanbithim.ru</a></div>
+        <small>ООО «КубаньБытХим» · 353917, Краснодарский край, г. Новороссийск, ул. Кутузовская, 117</small>
+      </div>
     </div>
   </div>
 </section>
@@ -439,6 +480,10 @@ footer a{color:var(--ink-700)}
 const burger=document.getElementById('burger'),links=document.getElementById('navLinks');
 burger.addEventListener('click',()=>{const open=links.classList.toggle('open');burger.setAttribute('aria-expanded',open)});
 links.addEventListener('click',e=>{if(e.target.tagName==='A'){links.classList.remove('open');burger.setAttribute('aria-expanded','false')}});
+// stagger-появление тайлов (уважает prefers-reduced-motion через CSS)
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+  const t=e.target;setTimeout(()=>t.classList.add('in'),(t.dataset.d||0));io.unobserve(t)}})},{threshold:.12});
+document.querySelectorAll('.bento').forEach(g=>{[...g.querySelectorAll(':scope>.tile')].forEach((t,i)=>{t.dataset.d=Math.min(i*45,270);io.observe(t)})});
 </script>
 </body>
 </html>
