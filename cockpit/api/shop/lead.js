@@ -1,7 +1,7 @@
 // POST /api/shop/lead — PUBLIC. Заявка на оптовый прайс с лендингов
 // (greenpanda-eco.ru и /matreshka). Сохраняет в _shop/leads и шлёт
 // уведомление в тот же админ-чат Telegram, что и заказы магазина.
-import { readJson, writeJson, SHOP, DEFAULT_SETTINGS, readBody, tg, botToken } from './_lib.js'
+import { readJson, writeJson, SHOP, DEFAULT_SETTINGS, readBody, tg, botToken, sendMail, mailEnabled } from './_lib.js'
 
 export const config = { maxDuration: 15 }
 
@@ -44,18 +44,22 @@ export default async function handler(req, res) {
   } catch { /* хранилище недоступно — заявку всё равно шлём в чат */ }
 
   const settings = { ...DEFAULT_SETTINGS, ...(await readJson(SHOP.settings, {}) || {}) }
+  const txt = [
+    `📋 Заявка на оптовый прайс #${lead.seq || ''}`,
+    `Имя: ${lead.name}`,
+    `Тел: ${lead.phone}`,
+    lead.email ? `E-mail: ${lead.email}` : '',
+    lead.biz ? `Бизнес: ${lead.biz}` : '',
+    lead.comment ? `Комментарий: ${lead.comment}` : '',
+    `Источник: ${lead.source}`,
+  ].filter(Boolean).join('\n')
   if (botToken() && settings.adminChatId) {
-    const txt = [
-      `📋 Заявка на оптовый прайс #${lead.seq || ''}`,
-      `Имя: ${lead.name}`,
-      `Тел: ${lead.phone}`,
-      lead.email ? `E-mail: ${lead.email}` : '',
-      lead.biz ? `Бизнес: ${lead.biz}` : '',
-      lead.comment ? `Комментарий: ${lead.comment}` : '',
-      `Источник: ${lead.source}`,
-    ].filter(Boolean).join('\n')
     try { await tg('sendMessage', { chat_id: settings.adminChatId, text: txt }) }
     catch { /* чат недоступен — заявка сохранена, не роняем ответ */ }
+  }
+  if (mailEnabled()) {
+    // то же уведомление письмом; best-effort — не роняем ответ формы
+    await sendMail(`Заявка на оптовый прайс #${lead.seq || ''} — ${lead.name}`, txt.replace('📋 ', ''))
   }
 
   return res.status(200).json({ ok: true })

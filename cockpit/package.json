@@ -18,6 +18,7 @@
     "express": "^4.22.2",
     "jszip": "^3.10.1",
     "multer": "^2.2.0",
+    "nodemailer": "^9.0.3",
     "pdf-lib": "^1.17.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

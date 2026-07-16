@@ -102,6 +102,31 @@ export function validateInitData(initData) {
   return { user, authDate: +params.get('auth_date') || 0 }
 }
 
+// ── E-mail уведомления (SMTP, по умолчанию Яндекс 360) ──
+// Нужны в .env: SMTP_USER (ящик-отправитель), SMTP_PASS (пароль приложения),
+// LEAD_EMAIL_TO (куда слать; можно несколько через запятую). Без них — тихо выключено.
+export const mailEnabled = () => !!(process.env.SMTP_USER && process.env.SMTP_PASS && process.env.LEAD_EMAIL_TO)
+
+export async function sendMail(subject, text) {
+  if (!mailEnabled()) return { ok: false, error: 'not_configured' }
+  try {
+    const { createTransport } = await import('nodemailer')
+    const t = createTransport({
+      host: process.env.SMTP_HOST || 'smtp.yandex.ru',
+      port: +(process.env.SMTP_PORT || 465),
+      secure: (process.env.SMTP_PORT || '465') === '465',
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    })
+    await t.sendMail({
+      from: `"Сайт GreenPanda/Matrёshka" <${process.env.SMTP_USER}>`,
+      to: process.env.LEAD_EMAIL_TO,
+      subject,
+      text,
+    })
+    return { ok: true }
+  } catch (e) { return { ok: false, error: String((e && e.message) || e) } }
+}
+
 export function readBody(req) {
   let body = req.body
   if (typeof body === 'string') { try { body = JSON.parse(body) } catch { body = {} } }
