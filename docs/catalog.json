@@ -1,0 +1,47 @@
+{
+  "generated_from": "static repo data (landings, deck, presentations); live WB/Ozon catalog is built by cockpit/gen_catalogs.mjs via API",
+  "brands": {
+    "greenpanda": {
+      "channel": "B2B",
+      "base_pack": "5 л, ПЭТ-канистра, 4 шт/короб, 128 шт/паллета",
+      "items": [
+        { "article": "90501", "name": "Хозяйственное мыло жидкое (посуда и руки)", "volume": "5 л", "barcode": "4680788441392", "sgr_date": "2016-12-12" },
+        { "article": "90502", "name": "Средство для стёкол и зеркал", "volume": "5 л", "barcode": "4680788441415", "sgr_date": "2016-12-12" },
+        { "article": "90503", "name": "Универсальное средство для полов и поверхностей", "volume": "5 л", "barcode": "4680788441477", "sgr_date": "2016-08-04" },
+        { "article": "90504", "name": "Жидкое мыло", "volume": "5 л", "barcode": null, "sgr_date": "2016-08-04" },
+        { "article": "90505", "name": "Средство для мытья посуды (и рук)", "volume": "5 л", "barcode": "4680788441484", "sgr_date": "2016-12-12" },
+        { "article": "90506", "name": "Жидкое средство для стирки", "volume": "5 л", "barcode": "4680788441507", "sgr_date": "2016-09-26" },
+        { "article": "90507", "name": "Пластификатор для бетона (противоморозный)", "volume": "5 л", "barcode": "4680788441392", "barcode_note": "дублирует ШК 90501 — вероятная ошибка в лендинге", "sgr_date": "2016-08-04" }
+      ],
+      "pack_variants": [
+        { "article": "90575", "base": "90505", "name": "Средство для мытья посуды", "volume": "0,75 л (дозатор)" },
+        { "article": "90516", "base": "90506", "name": "Жидкое средство для стирки", "volume": "1,5 л" },
+        { "article": "90752", "base": "90502", "name": "Для стёкол и зеркал", "volume": "0,75 л (триггер-спрей)" },
+        { "article": "90513", "base": "90503", "name": "Универсальное для полов", "volume": "1,5 л" }
+      ]
+    },
+    "matreshka": {
+      "channel": "B2C (WB, Ozon, МВидео)",
+      "note": "зонтичные артикулы; пер-вариантные offer_id/vendorCode — в кабинетах маркетплейсов",
+      "items": [
+        { "article": "60101", "name": "Гель для стирки", "volume": "1,1 л", "ean": "4627131951993", "per_box": 6, "variants": ["Белое бельё", "Чёрное", "Цветное", "Лаванда и роза", "Морозный день", "Экстракт хлопка"] },
+        { "article": "60103", "name": "Жидкое крем-мыло", "volume": "0,45 л", "ean": "4627131951979", "per_box": 12, "variants": ["Виноград", "Вишня", "Клубника", "Кокос"] },
+        { "article": "60107", "name": "Средство для мытья посуды", "volume": "0,45 л", "ean": "4627131952891", "per_box": 12, "variants": ["Масло лаванды", "Ромашковый букет", "Изумрудная река", "пенка", "спрей Delicate"] },
+        { "article": "60110", "name": "Кондиционер для белья", "volume": "1,1 л", "ean": "4627131951801", "per_box": 6, "variants": ["Лаванда-Роза", "Экстракт хлопка", "Южная ночь", "Северное сияние", "Морозный день"] },
+        { "article": "60125", "name": "Чистящие средства", "volume": "0,45 л", "ean": "4627131952136", "per_box": 12, "variants": ["Ванна/душ", "Антижир", "Туалет", "Кухня-eco", "Уборка-eco"] },
+        { "article": "60151", "name": "Средство для мытья полов и поверхностей", "volume": "1,1 л", "ean": "4627131952013", "per_box": 6, "variants": ["Морская прохлада", "Сочный цитрус", "концентрат Стронг PH13 (5 л)"] }
+      ]
+    },
+    "demo": {
+      "channel": "cockpit DEMO_CATALOG (заглушки витрины /shop)",
+      "items": [
+        { "article": "KBH-ANTIGREASE-5", "name": "Антижир концентрат", "volume": "5 л", "price_retail": 390, "price_opt": 320 },
+        { "article": "KBH-FLOOR-1", "name": "Средство для пола", "volume": "1 л", "price_retail": 149, "price_opt": 120 },
+        { "article": "KBH-GLASS-05", "name": "Для стёкол и зеркал", "volume": "0.5 л", "price_retail": 119, "price_opt": 95 },
+        { "article": "KBH-UNIVERSAL-1", "name": "Универсальное чистящее", "volume": "1 л", "price_retail": 159, "price_opt": 129 },
+        { "article": "KBH-SOAP-5", "name": "Жидкое мыло", "volume": "5 л", "price_retail": 290, "price_opt": 240 },
+        { "article": "KBH-SANITARY-075", "name": "Для сантехники", "volume": "0.75 л", "price_retail": 139, "price_opt": 110 }
+      ]
+    }
+  }
+}
